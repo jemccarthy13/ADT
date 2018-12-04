@@ -11,24 +11,18 @@ Features:
 --- client imports USMTF00 formatted ATO (default ATO for now)
 --- ATO Lookup search / add functionality (fully functional)
 --- AS Manager partially functional (display only)
---- 
+--- ATO generator is partially implemented (for MSNDAT/ACFT)
 
 TODO:
-- battle engine picks default move for every turn
-- Options don't work
-- pause menu selections only bare skeletons
-- need world map sprite for pokegear
-- sprites in battles collide with frame b/c of sizing difference
-- wild encounters don't work
-- need grass animation when walking through wild
-- map should be expanded and should include indoors locations
-- interact with world map (e.g. items, signs)
-- prof elm's intro scenes
-
-KNOWN BUGS:
-- occasionally the player will be in the process of moving
-	when a trainer sees them.  The behavior is a glitch, 
-	the trainer should not move in to battle
+- enhance conflict checking of rundown aircraft
+- don't allow duplicates on the rundown
+- add AR data to the ATO generator
+- fill out the rest of the implementation from excel:
+--- AS manager coloration
+--- conflict checks and overlap printout
+--- in SAM alert
+--- stacks printout
+--- 
 ===================================================================
                      END RELEASE NOTES
 ===================================================================
