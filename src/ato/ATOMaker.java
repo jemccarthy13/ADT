@@ -2,6 +2,7 @@ package ato;
 
 import javax.swing.JFrame;
 
+import panels.Panels;
 import utilities.ImageLibrary;
 
 /**
@@ -24,13 +25,13 @@ public class ATOMaker extends JFrame {
 	}
 
 	private ATOMaker() {
-		this.add(ATOPanel.getInstance());
+		this.add(Panels.getInstanceOf(ATOPanel.class));
 		this.setSize(1600, 600);
 		this.setLocationRelativeTo(null);
 		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));
-		// FontUIResource font = new FontUIResource("Verdana", Font.PLAIN, 24);
-		// UIManager.put("Table.font", font);
 		this.setTitle("ATO Generator");
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**
@@ -39,7 +40,6 @@ public class ATOMaker extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		instance.setVisible(true);
-		instance.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		System.out.println("Started.");
 	}
 }

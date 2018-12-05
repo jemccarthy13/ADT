@@ -2,31 +2,21 @@ package ato;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import panels.BasePanel;
+import panels.Panels;
+
 /**
  * The main panel for ATO table and information
- * 
- * @author John McCarthy
- *
  */
-public class ATOPanel extends JPanel {
+public class ATOPanel extends BasePanel {
 
 	private static final long serialVersionUID = -6930365855924400678L;
-	private static ATOPanel instance = new ATOPanel();
 
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static ATOPanel getInstance() {
-		return instance;
-	}
-
-	private ATOPanel() {
+	@Override
+	public void create() {
 		// establish the main content pane (layout the way we want)
 		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		this.setLayout(new BorderLayout());
@@ -37,6 +27,6 @@ public class ATOPanel extends JPanel {
 
 		// Add the scroll pane and button panel to the content.
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(ATOButtonPanel.getInstance(), BorderLayout.NORTH);
+		this.add(Panels.getInstanceOf(ATOButtonPanel.class), BorderLayout.NORTH);
 	}
 }

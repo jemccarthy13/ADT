@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import panels.Panels;
 import rundown.RundownMenuBar;
 import rundown.RundownPanel;
 import rundown.RundownTable;
@@ -38,8 +39,7 @@ public class RundownFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 * 
-	 * @param args
-	 *            - command line arguments
+	 * @param args - command line arguments
 	 */
 	public static void main(String[] args) {
 		RundownFrame.getInstance().setVisible(true);
@@ -63,7 +63,7 @@ public class RundownFrame extends JFrame {
 		this.setJMenuBar(RundownMenuBar.getInstance());
 
 		// add the rundown (buttons, table)
-		this.add(RundownPanel.getInstance());
+		this.add(Panels.getInstanceOf(RundownPanel.class));
 
 		// start the client - and start the server if one isn't found
 		client = new ADTClient();

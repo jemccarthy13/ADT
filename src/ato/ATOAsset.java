@@ -35,10 +35,20 @@ public class ATOAsset implements Serializable {
 			} else if (x == 8) {
 				retVal += "ARRLOC:";
 			}
+			if (x == 14) {
+				retVal += "1";
+			}
+			if (x == 15) {
+				retVal += "2";
+			}
+			if (x == 16) {
+				retVal += "3";
+			}
 			retVal += this.attributes[x] + "/";
 			if (x == 8) {
 				retVal += "/\nMSNACFT/";
 			}
+
 		}
 		retVal += "/";
 		return retVal;

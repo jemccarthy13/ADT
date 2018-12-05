@@ -2,32 +2,21 @@ package rundown;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import panels.BasePanel;
+import panels.Panels;
+
 /**
  * The main panel for rundown table and information
- * 
- * @author John McCarthy
- *
  */
-public class RundownPanel extends JPanel {
+public class RundownPanel extends BasePanel {
 
 	private static final long serialVersionUID = 8713537272012192261L;
 
-	private static RundownPanel instance = new RundownPanel();
-
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static RundownPanel getInstance() {
-		return instance;
-	}
-
-	private RundownPanel() {
+	@Override
+	public void create() {
 		// establish the main content pane (layout the way we want)
 		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		this.setLayout(new BorderLayout());
@@ -38,6 +27,6 @@ public class RundownPanel extends JPanel {
 
 		// Add the scroll pane and button panel to the content.
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(RundownButtonPanel.getInstance(), BorderLayout.NORTH);
+		this.add(Panels.getInstanceOf(RundownButtonPanel.class), BorderLayout.NORTH);
 	}
 }

@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import panels.Panels;
 import utilities.ImageLibrary;
 
 /**
@@ -56,12 +57,11 @@ public class ATOLookupForm extends JFrame {
 		scrollPane.setBorder(border);// new EmptyBorder(20, 20, 20, 20));
 
 		// Add the scroll pane and button panel to the content.
-		contentPane.add(ATOSearchPanel.getInstance(), BorderLayout.NORTH);
+		contentPane.add(Panels.getInstanceOf(ATOSearchPanel.class), BorderLayout.NORTH);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		// Add the "Add to Rundown" button and associated functionality
-		ATOLookupAddPanel addBtnPane = ATOLookupAddPanel.getInstance();
-		contentPane.add(addBtnPane, BorderLayout.SOUTH);
+		contentPane.add(Panels.getInstanceOf(ATOLookupAddPanel.class), BorderLayout.SOUTH);
 
 		this.add(contentPane);
 	}

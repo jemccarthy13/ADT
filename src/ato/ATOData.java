@@ -1,18 +1,23 @@
-package structures;
+package ato;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import ato.ATOAsset;
-import ato.ATOMaker;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import utilities.DebugUtility;
 
 /**
- * A list of assets that are in the rundown.
- * 
- * @author John McCarthy
+ * A list of assets that are in the ATO
  */
 public class ATOData extends ArrayList<ATOAsset> {
 
@@ -64,6 +69,42 @@ public class ATOData extends ArrayList<ATOAsset> {
 	}
 
 	/**
+	 * Choose and load a file that is an ATO project
+	 */
+	public static void loadAssets() {
+		JFileChooser fc = new JFileChooser();
+		File f = null;
+
+		fc.setDialogTitle("Choose ATO projecct file...");
+		fc.setCurrentDirectory(null);
+		FileFilter filter = new FileNameExtensionFilter("ATO Proj Files", "proj", "PROJ");
+
+		fc.setFileFilter(filter);
+		fc.showOpenDialog(null);
+		f = fc.getSelectedFile();
+
+		if (f != null) {
+			System.out.println(f.exists());
+
+			try {
+				System.out.println(f.getAbsolutePath() + "/" + f.getName());
+				FileInputStream is = new FileInputStream(f.getAbsolutePath());
+				ObjectInputStream ois = new ObjectInputStream(is);
+				ATOData.instance = (ATOData) ois.readObject();
+
+				ATOMaker.getInstance().repaint();
+				ATOMaker.getInstance().validate();
+				ois.close();
+				is.close();
+			} catch (IOException e) {
+				System.err.println("Unable to read from file.");
+			} catch (ClassNotFoundException e) {
+				System.err.println("Unable to cast to ATOData.");
+			}
+		}
+	}
+
+	/**
 	 * 
 	 */
 	public static void output() {
@@ -90,8 +131,10 @@ public class ATOData extends ArrayList<ATOAsset> {
 		// MODE2/IFFMODE3//
 		String msnDat = "";
 		for (ATOAsset asst : instance) {
-			System.out.println(asst.toString());
-			msnDat += asst.toString();
+			if (!asst.isBlank()) {
+				System.out.println(asst.toString());
+				msnDat += asst.toString();
+			}
 		}
 		atoStr = atoStr + msnDat;
 
@@ -100,7 +143,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 		System.out.println(atoStr);
 		BufferedWriter writer = null;
 		try {
-			writer = new BufferedWriter(new FileWriter(filePath, true));
+			writer = new BufferedWriter(new FileWriter(filePath, false));
 			writer.write(atoStr);
 			writer.close();
 		} catch (IOException e) {
@@ -112,6 +155,29 @@ public class ATOData extends ArrayList<ATOAsset> {
 				DebugUtility.printError("Error writing test ATO.");
 				e.printStackTrace();
 			}
+		}
+	}
+
+	/**
+	 * @throws IOException
+	 * 
+	 */
+	public void save() throws IOException {
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream("ATOYA.proj");
+			oos = new ObjectOutputStream(fos);
+			// write object to file
+			oos.writeObject(this);
+			System.out.println("ATO Project saved.");
+			// closing resources
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			oos.close();
+			fos.close();
 		}
 	}
 

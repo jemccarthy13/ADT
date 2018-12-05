@@ -5,15 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.RundownFrame;
+import panels.ADTLabel;
+import panels.ActionButton;
+import panels.BasePanel;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.RundownAssets;
-import utilities.Fonts;
 import utilities.Output;
 
 /**
@@ -22,20 +22,9 @@ import utilities.Output;
  * @author John McCarthy
  *
  */
-public class ATOLookupAddPanel extends JPanel {
+public class ATOLookupAddPanel extends BasePanel {
 
 	private static final long serialVersionUID = 4469189062928123724L;
-
-	private static ATOLookupAddPanel instance = new ATOLookupAddPanel();
-
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static ATOLookupAddPanel getInstance() {
-		return instance;
-	}
 
 	private ActionListener AddToRundownButtonListener = new ActionListener() {
 
@@ -59,14 +48,13 @@ public class ATOLookupAddPanel extends JPanel {
 		}
 	};
 
-	private ATOLookupAddPanel() {
-		JButton addSelectedBtn = new JButton("Add to Rundown");
-		addSelectedBtn.setFont(Fonts.serif);
-		addSelectedBtn.addActionListener(this.AddToRundownButtonListener);
+	@Override
+	public void create() {
+		JButton addSelectedBtn = new ActionButton("Add to Rundown", this.AddToRundownButtonListener);
 		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		this.setLayout(new GridLayout(1, 3, 50, 30));
-		this.add(new JLabel(""));
+		this.add(new ADTLabel(""));
 		this.add(addSelectedBtn);
-		this.add(new JLabel(""));
+		this.add(new ADTLabel(""));
 	}
 }

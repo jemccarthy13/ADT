@@ -1,30 +1,28 @@
 package managers;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import panels.ADTLabel;
+import panels.BasePanel;
 import utilities.AltCellListener;
-import utilities.Fonts;
 
 /**
  * The buttons / fields at the top of the airspace manager
  * 
  * @author John McCarthy
  */
-public class AirspaceManagerPanel extends JPanel {
+public class AirspaceManagerPanel extends BasePanel {
 
 	private static final long serialVersionUID = -7767311380915462474L;
-	private static AirspaceManagerPanel instance = new AirspaceManagerPanel();
 
-	private AirspaceManagerPanel() {
+	@Override
+	public void create() {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 75, 75, 75, 200, 75 };
@@ -33,8 +31,7 @@ public class AirspaceManagerPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
-		JLabel nameLbl = new JLabel("Name:");
-		nameLbl.setFont(Fonts.serif);
+		ADTLabel nameLbl = new ADTLabel("Name:");
 		nameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_nameLbl = new GridBagConstraints();
 		gbc_nameLbl.fill = GridBagConstraints.HORIZONTAL;
@@ -44,7 +41,6 @@ public class AirspaceManagerPanel extends JPanel {
 		this.add(nameLbl, gbc_nameLbl);
 
 		JTextField nameField = new JTextField();
-		nameField.setFont(Fonts.serif);
 		GridBagConstraints gbc_nameField = new GridBagConstraints();
 		gbc_nameField.gridwidth = 3;
 		gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
@@ -53,8 +49,7 @@ public class AirspaceManagerPanel extends JPanel {
 		gbc_nameField.gridy = 0;
 		this.add(nameField, gbc_nameField);
 
-		JLabel gridsLbl = new JLabel("Grids:");
-		gridsLbl.setFont(Fonts.serif);
+		ADTLabel gridsLbl = new ADTLabel("Grids:");
 		gridsLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_1 = new GridBagConstraints();
 		gbc_1.fill = GridBagConstraints.HORIZONTAL;
@@ -65,7 +60,6 @@ public class AirspaceManagerPanel extends JPanel {
 
 		JTextField gridsField = new JTextField();
 		gridsField.setHorizontalAlignment(SwingConstants.LEFT);
-		gridsField.setFont(Fonts.serif);
 		GridBagConstraints gbc_gridsField = new GridBagConstraints();
 		gbc_gridsField.gridwidth = 3;
 		gbc_gridsField.fill = GridBagConstraints.HORIZONTAL;
@@ -74,8 +68,7 @@ public class AirspaceManagerPanel extends JPanel {
 		gbc_gridsField.gridy = 1;
 		this.add(gridsField, gbc_gridsField);
 
-		JLabel altLowLbl = new JLabel("Alt (Lower):");
-		altLowLbl.setFont(Fonts.serif);
+		ADTLabel altLowLbl = new ADTLabel("Alt (Lower):");
 		altLowLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_3 = new GridBagConstraints();
 		gbc_3.fill = GridBagConstraints.HORIZONTAL;
@@ -85,7 +78,6 @@ public class AirspaceManagerPanel extends JPanel {
 		this.add(altLowLbl, gbc_3);
 
 		JTextField lowAltField = new JTextField();
-		lowAltField.setFont(Fonts.serif);
 		GridBagConstraints gbc_lowAltField = new GridBagConstraints();
 		gbc_lowAltField.gridwidth = 1;
 		gbc_lowAltField.fill = GridBagConstraints.HORIZONTAL;
@@ -94,8 +86,7 @@ public class AirspaceManagerPanel extends JPanel {
 		gbc_lowAltField.gridy = 2;
 		this.add(lowAltField, gbc_lowAltField);
 
-		JLabel altUpLbl = new JLabel("Alt (Upper):");
-		altUpLbl.setFont(Fonts.serif);
+		ADTLabel altUpLbl = new ADTLabel("Alt (Upper):");
 		altUpLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_4 = new GridBagConstraints();
 		gbc_4.fill = GridBagConstraints.HORIZONTAL;
@@ -105,7 +96,6 @@ public class AirspaceManagerPanel extends JPanel {
 		this.add(altUpLbl, gbc_4);
 
 		JTextField upAltField = new JTextField();
-		upAltField.setFont(Fonts.serif);
 		GridBagConstraints gbc_upAltField = new GridBagConstraints();
 		gbc_upAltField.gridwidth = 1;
 		gbc_upAltField.fill = GridBagConstraints.HORIZONTAL;
@@ -115,7 +105,6 @@ public class AirspaceManagerPanel extends JPanel {
 		this.add(upAltField, gbc_upAltField);
 
 		JButton addNew = new JButton("Add New");
-		addNew.setFont(Fonts.serif);
 		GridBagConstraints gbc_addNew = new GridBagConstraints();
 		gbc_addNew.gridwidth = 1;
 		gbc_addNew.fill = GridBagConstraints.HORIZONTAL;
@@ -127,14 +116,4 @@ public class AirspaceManagerPanel extends JPanel {
 		upAltField.addFocusListener(new AltCellListener(upAltField));
 		lowAltField.addFocusListener(new AltCellListener(lowAltField));
 	}
-
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return single instance
-	 */
-	public static Component getInstance() {
-		return instance;
-	}
-
 }
