@@ -16,6 +16,8 @@ public class Configuration {
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
 
+	private static boolean compact = false;
+
 	private final boolean SHOW_MESSAGES = false;
 	private boolean testATO = false;
 
@@ -72,5 +74,19 @@ public class Configuration {
 		} catch (Exception e1) {
 			DebugUtility.printError("Unable to set system look and feel. " + e1.getMessage());
 		}
+	}
+
+	/**
+	 * @return true iff compact checkbox is true (checked)
+	 */
+	public static boolean isCompactMode() {
+		return compact;
+	}
+
+	/**
+	 * @param selected set the compact mode based on selected option
+	 */
+	public static void setCompact(boolean selected) {
+		compact = selected;
 	}
 }

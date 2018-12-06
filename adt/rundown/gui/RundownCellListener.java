@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import main.RundownFrame;
 import rundown.model.RundownTable;
-import rundown.model.RundownTableModel;
+import structures.LockedCells;
 
 /**
  * This class listens for changes made to the data in the table via the
@@ -24,8 +24,7 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	/**
 	 * Create a TableCellListener.
 	 *
-	 * @param action
-	 *            the Action to invoke when cell data is changed
+	 * @param action the Action to invoke when cell data is changed
 	 */
 	public RundownCellListener() {
 	}
@@ -66,7 +65,7 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		this.row = RundownTable.getInstance().getEditingRow();
 		this.column = RundownTable.getInstance().getEditingColumn();
 		RundownFrame.getClient().sendMessage("locked," + this.row + "," + this.column);
-		RundownTableModel.getInstance().setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
+		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 	}
 
 	/*
@@ -74,6 +73,6 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	 */
 	private void processEditingStopped() {
 		RundownFrame.getClient().sendMessage("unlocked," + this.row + "," + this.column);
-		RundownTableModel.getInstance().setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
+		LockedCells.setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 	}
 }

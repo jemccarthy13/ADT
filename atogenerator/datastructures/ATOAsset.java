@@ -1,16 +1,11 @@
 package datastructures;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Representation of an asset listed in the ATO
  */
-public class ATOAsset implements Serializable {
-
-	/**
-	 * attributes for the ATO data
-	 */
-	String[] attributes = new String[17];
+public class ATOAsset extends ArrayList<Object> {
 
 	private static final long serialVersionUID = 8634221915912471387L;
 
@@ -18,8 +13,8 @@ public class ATOAsset implements Serializable {
 	 * Create a blank asset
 	 */
 	public ATOAsset() {
-		for (int x = 0; x < this.attributes.length; x++) {
-			this.attributes[x] = "-";
+		for (int x = 0; x < 17; x++) {
+			this.add("-");
 		}
 	}
 
@@ -29,7 +24,7 @@ public class ATOAsset implements Serializable {
 	@Override
 	public String toString() {
 		String retVal = "AMSNDAT/";
-		for (int x = 0; x < this.attributes.length; x++) {
+		for (int x = 0; x < this.size(); x++) {
 			if (x == 7) {
 				retVal += "DEPLOC:";
 			} else if (x == 8) {
@@ -44,7 +39,7 @@ public class ATOAsset implements Serializable {
 			if (x == 16) {
 				retVal += "3";
 			}
-			retVal += this.attributes[x] + "/";
+			retVal += this.get(x) + "/";
 			if (x == 8) {
 				retVal += "/\nMSNACFT/";
 			}
@@ -59,7 +54,7 @@ public class ATOAsset implements Serializable {
 	 * @return the attribute desired
 	 */
 	public String getVal(int x) {
-		return this.attributes[x];
+		return (String) this.get(x);
 	}
 
 	/**
@@ -67,20 +62,11 @@ public class ATOAsset implements Serializable {
 	 */
 	public boolean isBlank() {
 		boolean retVal = true;
-		for (int x = 0; x < this.attributes.length; x++) {
-			if (this.attributes[x] != null && !this.attributes[x].equals("-")) {
+		for (int x = 0; x < this.size(); x++) {
+			if (this.get(x) != null && !this.get(x).equals("-")) {
 				retVal = false;
 			}
 		}
 		return retVal;
 	}
-
-	/**
-	 * @param columnIndex
-	 * @param val
-	 */
-	public void set(int columnIndex, String val) {
-		this.attributes[columnIndex] = val;
-	}
-
 }

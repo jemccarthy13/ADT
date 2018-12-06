@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import rundown.model.RundownTableModel;
+import structures.LockedCells;
+import swing.GUI;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -23,12 +25,9 @@ public class ADTServerThread extends Thread {
 	/**
 	 * Constructor for a server thread.
 	 * 
-	 * @param id
-	 *            - the ID number of the thread
-	 * @param reader
-	 *            - input to process
-	 * @param socket
-	 *            - the connection socket to create a writer for
+	 * @param id     - the ID number of the thread
+	 * @param reader - input to process
+	 * @param socket - the connection socket to create a writer for
 	 */
 	public ADTServerThread(int id, BufferedReader reader, Socket socket) {
 		this.input = reader;
@@ -81,8 +80,7 @@ public class ADTServerThread extends Thread {
 	/**
 	 * Send a message to the game server.
 	 * 
-	 * @param string
-	 *            - the message to send
+	 * @param string - the message to send
 	 */
 	public void sendMessage(String string) {
 		try {
@@ -106,7 +104,7 @@ public class ADTServerThread extends Thread {
 	 * locked cells to the newly joined client.
 	 */
 	public void sendLocks() {
-		HashMap<Integer, Integer[]> lockedCells = RundownTableModel.getInstance().getLockedCells();
+		HashMap<Integer, Integer[]> lockedCells = LockedCells.getLockedCells();
 		for (Integer key : lockedCells.keySet()) {
 			sendMessage(key + ",locked," + lockedCells.get(key)[0] + "," + lockedCells.get(key)[1]);
 		}
@@ -116,7 +114,7 @@ public class ADTServerThread extends Thread {
 	 * Done on initial client connect, this sends the rundown to the client.
 	 */
 	public void sendRundown() {
-		RundownTableModel model = RundownTableModel.getInstance();
+		RundownTableModel model = (RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class);
 		for (int r = 0; r < model.getRowCount(); r++) {
 			for (int c = 0; c < model.getColumnCount(); c++) {
 				sendMessage("-1,set," + model.getValueAt(r, c) + "," + r + "," + c);

@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gui.ATOGeneratorFrame;
 import swing.GUI;
+import table.ATOTableModel;
 import utilities.DebugUtility;
 
 /**
@@ -93,6 +94,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 				FileInputStream is = new FileInputStream(f.getAbsolutePath());
 				ObjectInputStream ois = new ObjectInputStream(is);
 				ATOData.instance = (ATOData) ois.readObject();
+				GUI.MODELS.getInstanceOf(ATOTableModel.class).setItems(instance);
 
 				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).validate();

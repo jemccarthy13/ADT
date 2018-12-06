@@ -11,12 +11,12 @@ import javax.swing.border.EmptyBorder;
 import atoLookup.ATOLookupForm;
 import main.RundownFrame;
 import managers.ManagerFrame;
-import rundown.model.RundownTableModel;
 import swing.ActionButton;
 import swing.BaseFrame;
 import swing.BasePanel;
 import swing.GUI;
 import test.Tester;
+import utilities.Configuration;
 
 /**
  * The panel containing all of the rundown buttons (i.e. a form header of
@@ -85,8 +85,8 @@ public class RundownButtonPanel extends BasePanel {
 		compactCheck.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RundownTableModel.getInstance().setCompact(((JCheckBox) (e.getSource())).isSelected());
-				System.out.println("Setting compact: " + RundownTableModel.getInstance().isCompactMode());
+				Configuration.setCompact(((JCheckBox) (e.getSource())).isSelected());
+				System.out.println("Setting compact: " + Configuration.isCompactMode());
 				RundownFrame.getInstance().handleCompact();
 			}
 		});

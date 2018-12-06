@@ -16,6 +16,8 @@ import java.net.UnknownHostException;
 import rundown.model.RundownTableModel;
 import server.ADTServer;
 import structures.ATOAssets;
+import structures.LockedCells;
+import swing.GUI;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.Output;
@@ -101,12 +103,12 @@ public class ADTClient extends Thread {
 	/**
 	 * Try to connect to the server.
 	 * 
-	 * @throws UnknownHostException
-	 *             - if host isn't known (localhost should never cause this)
-	 * @throws IOException
-	 *             - if there are any IO errors with the BufferedReader
-	 * @throws ConnectException
-	 *             - if there are any issues connecting to the socket
+	 * @throws UnknownHostException - if host isn't known (localhost should never
+	 *                              cause this)
+	 * @throws IOException          - if there are any IO errors with the
+	 *                              BufferedReader
+	 * @throws ConnectException     - if there are any issues connecting to the
+	 *                              socket
 	 */
 	public void tryConnect() throws UnknownHostException, IOException, ConnectException {
 		this.socket = null;
@@ -174,8 +176,7 @@ public class ADTClient extends Thread {
 	/**
 	 * Read a line and process the received command.
 	 * 
-	 * @param inputLine
-	 *            - the next command to process
+	 * @param inputLine - the next command to process
 	 * @return true if the server session should end (end command received)
 	 */
 	public boolean processLine(String inputLine) {
@@ -195,7 +196,8 @@ public class ADTClient extends Thread {
 			int row = Integer.parseInt(data[3]);
 			int col = Integer.parseInt(data[4]);
 
-			RundownTableModel.setValueAt(val, row, col, false, false);
+			((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).setValueAt(val, row, col, false,
+					false);
 			RundownFrame.getInstance().repaint();
 		} else if (command.equals("atodat")) {
 			if (!data[2].trim().equals("")) {
@@ -213,17 +215,17 @@ public class ADTClient extends Thread {
 			}
 		} else if (command.equals("unlock all")) {
 			Integer user = Integer.parseInt(data[0]);
-			RundownTableModel.getInstance().unlockUser(user);
+			LockedCells.unlockUser(user);
 		} else if (command.equals("unlocked")) {
 			Integer user = Integer.parseInt(data[0]);
 			Integer row = Integer.parseInt(data[2]);
 			Integer column = Integer.parseInt(data[3]);
-			RundownTableModel.getInstance().setUnlocked(user, row, column);
+			LockedCells.setUnlocked(user, row, column);
 		} else if (command.equals("locked")) {
 			Integer user = Integer.parseInt(data[0]);
 			Integer row = Integer.parseInt(data[2]);
 			Integer column = Integer.parseInt(data[3]);
-			RundownTableModel.getInstance().setLocked(user, row, column);
+			LockedCells.setLocked(user, row, column);
 		} else if (command.equals("end")) {
 			end = true;
 		}
@@ -234,8 +236,7 @@ public class ADTClient extends Thread {
 	/**
 	 * Send a message to the game server.
 	 * 
-	 * @param string
-	 *            - the message to send
+	 * @param string - the message to send
 	 */
 	public void sendMessage(String string) {
 		DebugUtility.logMessage("(Client) Sending message: " + string);

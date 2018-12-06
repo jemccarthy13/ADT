@@ -1,161 +1,50 @@
 package rundown.model;
 
-import java.util.HashMap;
-
 import javax.swing.DefaultRowSorter;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
 
 import main.RundownFrame;
+import structures.ADTTableModel;
 import structures.ATOAssets;
 import structures.Asset;
+import structures.LockedCells;
 import structures.RundownAssets;
 
 /**
  * Rundown table model stores the data for the rundown
- * 
- * @author John McCarthy
- *
  */
-public class RundownTableModel extends AbstractTableModel implements TableModelListener {
+public class RundownTableModel extends ADTTableModel<Asset> {
 	private static final long serialVersionUID = -9017185692217463087L;
-
-	private String[] columnNames = { "VCS", "Mode 2", "Location", "Alt L", "Alt U", "Status" };
-	private String[] fullColumnNames = { "VCS", "Mode 2", "Location", "Alt L", "Alt U", "Status", "Type", "Category",
-			"Full Callsign" };
-
-	private HashMap<Integer, Integer[]> lockedCells = new HashMap<Integer, Integer[]>();
 
 	private boolean compactMode = false;
 
-	private static RundownTableModel instance = new RundownTableModel();
-
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static RundownTableModel getInstance() {
-		return instance;
-	}
-
-	/**
-	 * @return the current list of locked cells
-	 */
-	public HashMap<Integer, Integer[]> getLockedCells() {
-		return this.lockedCells;
-	}
-
-	/**
-	 * Set a particular cell as locked by the given user
-	 * 
-	 * @param user   - user who has locked the cell
-	 * @param row    - row of the cell
-	 * @param column - col of the cell
-	 */
-	public void setLocked(Integer user, Integer row, Integer column) {
-		if (!this.lockedCells.containsKey(user)) {
-			this.lockedCells.put(user, new Integer[2]);
-		}
-		this.lockedCells.get(user)[0] = row;
-		this.lockedCells.get(user)[1] = column;
-	}
-
-	/**
-	 * Clear all locks of a particular user
-	 * 
-	 * @param user - the user whose locks should be cleared
-	 */
-	public void unlockUser(Integer user) {
-		setUnlocked(user, -1, -1);
-	}
-
-	/**
-	 * Set a particular cell as unlocked by the given user
-	 * 
-	 * @param user   - user who has unlocked the cell
-	 * @param row    - row of the cell
-	 * @param column - col of the cell
-	 */
-	public void setUnlocked(Integer user, Integer row, Integer column) {
-		if (this.lockedCells.containsKey(user)) {
-			this.lockedCells.remove(user);
-		}
-	}
-
-	/**
-	 * Check if a given cell is marked as locked
-	 * 
-	 * @param row    - row of the cell
-	 * @param column - col of the cell
-	 * @return true iff a user has the cell locked
-	 */
-	public boolean isLocked(int row, int column) {
-		boolean locked = false;
-		for (Integer user : this.lockedCells.keySet()) {
-			if (this.lockedCells.get(user)[0] == row && this.lockedCells.get(user)[1] == column) {
-				locked = true;
-			}
-		}
-		return locked;
-	}
-
-	private RundownTableModel() {
+	@Override
+	public void create() {
 		this.addTableModelListener(this);
-	}
+		this.fullColumnNames.add("VCS");
+		this.fullColumnNames.add("Mode 2");
+		this.fullColumnNames.add("Location");
+		this.fullColumnNames.add("Alt L");
+		this.fullColumnNames.add("Alt U");
+		this.fullColumnNames.add("Status");
+		this.fullColumnNames.add("Type");
+		this.fullColumnNames.add("Category");
+		this.fullColumnNames.add("Full Callsign");
 
-	// By default forward all events to all the listeners.
-	@Override
-	public void tableChanged(TableModelEvent e) {
-		fireTableChanged(e);
-	}
-
-	/**
-	 * @param val - new value for if the table is in compact mode or not
-	 */
-	public void setCompact(boolean val) {
-		this.compactMode = val;
-	}
-
-	/**
-	 * @return true iff table is in compact mode
-	 */
-	public boolean isCompactMode() {
-		return this.compactMode;
-	}
-
-	@Override
-	public int getRowCount() {
-		return RundownAssets.getInstance().size();
+		this.items = RundownAssets.getInstance();
 	}
 
 	@Override
 	public int getColumnCount() {
-		int colCount = this.fullColumnNames.length;
+		int colCount = this.fullColumnNames.size();
 		if (this.compactMode) {
-			colCount = this.columnNames.length;
+			colCount = this.fullColumnNames.size() - 3;
 		}
 		return colCount;
 	}
 
 	@Override
-	public String getColumnName(int columnIndex) {
-		String colName = this.fullColumnNames[columnIndex];
-		if (this.compactMode) {
-			colName = this.columnNames[columnIndex];
-		}
-		return colName;
-	}
-
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
-	}
-
-	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return !isLocked(rowIndex, columnIndex);
+		return !LockedCells.isLocked(rowIndex, columnIndex);
 	}
 
 	@Override
@@ -198,46 +87,46 @@ public class RundownTableModel extends AbstractTableModel implements TableModelL
 	 * @param doLookup    - true to copy over data if found
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void setValueAt(Object aValue, int rowIndex, int columnIndex, boolean sendMessage, boolean doLookup) {
-		while (RundownAssets.getInstance().size() <= rowIndex) {
-			RundownAssets.getInstance().add(new Asset());
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex, boolean sendMessage, boolean doLookup) {
+		while (this.items.size() <= rowIndex) {
+			this.items.add(new Asset());
 		}
-		if (RundownAssets.getInstance().size() <= rowIndex) {
-			RundownAssets.getInstance().add(new Asset());
+		if (this.items.size() <= rowIndex) {
+			this.items.add(new Asset());
 		}
 		String val = aValue.toString().toUpperCase();
 
 		switch (columnIndex) {
 		case 0:
-			RundownAssets.getInstance().get(rowIndex).setVCS(val);
+			this.items.get(rowIndex).setVCS(val);
 			if (doLookup)
 				ATOAssets.staticInstance().lookup(rowIndex, 0, val);
 			break;
 		case 1:
-			RundownAssets.getInstance().get(rowIndex).setMode2(val);
+			this.items.get(rowIndex).setMode2(val);
 			if (doLookup)
 				ATOAssets.staticInstance().lookup(rowIndex, 1, val);
 			break;
 		case 2:
-			RundownAssets.getInstance().get(rowIndex).setAirspace(val);
+			this.items.get(rowIndex).setAirspace(val);
 			break;
 		case 3:
-			RundownAssets.getInstance().get(rowIndex).setLowerAlt(val);
+			this.items.get(rowIndex).setLowerAlt(val);
 			break;
 		case 4:
-			RundownAssets.getInstance().get(rowIndex).setUpperAlt(val);
+			this.items.get(rowIndex).setUpperAlt(val);
 			break;
 		case 5:
-			RundownAssets.getInstance().get(rowIndex).setStatus(val);
+			this.items.get(rowIndex).setStatus(val);
 			break;
 		case 6:
-			RundownAssets.getInstance().get(rowIndex).setTypeCat(val);
+			this.items.get(rowIndex).setTypeCat(val);
 			break;
 		case 7:
-			RundownAssets.getInstance().get(rowIndex).setSpecType(val);
+			this.items.get(rowIndex).setSpecType(val);
 			break;
 		case 8:
-			RundownAssets.getInstance().get(rowIndex).setFullCallsign(val);
+			this.items.get(rowIndex).setFullCallsign(val);
 			break;
 		default:
 			break;
@@ -250,5 +139,4 @@ public class RundownTableModel extends AbstractTableModel implements TableModelL
 
 		((DefaultRowSorter) RundownTable.getInstance().getRowSorter()).setRowFilter(null);
 	}
-
 }

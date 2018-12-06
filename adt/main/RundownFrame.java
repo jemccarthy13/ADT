@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import rundown.gui.RundownMenuBar;
 import rundown.gui.RundownPanel;
 import rundown.model.RundownTable;
-import rundown.model.RundownTableModel;
 import swing.GUI;
 import utilities.Configuration;
 import utilities.ImageLibrary;
@@ -81,7 +80,7 @@ public class RundownFrame extends JFrame {
 	 */
 	public void handleCompact() {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		if (RundownTableModel.getInstance().isCompactMode()) {
+		if (Configuration.isCompactMode()) {
 			this.setSize((int) (d.width * 0.30), (int) (d.height * 0.7));
 		} else {
 			this.setSize((int) (d.width * 0.4), (int) (d.height * 0.7));

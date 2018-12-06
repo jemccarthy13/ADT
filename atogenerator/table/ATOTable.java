@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import swing.GUI;
 import utilities.Fonts;
 
 /**
@@ -69,7 +70,7 @@ public class ATOTable extends JTable {
 	private ATOTable() {
 
 		// set the data
-		this.setModel(ATOTableModel.getInstance());
+		this.setModel(GUI.MODELS.getInstanceOf(ATOTableModel.class));
 		this.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			/**

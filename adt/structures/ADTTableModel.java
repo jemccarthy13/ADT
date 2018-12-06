@@ -2,6 +2,8 @@ package structures;
 
 import java.util.ArrayList;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import swing.Singleton;
@@ -9,7 +11,7 @@ import swing.Singleton;
 /**
  * @param <T>
  */
-public abstract class ADTTableModel<T> extends AbstractTableModel implements AddNew, Singleton {
+public abstract class ADTTableModel<T> extends AbstractTableModel implements AddNew, Singleton, TableModelListener {
 
 	/** Serialization variable */
 	private static final long serialVersionUID = -2333045189615857224L;
@@ -44,6 +46,11 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 		return this.fullColumnNames.get(columnIndex);
 	}
 
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return String.class;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -73,5 +80,19 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 	@Override
 	public void addNew() {
 		System.out.println("Not adding anything to ADTTableModel (parent)");
+	}
+
+	// By default forward all events to all the listeners.
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		fireTableChanged(e);
+	}
+
+	/**
+	 * @param instance
+	 */
+	@SuppressWarnings("unchecked")
+	public void setItems(ArrayList<?> instance) {
+		this.items = (ArrayList<T>) instance;
 	}
 }

@@ -24,9 +24,7 @@ import utilities.Output;
 import utilities.Patterns;
 
 /**
- * An ArrayList of Assets for the ATO Lookup form.
- * 
- * @author John McCarthy
+ * An ArrayList of Assets for the ATO Lookup form
  */
 public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 
@@ -339,15 +337,16 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 				compVal = ass.getFullCallsign();
 			}
 			if (val.equals(compVal)) {
-				RundownTableModel.setValueAt(ass.getVCS(), row, 0, true, false);
-				RundownTableModel.setValueAt(ass.getMode2(), row, 1, true, false);
-				RundownTableModel.setValueAt(ass.getAirspace(), row, 2, true, false);
-				RundownTableModel.setValueAt(ass.getLowerAlt(), row, 3, true, false);
-				RundownTableModel.setValueAt(ass.getUpperAlt(), row, 4, true, false);
-				RundownTableModel.setValueAt(ass.getStatus(), row, 5, true, false);
-				RundownTableModel.setValueAt(ass.getSpecType(), row, 6, true, false);
-				RundownTableModel.setValueAt(ass.getTypeCat(), row, 7, true, false);
-				RundownTableModel.setValueAt(ass.getFullCallsign(), row, 8, true, false);
+				RundownTableModel m = (RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class);
+				m.setValueAt(ass.getVCS(), row, 0, true, false);
+				m.setValueAt(ass.getMode2(), row, 1, true, false);
+				m.setValueAt(ass.getAirspace(), row, 2, true, false);
+				m.setValueAt(ass.getLowerAlt(), row, 3, true, false);
+				m.setValueAt(ass.getUpperAlt(), row, 4, true, false);
+				m.setValueAt(ass.getStatus(), row, 5, true, false);
+				m.setValueAt(ass.getSpecType(), row, 6, true, false);
+				m.setValueAt(ass.getTypeCat(), row, 7, true, false);
+				m.setValueAt(ass.getFullCallsign(), row, 8, true, false);
 			}
 		}
 	}

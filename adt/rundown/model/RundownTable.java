@@ -9,7 +9,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import rundown.gui.RundownCellListener;
+import structures.LockedCells;
+import swing.GUI;
 import swing.MyTableCellEditor;
+import utilities.Configuration;
 import utilities.Fonts;
 
 /**
@@ -36,7 +39,7 @@ public class RundownTable extends JTable {
 	private RundownTable() {
 
 		// set the data
-		this.setModel(RundownTableModel.getInstance());
+		this.setModel(GUI.MODELS.getInstanceOf(RundownTableModel.class));
 		this.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 8107150085372915277L;
@@ -46,7 +49,7 @@ public class RundownTable extends JTable {
 					boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				RundownTable.getInstance().getModel();
-				if (RundownTableModel.getInstance().isLocked(row, column)) {
+				if (LockedCells.isLocked(row, column)) {
 					c.setBackground(Color.gray.darker());
 				} else if (!isSelected) {
 					c.setBackground(RundownTable.getInstance().getBackground());
@@ -75,7 +78,7 @@ public class RundownTable extends JTable {
 		this.setRowHeight(25 + 10);
 		this.setPreferredScrollableViewportSize(new Dimension(523, 233));
 
-		RundownTableModel.getInstance().setCompact(true);
+		Configuration.setCompact(true);
 
 		for (int x = 0; x < getModel().getColumnCount(); x++) {
 			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor());
@@ -104,7 +107,7 @@ public class RundownTable extends JTable {
 		this.getColumnModel().getColumn(4).setMaxWidth(60);
 		this.getColumnModel().getColumn(5).setMinWidth(90);
 
-		if (RundownTableModel.getInstance().isCompactMode() == false) {
+		if (Configuration.isCompactMode() == false) {
 			this.getColumnModel().getColumn(6).setMinWidth(60);
 			this.getColumnModel().getColumn(6).setWidth(60);
 			this.getColumnModel().getColumn(6).setMaxWidth(60);
@@ -115,7 +118,7 @@ public class RundownTable extends JTable {
 
 			this.getColumnModel().getColumn(8).setMinWidth(5);
 
-		} else if (RundownTableModel.getInstance().isCompactMode() == true) {
+		} else if (Configuration.isCompactMode() == true) {
 			this.getColumnModel().getColumn(6).setMinWidth(5);
 			this.getColumnModel().getColumn(6).setWidth(5);
 
