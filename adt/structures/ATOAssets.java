@@ -20,6 +20,7 @@ import atoLookup.ATOLookupForm;
 import rundown.model.RundownTableModel;
 import swing.GUI;
 import utilities.Configuration;
+import utilities.DebugUtility;
 import utilities.Output;
 import utilities.Patterns;
 
@@ -106,20 +107,16 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 
 			for (File file : rootDir.listFiles()) {
 				if (Patterns.extPattern.matcher(file.getName()).find()) {
-					System.out.println("Process: " + file.getName());
+					DebugUtility.debug(ATOAssets.class, "Processing: " + file.getName());
 					try {
 						processFile(f.getPath(), typeMap);
 					} catch (IOException e) {
-						System.out.println("Unable to process: " + f.getName() + "\n" + e.getMessage());
+						DebugUtility.debug(ATOAssets.class,
+								"Unable to process: " + f.getName() + "\n" + e.getMessage());
 					}
 				}
 			}
 
-			// Call processFile(f.Name, f.path, typeDict, rs)
-			// .Print ("Processed: " & f.path)
-			// numFilesProc = numFilesProc + 1
-
-			// Debug.Print ("Processing took: " & ((GetTime - startTime) / 1000))
 			if (numFilesProc == 0) {
 				Output.showInfoMessage("Error", "No ATO files (USMTF00.txt) were imported.\n"
 						+ "PLease ensure you are selecting a valid USMTF00.txt file.");
@@ -219,14 +216,14 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 				processLine(line.toString(), typeMap);
 			}
 
-			System.out.println((((double) (y) / lineCount)) * 100 + " % complete");
+			DebugUtility.debug(ATOAssets.class, ((((double) (y) / lineCount)) * 100 + " % complete"));
 			// Forms(IMPORTOPTIONS).ProgressLbl.width = CInt((lineCount / totalCount) *
 			// (Forms(IMPORTOPTIONS).ProgressFrame.width * 0.95))
 			// Forms(IMPORTOPTIONS).Repaint
 			/// lineCount = lineCount + 1
 		}
 
-		System.out.println("100% complete.");
+		DebugUtility.debug(ATOAssets.class, "ATO load 100% complete");
 	}
 
 	/**
@@ -299,7 +296,7 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 		String typ = "";
 		// typ = typeDict(SpecType)
 
-		System.out.println(
+		DebugUtility.debug(ATOAssets.class,
 				tkd + "/" + mode2 + "/" + arinfo + "/" + specType + "/" + typ + "/" + callsign + "/" + location);
 
 		instance.add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));

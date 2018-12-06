@@ -30,8 +30,8 @@ public class AirspaceManagerActivePanel extends BasePanel {
 			for (int x = 0; x < AirspaceList.getInstance().size(); x++) {
 				Airspace aspace = AirspaceList.getInstance().get(x);
 				if (aspace.isAddToRundown()) {
-					System.out.println(aspace.getName() + " being activated.");
-					DebugUtility.printDebug("TODO - activate");
+					DebugUtility.debug(this.getClass(), aspace.getName() + " being activated.");
+					DebugUtility.error("TODO - activate");
 				}
 			}
 

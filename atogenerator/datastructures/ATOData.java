@@ -87,10 +87,8 @@ public class ATOData extends ArrayList<ATOAsset> {
 		f = fc.getSelectedFile();
 
 		if (f != null) {
-			System.out.println(f.exists());
-
 			try {
-				System.out.println(f.getAbsolutePath() + "/" + f.getName());
+				DebugUtility.debug(ATOData.class, f.getAbsolutePath() + "/" + f.getName());
 				FileInputStream is = new FileInputStream(f.getAbsolutePath());
 				ObjectInputStream ois = new ObjectInputStream(is);
 				ATOData.instance = (ATOData) ois.readObject();
@@ -136,7 +134,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 		String msnDat = "";
 		for (ATOAsset asst : instance) {
 			if (!asst.isBlank()) {
-				System.out.println(asst.toString());
+				DebugUtility.debug(ATOData.class, asst.toString());
 				msnDat += asst.toString();
 			}
 		}
@@ -144,7 +142,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 
 		String filePath = "ATO YA CHG 0 USMTF00.txt";
 
-		System.out.println(atoStr);
+		DebugUtility.debug(ATOData.class, atoStr);
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new FileWriter(filePath, false));
@@ -156,7 +154,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 			try {
 				writer.close();
 			} catch (IOException e) {
-				DebugUtility.printError("Error writing test ATO.");
+				DebugUtility.error("Error writing test ATO.");
 				e.printStackTrace();
 			}
 		}
@@ -174,7 +172,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 			oos = new ObjectOutputStream(fos);
 			// write object to file
 			oos.writeObject(this);
-			System.out.println("ATO Project saved.");
+			DebugUtility.debug(ATOData.class, "ATO Project saved.");
 			// closing resources
 			oos.close();
 			fos.close();

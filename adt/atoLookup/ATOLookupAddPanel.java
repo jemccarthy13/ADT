@@ -15,6 +15,7 @@ import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
 import swing.GUI;
+import utilities.DebugUtility;
 import utilities.Output;
 
 /**
@@ -31,7 +32,7 @@ public class ATOLookupAddPanel extends BasePanel {
 			for (int x = 0; x < ATOAssets.staticInstance().size(); x++) {
 				Asset atoAsset = ATOAssets.staticInstance().get(x);
 				if (atoAsset.isAddToRundown()) {
-					System.out.println(atoAsset.getVCS() + " being added");
+					DebugUtility.debug(ATOLookupAddPanel.class, atoAsset.getVCS() + " being added from ATO Lookup");
 					GUI.MODELS.getInstanceOf(ATOLookupModel.class).setValueAt(Boolean.FALSE, x, 0);
 					if (!RundownAssets.getInstance().contains(atoAsset)) {
 						RundownAssets.getInstance().add(atoAsset);

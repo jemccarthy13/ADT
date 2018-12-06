@@ -35,9 +35,9 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 
 			@Override
 			public void editingCanceled(ChangeEvent e) {
-				// nothing required
-			}
+				// TODO Auto-generated method stub
 
+			}
 		});
 	}
 
@@ -63,10 +63,5 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 		}
 
 		return this.component;
-	}
-
-	@Override
-	public Object getCellEditorValue() {
-		return ((JTextField) this.component).getText();
 	}
 }

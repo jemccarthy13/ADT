@@ -7,6 +7,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import swing.Singleton;
+import utilities.DebugUtility;
 
 /**
  * @param <T>
@@ -79,7 +80,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 
 	@Override
 	public void addNew() {
-		System.out.println("Not adding anything to ADTTableModel (parent)");
+		DebugUtility.error(ADTTableModel.class, "Can't add to parent ADTTableModel.");
 	}
 
 	// By default forward all events to all the listeners.

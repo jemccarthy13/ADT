@@ -15,6 +15,7 @@ import structures.ATOAssets;
 import structures.RundownAssets;
 import swing.GUI;
 import utilities.Configuration;
+import utilities.DebugUtility;
 import utilities.Output;
 
 /**
@@ -86,9 +87,9 @@ public class RundownMenuBar extends JMenuBar {
 				ATOAssets.doImport();
 				RundownFrame.getClient().sendMessage("-1,atodat," + Configuration.getInstance().getATODatFileLoc());
 			} else if (e.getSource().equals(RundownMenuBar.this.setGrid)) {
-				System.out.println("Setting grid");
+				DebugUtility.error(RundownMenuBar.class, "Setting grid not implemented");
 			} else if (e.getSource().equals(RundownMenuBar.this.typeManager)) {
-				System.out.println("Run type manager");
+				DebugUtility.error(RundownMenuBar.class, "Type manager not implemented");
 			} else if (e.getSource().equals(RundownMenuBar.this.zeroize)) {
 				if (Output.showConfirmMessage("Confirm zeroize", "Are you sure?")) {
 					ATOAssets.zeroize();
@@ -98,7 +99,7 @@ public class RundownMenuBar extends JMenuBar {
 				GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
 				RundownFrame.getInstance().repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
-				System.out.println("refreshing");
+				DebugUtility.debug(RundownMenuBar.class, "Refresh option pressed.");
 				RundownTable.getInstance().setRowSorter(null);
 				RundownFrame.getInstance().repaint();
 				RundownTable.getInstance().setAutoCreateRowSorter(true);

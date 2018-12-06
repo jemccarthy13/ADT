@@ -36,7 +36,7 @@ public class ADTServerThread extends Thread {
 		try {
 			this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
 		} catch (IOException e) {
-			DebugUtility.printError("(ServerThread) Unable to create printWriter");
+			DebugUtility.error("(ServerThread) Unable to create printWriter");
 		}
 	}
 
@@ -51,16 +51,15 @@ public class ADTServerThread extends Thread {
 			try {
 				inputLine = this.input.readLine();
 			} catch (IOException e) {
-				DebugUtility.printError("(ServerThread) Unable to readline!");
+				DebugUtility.error(ADTServerThread.class, "Unable to readline! User:" + this.id);
 			}
 			if (inputLine != null) {
 				if (inputLine.contains("establish")) {
-					System.out.println("(Server) Server thread started. User: " + this.id);
+					DebugUtility.debug(ADTServerThread.class, "Server thread started. User: " + this.id);
 				} else if (inputLine.contains("end")) {
-					System.out.println("(Server) " + this.id + " left session.");
-
+					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " left session.");
 				} else {
-					System.out.println("(Server) Forwarding command: " + inputLine);
+					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " sending command: " + inputLine);
 					String[] msgArr = inputLine.split(",");
 					int origin = Integer.parseInt(msgArr[0]);
 					ADTServer.sendMessage(inputLine, origin);
@@ -86,7 +85,7 @@ public class ADTServerThread extends Thread {
 		try {
 			this.printWriter.println(string);
 		} catch (NullPointerException e) {
-			System.out.println("Server/client connection wasn't established.");
+			DebugUtility.error(ADTServerThread.class, "Server/client connection wasn't established.");
 		}
 	}
 

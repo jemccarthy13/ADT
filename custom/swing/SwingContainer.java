@@ -2,6 +2,8 @@ package swing;
 
 import java.util.HashMap;
 
+import utilities.DebugUtility;
+
 /**
  * One central location where all JFrames can be retrieved from
  * 
@@ -21,7 +23,7 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 		if (!this.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
-				System.out.println("On the fly creating " + c.getName());
+				DebugUtility.debug(SwingContainer.class, "On the fly creating " + c.getName());
 				y = c.newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();

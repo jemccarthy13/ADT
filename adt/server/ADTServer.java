@@ -52,8 +52,7 @@ public class ADTServer extends Thread {
 	/**
 	 * Main entry point for the server
 	 * 
-	 * @param args
-	 *            - command line arguments
+	 * @param args - command line arguments
 	 */
 	public static void main(String[] args) {
 		instance.start();
@@ -70,7 +69,7 @@ public class ADTServer extends Thread {
 			serverSocket = new ServerSocket(Configuration.portNum);
 			Output.showInfoMessage("Started Server", "Started the rundown server. You are the host.");
 		} catch (BindException e3) {
-			System.out.println("(Server) Server already bound.");
+			DebugUtility.error(ADTServer.class, "Port already bound: " + Configuration.portNum);
 			serverSocket = null;
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -81,7 +80,7 @@ public class ADTServer extends Thread {
 				clientSocket = serverSocket.accept();
 				// Create a reader
 				bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				System.out.println("(Server) Started server thread " + connections);
+				DebugUtility.debug(ADTServer.class, "Started server thread: " + connections);
 				ADTServerThread client = new ADTServerThread(connections, bufferedReader, clientSocket);
 				new Thread(client).start();
 				clients.put(connections, client);
@@ -93,9 +92,9 @@ public class ADTServer extends Thread {
 
 				connections++;
 			} catch (BindException e1) {
-				System.out.println("(Server) " + Configuration.portNum + " already in use.");
+				DebugUtility.error(ADTServer.class, "Port " + Configuration.portNum + " already in use.");
 			} catch (IOException e) {
-				System.out.println(e.getMessage());
+				DebugUtility.error(ADTServer.class, e.getMessage());
 			}
 		}
 	}
@@ -103,16 +102,14 @@ public class ADTServer extends Thread {
 	/**
 	 * Send a message to all registered clients.
 	 * 
-	 * @param message
-	 *            - the message to send
-	 * @param origin
-	 *            - the originator of the message
+	 * @param message - the message to send
+	 * @param origin  - the originator of the message
 	 */
 	public static void sendMessage(String message, Integer origin) {
 		for (Integer key : clients.keySet()) {
 			if (key != origin) {
 				clients.get(key).sendMessage(message);
-				DebugUtility.printDebug("(Server) Sent " + message + " to " + key);
+				DebugUtility.debug(ADTServer.class, "(Server) Sent " + message + " to " + key);
 			}
 		}
 	}

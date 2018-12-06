@@ -30,8 +30,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 * Default private constructor - singleton fly weight pattern
 	 */
 	private ImageLibrary() {
-		DebugUtility.printHeader("Graphics");
-		DebugUtility.printDebug("Initialized image library.");
+		DebugUtility.debug(this.getClass(), "Initialized image library");
 	}
 
 	/**
@@ -46,8 +45,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	/**
 	 * Static access wrapper method to retrieve a paintable image
 	 * 
-	 * @param name
-	 *            - the image to look for
+	 * @param name - the image to look for
 	 * @return an Image if it can be retrieved
 	 */
 	public static Image getImage(String name) {
@@ -63,8 +61,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 * image does not exist, try some of the graphics library paths in order to load
 	 * the graphic flyweight
 	 * 
-	 * @param name
-	 *            - the image to look for
+	 * @param name - the image to look for
 	 * @return an ImageIcon, if it can be created
 	 */
 	public ImageIcon getImageIcon(String name) {
@@ -75,7 +72,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 			retVal = get(name);
 		} else {
 			if (!tryPath("./", fullName)) {
-				DebugUtility.printError("Unable to load: '" + fullName + "'");
+				DebugUtility.error("Unable to load: '" + fullName + "'");
 			}
 
 			if (containsKey(fullName)) {
@@ -88,16 +85,14 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	/**
 	 * Try to find the image resource in a given relative path
 	 * 
-	 * @param path
-	 *            - the relative path to look in
-	 * @param name
-	 *            - the name of the image to find
+	 * @param path - the relative path to look in
+	 * @param name - the name of the image to find
 	 * @return whether or not the path had the image
 	 */
 	public boolean tryPath(String path, String name) {
 		boolean success = false;
 		if (name == null) {
-			DebugUtility.printError("Unable to load: '" + name + "' " + path);
+			DebugUtility.error("Unable to load: '" + name + "' " + path);
 		} else {
 
 			File folder = new File(this.libPath + path + "/");
@@ -126,14 +121,14 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 		File f = new File(path);
 		ImageIcon thisIcon = null;
 		if (!f.exists()) {
-			DebugUtility.printError("Image path does not exist: " + path);
+			DebugUtility.error("Image path does not exist: " + path);
 		}
 		String fullPath = "/" + path.replace("resources/", "").replace("resources\\", "");
 		URL iconURL = System.class.getResource(fullPath);
 		// this is the path within the jar file
 
 		if (iconURL == null) {
-			DebugUtility.printError("Cannot find resource" + fullPath);
+			DebugUtility.error("Cannot find resource" + fullPath);
 		} else {
 			thisIcon = new ImageIcon(System.class.getResource(fullPath));
 		}

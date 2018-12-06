@@ -2,6 +2,7 @@ package main;
 
 import gui.ATOGeneratorFrame;
 import swing.GUI;
+import utilities.DebugUtility;
 
 /**
  * The main starting point of the ATO Generator.
@@ -15,6 +16,6 @@ public class ATOGenerator {
 	 */
 	public static void main(String[] args) {
 		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).setVisible(true);
-		System.out.println("Started.");
+		DebugUtility.debug(ATOGenerator.class, "Started");
 	}
 }

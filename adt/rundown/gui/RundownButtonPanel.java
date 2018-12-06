@@ -17,6 +17,7 @@ import swing.BasePanel;
 import swing.GUI;
 import test.Tester;
 import utilities.Configuration;
+import utilities.DebugUtility;
 
 /**
  * The panel containing all of the rundown buttons (i.e. a form header of
@@ -86,7 +87,7 @@ public class RundownButtonPanel extends BasePanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Configuration.setCompact(((JCheckBox) (e.getSource())).isSelected());
-				System.out.println("Setting compact: " + Configuration.isCompactMode());
+				DebugUtility.debug(getClass(), "Setting compact: " + Configuration.isCompactMode());
 				RundownFrame.getInstance().handleCompact();
 			}
 		});

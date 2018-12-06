@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -71,6 +72,16 @@ public class ATOTable extends JTable {
 
 		// set the data
 		this.setModel(GUI.MODELS.getInstanceOf(ATOTableModel.class));
+		this.setDefaultRenderer(JButton.class, new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				return (Component) value;
+			}
+		});
 		this.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			/**
@@ -112,7 +123,7 @@ public class ATOTable extends JTable {
 		this.setPreferredScrollableViewportSize(new Dimension(523, 233));
 
 		ATOTableCellEditor editor = new ATOTableCellEditor();
-		for (int x = 0; x < getModel().getColumnCount(); x++) {
+		for (int x = 0; x < getModel().getColumnCount() - 1; x++) {
 			getColumnModel().getColumn(x).setCellEditor(editor);
 		}
 	}

@@ -72,7 +72,7 @@ public class Configuration {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e1) {
-			DebugUtility.printError("Unable to set system look and feel. " + e1.getMessage());
+			DebugUtility.error("Unable to set system look and feel. ", e1);
 		}
 	}
 

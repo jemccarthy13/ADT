@@ -20,8 +20,7 @@ public class Tester {
 	/**
 	 * Main entry point of tests
 	 * 
-	 * @param args
-	 *            - command line args
+	 * @param args - command line args
 	 */
 	public static void main(String[] args) {
 		testInject();
@@ -44,7 +43,7 @@ public class Tester {
 	public static void testRegex() {
 		Matcher typeMatcher = Patterns.acTypePattern.matcher("OTHAC:F22");
 		typeMatcher.find();
-		System.out.println(typeMatcher.group(2));
+		DebugUtility.debug(Tester.class, typeMatcher.group(2));
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class Tester {
 			try {
 				writer.close();
 			} catch (IOException e) {
-				DebugUtility.printError("Error writing test ATO.");
+				DebugUtility.error("Error writing test ATO.");
 				e.printStackTrace();
 			}
 		}

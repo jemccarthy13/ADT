@@ -1,5 +1,7 @@
 package table;
 
+import javax.swing.JButton;
+
 import datastructures.ATOAsset;
 import datastructures.ATOData;
 import structures.ADTTableModel;
@@ -30,8 +32,25 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 		this.fullColumnNames.add("M1");
 		this.fullColumnNames.add("M2");
 		this.fullColumnNames.add("M3");
+		this.fullColumnNames.add("AR");
 
 		this.items = ATOData.getInstance();
+	}
+
+	@Override
+	public Class<?> getColumnClass(int col) {
+		if (col == 17) {
+			return JButton.class;
+		}
+		return super.getColumnClass(col);
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		if (columnIndex == 17) {
+			return new JButton("Press");
+		}
+		return super.getValueAt(rowIndex, columnIndex);
 	}
 
 	@Override

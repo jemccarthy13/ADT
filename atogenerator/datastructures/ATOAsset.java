@@ -2,6 +2,8 @@ package datastructures;
 
 import java.util.ArrayList;
 
+import swing.ActionButton;
+
 /**
  * Representation of an asset listed in the ATO
  */
@@ -16,6 +18,7 @@ public class ATOAsset extends ArrayList<Object> {
 		for (int x = 0; x < 17; x++) {
 			this.add("-");
 		}
+		this.add(new ActionButton("Add", null));
 	}
 
 	/**
@@ -62,7 +65,7 @@ public class ATOAsset extends ArrayList<Object> {
 	 */
 	public boolean isBlank() {
 		boolean retVal = true;
-		for (int x = 0; x < this.size(); x++) {
+		for (int x = 0; x < this.size() - 1; x++) {
 			if (this.get(x) != null && !this.get(x).equals("-")) {
 				retVal = false;
 			}
