@@ -1,18 +1,39 @@
 package utilities;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 /**
  * Logging wrapper around log4j
  */
 public final class DebugUtility {
-
-	private DebugUtility() {
-	}
-
 	/** The logger */
 	public static Logger log4j = LogManager.getLogger("ADTLogger");
+
+	/**
+	 * To force log4j configuration on static instantiation
+	 * 
+	 * @return instance of DebugUtility
+	 */
+	protected static DebugUtility getInstance() {
+		return instance;
+	}
+
+	private static DebugUtility instance = new DebugUtility();
+
+	private DebugUtility() {
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		LoggerConfig loggerConfig = config.getLoggerConfig("ADTLogger");
+		loggerConfig.setLevel(Level.TRACE);
+		ctx.updateLoggers();
+
+		log4j.trace("Log4j Set to trace");
+	}
 
 	/**
 	 * Print the given message only if we're logging (VERBOSE)
