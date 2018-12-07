@@ -19,7 +19,9 @@ public class ImageLibraryTest extends BaseTest {
 	public void getImageIcon() {
 		ImageLibrary instance = ImageLibrary.getInstance();
 		instance.getImageIcon("invalid");
-		Assert.assertTrue(BaseTest.outContent.toString().contains("(ImageLibrary) Unable to load: 'invalid.jpg'"));
+		BaseTest.originalOut.println(BaseTest.outContent);
+
+		Assert.assertTrue(BaseTest.outContent.toString().contains("Unable to load: 'invalid.jpg'"));
 	}
 
 	/**
@@ -28,6 +30,7 @@ public class ImageLibraryTest extends BaseTest {
 	@Test
 	public void getImage() {
 		ImageLibrary.getImage("invalid");
+		BaseTest.originalOut.println(BaseTest.outContent);
 		Assert.assertTrue(BaseTest.outContent.toString().contains("Unable to resolve invalid"));
 	}
 
@@ -37,8 +40,8 @@ public class ImageLibraryTest extends BaseTest {
 	@Test
 	public void getValidImage() {
 		ImageLibrary.getImage("searchIcon");
-		Assert.assertFalse(BaseTest.outContent.toString().contains("(ImageLibrary) Unable to resolve searchIcon"));
-		Assert.assertFalse(BaseTest.outContent.toString().contains("(ImageLibrary) Unable to load: 'searchIcon.jpg'"));
+		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to resolve searchIcon"));
+		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to load: 'searchIcon.jpg'"));
 	}
 
 	/**
@@ -47,8 +50,9 @@ public class ImageLibraryTest extends BaseTest {
 	@Test
 	public void getExistingImage() {
 		ImageLibrary.getImage("AF-Roundel");
-		Assert.assertFalse(BaseTest.outContent.toString().contains("(ImageLibrary) Unable to resolve AF-Roundel"));
-		Assert.assertFalse(BaseTest.outContent.toString().contains("(ImageLibrary) Unable to load: 'AF-Roundel.jpg'"));
+		BaseTest.originalOut.println(BaseTest.outContent);
+		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to resolve AF-Roundel"));
+		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to load: 'AF-Roundel.jpg'"));
 		Image i = ImageLibrary.getImage("AF-Roundel");
 		Assert.assertNotNull(i);
 	}
@@ -68,6 +72,7 @@ public class ImageLibraryTest extends BaseTest {
 	@Test
 	public void createImage() {
 		ImageLibrary.createImage("./fakedir");
+		BaseTest.originalOut.println(BaseTest.outContent);
 		Assert.assertTrue(BaseTest.outContent.toString().contains("Image path does not exist: ./fakedir"));
 	}
 }
