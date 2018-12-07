@@ -67,8 +67,8 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 		String fullName = name + ".jpg";
 		ImageIcon retVal = null;
 		// if the image exists, get it and return it
-		if (containsKey(name)) {
-			retVal = get(name);
+		if (containsKey(fullName)) {
+			retVal = get(fullName);
 		} else {
 			if (!tryPath("./", fullName)) {
 				DebugUtility.error(ImageLibrary.class, "Unable to load: '" + fullName + "'");
@@ -90,24 +90,20 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 */
 	public boolean tryPath(String path, String name) {
 		boolean success = false;
-		if (name == null) {
-			DebugUtility.error("Unable to load: '" + name + "' " + path);
-		} else {
-
-			File folder = new File(this.libPath + path + "/");
-			File[] listOfFiles = folder.listFiles();
-			if (listOfFiles != null) {
-				for (File file : listOfFiles) {
-					if (file.isFile() && name.toUpperCase().equals(file.getName().toUpperCase())) {
-						put(name, createImage(file.getPath().replaceAll("\\\\", "/")));
-						success = true;
-						continue;
-					}
+		File folder = new File(this.libPath + path + "/");
+		File[] listOfFiles = folder.listFiles();
+		if (listOfFiles != null) {
+			for (File file : listOfFiles) {
+				if (file.isFile() && name.toUpperCase().equals(file.getName().toUpperCase())) {
+					put(name, createImage(file.getPath().replaceAll("\\\\", "/")));
+					success = true;
+					continue;
 				}
 			}
 		}
 
 		return success;
+
 	}
 
 	/**

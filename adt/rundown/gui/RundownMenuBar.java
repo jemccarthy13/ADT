@@ -97,11 +97,11 @@ public class RundownMenuBar extends JMenuBar {
 					RundownAssets.checkAddNew();
 				}
 				GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
-				RundownFrame.getInstance().repaint();
+				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
 				DebugUtility.debug(RundownMenuBar.class, "Refresh option pressed.");
 				RundownTable.getInstance().setRowSorter(null);
-				RundownFrame.getInstance().repaint();
+				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 				RundownTable.getInstance().setAutoCreateRowSorter(true);
 				try {
 					Thread.sleep(100);

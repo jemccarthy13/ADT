@@ -8,47 +8,25 @@ import javax.swing.JFrame;
 import rundown.gui.RundownMenuBar;
 import rundown.gui.RundownPanel;
 import rundown.model.RundownTable;
+import swing.BaseFrame;
 import swing.GUI;
 import utilities.Configuration;
 import utilities.ImageLibrary;
-import utilities.ShutdownThread;
 
 /**
- * The starting point of the Rundown application.
- * 
- * @author John McCarthy
+ * The starting point of the Rundown application
  */
-public class RundownFrame extends JFrame {
+public class RundownFrame extends BaseFrame {
 
 	private static final long serialVersionUID = -5736125343545871775L;
-
-	private final static RundownFrame instance = new RundownFrame();
-
-	/**
-	 * Singleton implementation.
-	 * 
-	 * @return single instance of the rundown frame
-	 */
-	public static RundownFrame getInstance() {
-		return instance;
-	}
 
 	private static ADTClient client;
 
 	/**
-	 * Launch the application.
-	 * 
-	 * @param args - command line arguments
-	 */
-	public static void main(String[] args) {
-		RundownFrame.getInstance().setVisible(true);
-		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	private RundownFrame() {
+	@Override
+	public void create() {
 
 		// make it look like windows rather than Java
 		Configuration.setLookAndFeel(RundownFrame.class);
@@ -96,5 +74,4 @@ public class RundownFrame extends JFrame {
 	public static ADTClient getClient() {
 		return client;
 	}
-
 }

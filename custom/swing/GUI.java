@@ -7,6 +7,9 @@ import utilities.ADTTableModel;
  */
 public class GUI {
 
+	private GUI() {
+	}
+
 	/**
 	 * Frames will be stored here
 	 */

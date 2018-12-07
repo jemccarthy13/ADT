@@ -198,7 +198,7 @@ public class ADTClient extends Thread {
 
 			((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).setValueAt(val, row, col, false,
 					false);
-			RundownFrame.getInstance().repaint();
+			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		} else if (command.equals("atodat")) {
 			if (!data[2].trim().equals("")) {
 				File f = new File(data[2]);
@@ -229,7 +229,7 @@ public class ADTClient extends Thread {
 		} else if (command.equals("end")) {
 			end = true;
 		}
-		RundownFrame.getInstance().repaint();
+		GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		return end;
 	}
 

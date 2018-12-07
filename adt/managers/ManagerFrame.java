@@ -4,14 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import main.RundownFrame;
+import swing.GUI;
 import utilities.ImageLibrary;
 
 /**
  * Main frame for the Airspace Manager, MILDECON assist, and Lowdown Managers.
  * 
- * @author John McCarthy
- * 
- *         TODO - massive implementation needed
+ * TODO - massive implementation needed
  *
  */
 public class ManagerFrame extends JFrame {
@@ -35,7 +34,7 @@ public class ManagerFrame extends JFrame {
 	 * Display the manager frame
 	 */
 	public static void openManager() {
-		instance.setLocationRelativeTo(RundownFrame.getInstance());
+		instance.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 		instance.setVisible(true);
 	}
 
@@ -45,7 +44,7 @@ public class ManagerFrame extends JFrame {
 
 		this.setIconImage(ImageLibrary.getImage("searchIcon"));
 		this.setTitle("Airspace Manager");
-		this.setLocationRelativeTo(RundownFrame.getInstance());
+		this.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 		this.setAirspacePanel();
 		this.add(this.content);
 	}

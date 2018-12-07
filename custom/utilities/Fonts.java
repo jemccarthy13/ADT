@@ -4,10 +4,12 @@ import java.awt.Font;
 
 /**
  * A static location for Fonts.
- * 
- * @author John McCarthy
  */
 public class Fonts {
+
+	private Fonts() {
+	}
+
 	/** Size 20 plain SansSerif */
 	public static Font serif = new Font("SansSerif", Font.PLAIN, 20);
 

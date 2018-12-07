@@ -27,7 +27,7 @@ public class RundownButtonPanel extends BasePanel {
 
 	private static final long serialVersionUID = 6980336047696920906L;
 	/** do ato lookup */
-	ActionButton atoLookupBtn;
+	public ActionButton atoLookupBtn;
 
 	/** manage airspaces */
 	ActionButton asMgrBtn;
@@ -54,11 +54,11 @@ public class RundownButtonPanel extends BasePanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(RundownButtonPanel.this.atoLookupBtn)) {
 				BaseFrame atoLookup = GUI.FRAMES.getInstanceOf(ATOLookupForm.class);
-				atoLookup.setLocationRelativeTo(RundownFrame.getInstance());
+				atoLookup.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				atoLookup.setVisible(true);
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
 				ManagerFrame mgrForm = ManagerFrame.getInstance();
-				mgrForm.setLocationRelativeTo(RundownFrame.getInstance());
+				mgrForm.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				mgrForm.setVisible(true);
 			}
 		}
@@ -88,7 +88,7 @@ public class RundownButtonPanel extends BasePanel {
 			public void actionPerformed(ActionEvent e) {
 				Configuration.setCompact(((JCheckBox) (e.getSource())).isSelected());
 				DebugUtility.debug(getClass(), "Setting compact: " + Configuration.isCompactMode());
-				RundownFrame.getInstance().handleCompact();
+				((RundownFrame) GUI.FRAMES.getInstanceOf(RundownFrame.class)).handleCompact();
 			}
 		});
 		compactCheck.setSelected(true);

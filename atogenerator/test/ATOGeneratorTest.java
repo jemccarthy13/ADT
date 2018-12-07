@@ -9,7 +9,6 @@ import swing.GUI;
 /**
  * JUnit test cases
  */
-@SuppressWarnings("static-method")
 public class ATOGeneratorTest extends BaseTest {
 
 	/**

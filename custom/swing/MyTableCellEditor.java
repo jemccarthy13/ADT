@@ -12,7 +12,7 @@ import javax.swing.table.TableCellEditor;
 
 /**
  */
-public class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
+public abstract class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 	/**
 	 * 
 	 */
@@ -43,10 +43,4 @@ public class MyTableCellEditor extends AbstractCellEditor implements TableCellEd
 
 		return this.component;
 	}
-
-	@Override
-	public Object getCellEditorValue() {
-		return ((JTextField) this.component).getText();
-	}
-
 }

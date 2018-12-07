@@ -19,7 +19,8 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 	 * @return base panel
 	 */
 	@SuppressWarnings("unchecked")
-	public T getInstanceOf(Class<?> c) {
+	public synchronized T getInstanceOf(Class<?> c) {
+
 		if (!this.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
@@ -30,6 +31,10 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
+
+			DebugUtility.trace(SwingContainer.class,
+					"first time adding " + c.getSimpleName() + " " + y + " found, " + c.hashCode());
+
 			this.put(c.hashCode(), (T) y);
 		}
 		return this.get(c.hashCode());

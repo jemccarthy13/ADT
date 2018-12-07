@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -81,7 +82,18 @@ public class RundownTable extends JTable {
 		Configuration.setCompact(true);
 
 		for (int x = 0; x < getModel().getColumnCount(); x++) {
-			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor());
+			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -5861885526072691837L;
+
+				@Override
+				public Object getCellEditorValue() {
+					return ((JTextField) this.component).getText();
+				}
+			});
 		}
 		this.addPropertyChangeListener(new RundownCellListener());
 	}

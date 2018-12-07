@@ -3,6 +3,7 @@ package structures;
 import java.util.ArrayList;
 
 import main.RundownFrame;
+import swing.GUI;
 
 /**
  * A list of assets that are in the rundown.
@@ -54,7 +55,7 @@ public class RundownAssets extends ArrayList<Asset> {
 		}
 		if (!blankRow) {
 			addNew();
-			RundownFrame.getInstance().repaint();
+			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		}
 	}
 }

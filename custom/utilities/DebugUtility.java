@@ -14,30 +14,6 @@ public final class DebugUtility {
 	/** The logger */
 	public static Logger log4j = LogManager.getLogger("ADTLogger");
 
-	private final static int MESSAGE_LENGTH = 40;
-
-	/**
-	 * Print a formatted debug header section
-	 * 
-	 * @param header - the message to print
-	 */
-	public static void printHeader(String header) {
-
-		int banner = (MESSAGE_LENGTH - (header.length() + 2)) / 2;
-
-		StringBuilder b = new StringBuilder();
-		for (int x = 0; x < banner; x++) {
-			b.append("=");
-		}
-		b.append(" " + header + " ");
-
-		for (int x = 0; x < banner; x++) {
-			b.append("=");
-		}
-
-		log4j.debug(b.toString());
-	}
-
 	/**
 	 * Print the given message only if we're logging (VERBOSE)
 	 * 
@@ -45,7 +21,7 @@ public final class DebugUtility {
 	 * 
 	 * @param string - the message to log
 	 */
-	public static void debug(Class<?> c, String string) {
+	public synchronized static void debug(Class<?> c, String string) {
 		if (log4j.isDebugEnabled()) {
 			log4j.debug("(" + c.getSimpleName() + ") " + string);
 		}
@@ -56,7 +32,7 @@ public final class DebugUtility {
 	 * 
 	 * @param string - the message to print
 	 */
-	public static void error(String string) {
+	public synchronized static void error(String string) {
 		log4j.error(string);
 	}
 
@@ -66,7 +42,7 @@ public final class DebugUtility {
 	 * @param message the message to explain the error
 	 * @param e       the exception that was thrown
 	 */
-	public static void error(String message, Exception e) {
+	public synchronized static void error(String message, Exception e) {
 		log4j.error(message, e);
 	}
 
@@ -75,15 +51,8 @@ public final class DebugUtility {
 	 * 
 	 * @param message the end of the world message
 	 */
-	public static void fatal(String message) {
+	public synchronized static void fatal(String message) {
 		log4j.fatal(message);
-	}
-
-	/**
-	 * Wrapper around quitting the JVM
-	 */
-	public static void quit() {
-		System.exit(0);
 	}
 
 	/**
@@ -92,7 +61,7 @@ public final class DebugUtility {
 	 * @param class1
 	 * @param string
 	 */
-	public static void error(Class<?> class1, String string) {
+	public synchronized static void error(Class<?> class1, String string) {
 		log4j.error("(" + class1.getSimpleName() + ") " + string);
 	}
 
@@ -102,7 +71,7 @@ public final class DebugUtility {
 	 * @param class1 class doing the logging
 	 * @param msg    Message to log
 	 */
-	public static void trace(Class<?> class1, String msg) {
+	public synchronized static void trace(Class<?> class1, String msg) {
 		log4j.trace("(" + class1.getSimpleName() + ") " + msg);
 	}
 }

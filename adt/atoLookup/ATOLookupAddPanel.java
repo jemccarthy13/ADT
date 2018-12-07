@@ -43,7 +43,7 @@ public class ATOLookupAddPanel extends BasePanel {
 				}
 			}
 			GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
-			RundownFrame.getInstance().repaint();
+			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		}
 	};
 
