@@ -36,5 +36,7 @@ public class Log4JCoverage extends BaseTest {
 		Assert.assertFalse(BaseTest.outContent.toString().contains("Should not appear"));
 
 		loggerConfig.setLevel(prevLevel);
+
+		Assert.assertTrue("DebugUtility".equals(DebugUtility.getInstance().getClass().getSimpleName()));
 	}
 }

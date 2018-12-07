@@ -3,7 +3,13 @@ package test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -69,5 +75,19 @@ public abstract class BaseTest extends TestSuite {
 	public static void restoreStreams() {
 		originalOut.println(outContent);
 		originalErr.println(errContent);
+	}
+
+	/**
+	 * Set to trace before each method because jenkins.
+	 */
+	@Before
+	public void setTrace() {
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		LoggerConfig loggerConfig = config.getLoggerConfig("ADTLogger");
+		loggerConfig.setLevel(Level.TRACE);
+		ctx.updateLoggers();
+
+		DebugUtility.log4j.trace("Log4j Set to trace");
 	}
 }

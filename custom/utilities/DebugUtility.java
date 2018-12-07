@@ -19,7 +19,7 @@ public final class DebugUtility {
 	 * 
 	 * @return instance of DebugUtility
 	 */
-	protected static DebugUtility getInstance() {
+	public static DebugUtility getInstance() {
 		return instance;
 	}
 
