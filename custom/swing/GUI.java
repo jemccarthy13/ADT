@@ -1,6 +1,6 @@
 package swing;
 
-import structures.ADTTableModel;
+import utilities.ADTTableModel;
 
 /**
  * Containers for frames and panels

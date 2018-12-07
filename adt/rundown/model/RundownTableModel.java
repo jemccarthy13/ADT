@@ -3,11 +3,11 @@ package rundown.model;
 import javax.swing.DefaultRowSorter;
 
 import main.RundownFrame;
-import structures.ADTTableModel;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
+import utilities.ADTTableModel;
 
 /**
  * Rundown table model stores the data for the rundown

@@ -4,7 +4,7 @@ import javax.swing.JButton;
 
 import datastructures.ATOAsset;
 import datastructures.ATOData;
-import structures.ADTTableModel;
+import utilities.ADTTableModel;
 
 /**
  * ATO table model stores the data for ATO generator table

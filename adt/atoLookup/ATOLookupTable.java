@@ -3,8 +3,8 @@ package atoLookup;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
-import structures.ADTTableModel;
 import swing.GUI;
+import utilities.ADTTableModel;
 import utilities.Fonts;
 
 /**

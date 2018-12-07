@@ -10,11 +10,11 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
-import structures.ADTTableModel;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
 import swing.GUI;
+import utilities.ADTTableModel;
 
 /**
  * A panel for the ATO lookup that holds the functionality to search the ATO

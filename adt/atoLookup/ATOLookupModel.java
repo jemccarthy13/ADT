@@ -1,8 +1,8 @@
 package atoLookup;
 
-import structures.ADTTableModel;
 import structures.ATOAssets;
 import structures.Asset;
+import utilities.ADTTableModel;
 
 /**
  * A model to hold ATO Lookup table data for display to the user

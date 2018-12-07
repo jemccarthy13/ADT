@@ -7,11 +7,6 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-// ////////////////////////////////////////////////////////////////////////
-//
-// Create all images used in game for reference.
-//
-// ////////////////////////////////////////////////////////////////////////
 /**
  * Create all images used in game for reference.
  */
@@ -30,7 +25,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 * Default private constructor - singleton fly weight pattern
 	 */
 	private ImageLibrary() {
-		DebugUtility.debug(this.getClass(), "Initialized image library");
+		DebugUtility.trace(this.getClass(), "On the fly initialized image library");
 	}
 
 	/**
@@ -49,11 +44,15 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 * @return an Image if it can be retrieved
 	 */
 	public static Image getImage(String name) {
+		Image img = null;
 		ImageIcon icon = getInstance().getImageIcon(name);
+		DebugUtility.debug(ImageLibrary.class, "Icon: " + icon);
 		if (icon == null) {
-			return null;
+			DebugUtility.debug(ImageLibrary.class, "Unable to resolve " + name);
+		} else {
+			img = icon.getImage();
 		}
-		return getInstance().getImageIcon(name).getImage();
+		return img;
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 			retVal = get(name);
 		} else {
 			if (!tryPath("./", fullName)) {
-				DebugUtility.error("Unable to load: '" + fullName + "'");
+				DebugUtility.error(ImageLibrary.class, "Unable to load: '" + fullName + "'");
 			}
 
 			if (containsKey(fullName)) {
@@ -133,14 +132,5 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 			thisIcon = new ImageIcon(System.class.getResource(fullPath));
 		}
 		return thisIcon;
-	}
-
-	/**
-	 * Get the graphics library path
-	 * 
-	 * @return a String path to the graphics library
-	 */
-	public static String getLibPath() {
-		return m_instance.libPath;
 	}
 }

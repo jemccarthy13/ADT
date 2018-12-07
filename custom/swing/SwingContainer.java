@@ -23,7 +23,7 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 		if (!this.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
-				DebugUtility.debug(SwingContainer.class, "On the fly creating " + c.getName());
+				DebugUtility.trace(SwingContainer.class, "On the fly creating " + c.getName());
 				y = c.newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();

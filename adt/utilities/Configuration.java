@@ -4,22 +4,14 @@ import javax.swing.UIManager;
 
 /**
  * Holds program configuration and constants
- * 
- * @author John McCarthy
- *
  */
 public class Configuration {
-
-	/** The location of the test ATO */
-	public static final String testATOFilePath = "C:\\Users\\caitr\\git\\ADT\\ATO XX CHG 0 USMTF00.txt";
-
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
 
 	private static boolean compact = false;
 
 	private final boolean SHOW_MESSAGES = false;
-	private boolean testATO = false;
 
 	private String ATODatFileLoc = " ";
 
@@ -52,13 +44,6 @@ public class Configuration {
 	}
 
 	/**
-	 * @return true iff we should be using the test ATO file
-	 */
-	public boolean isTestATO() {
-		return this.testATO;
-	}
-
-	/**
 	 * @return true iff show messages is turned on
 	 */
 	public boolean isShowMessages() {
@@ -67,10 +52,13 @@ public class Configuration {
 
 	/**
 	 * Set the look and feel of the application.
+	 * 
+	 * @param class1
 	 */
-	public static void setLookAndFeel() {
+	public static void setLookAndFeel(Class<?> class1) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			DebugUtility.trace(class1, "Look and feel set");
 		} catch (Exception e1) {
 			DebugUtility.error("Unable to set system look and feel. ", e1);
 		}

@@ -76,33 +76,43 @@ public class ATOData extends ArrayList<ATOAsset> {
 	 */
 	public static void loadAssets() {
 		JFileChooser fc = new JFileChooser();
-		File f = null;
+		File f = new File(".");
 
 		fc.setDialogTitle("Choose ATO projecct file...");
-		fc.setCurrentDirectory(null);
+		fc.setCurrentDirectory(f);
 		FileFilter filter = new FileNameExtensionFilter("ATO Proj Files", "proj", "PROJ");
 
 		fc.setFileFilter(filter);
-		fc.showOpenDialog(null);
-		f = fc.getSelectedFile();
+		int result = fc.showOpenDialog(null);
 
-		if (f != null) {
-			try {
-				DebugUtility.debug(ATOData.class, f.getAbsolutePath() + "/" + f.getName());
-				FileInputStream is = new FileInputStream(f.getAbsolutePath());
-				ObjectInputStream ois = new ObjectInputStream(is);
-				ATOData.instance = (ATOData) ois.readObject();
-				GUI.MODELS.getInstanceOf(ATOTableModel.class).setItems(instance);
+		switch (result) {
+		case JFileChooser.APPROVE_OPTION:
+			f = fc.getSelectedFile();
 
-				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
-				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).validate();
-				ois.close();
-				is.close();
-			} catch (IOException e) {
-				System.err.println("Unable to read from file.");
-			} catch (ClassNotFoundException e) {
-				System.err.println("Unable to cast to ATOData.");
+			if (f != null) {
+				try {
+					FileInputStream is = new FileInputStream(f.getAbsolutePath());
+					ObjectInputStream ois = new ObjectInputStream(is);
+					ATOData.instance = (ATOData) ois.readObject();
+					GUI.MODELS.getInstanceOf(ATOTableModel.class).setItems(instance);
+
+					GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+					GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).validate();
+					ois.close();
+					is.close();
+
+					String message = "Project loaded: \n" + "-- " + f.getAbsolutePath() + "/" + f.getName();
+					DebugUtility.debug(ATOData.class, message);
+
+				} catch (IOException e) {
+					DebugUtility.error(ATOData.class, "Unable to read from file.");
+				} catch (ClassNotFoundException e) {
+					DebugUtility.error(ATOData.class, "Unable to cast to ATOData.");
+				}
 			}
+			break;
+		default:
+			break;
 		}
 	}
 

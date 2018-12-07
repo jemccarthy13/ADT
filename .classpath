@@ -7,5 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_45"/>
 	<classpathentry kind="lib" path="C:/Users/jemcc/eclipse/java-2018-09/eclipse/configuration/add-ins/apache-log4j-2.3-bin/log4j-api-2.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/jemcc/eclipse/java-2018-09/eclipse/configuration/add-ins/apache-log4j-2.3-bin/log4j-core-2.3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

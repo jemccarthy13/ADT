@@ -81,18 +81,13 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 		JFileChooser fc = new JFileChooser();
 		File f = null;
 
-		// if we are testing- use the default file above
-		if (Configuration.getInstance().isTestATO()) {
-			f = new File(Configuration.testATOFilePath);
-		} else {
-			fc.setDialogTitle("Choose ATO file");
-			fc.setCurrentDirectory(null);
-			FileFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+		fc.setDialogTitle("Choose ATO file");
+		fc.setCurrentDirectory(null);
+		FileFilter filter = new FileNameExtensionFilter("Text Files", "txt");
 
-			fc.setFileFilter(filter);
-			fc.showOpenDialog(null);
-			f = fc.getSelectedFile();
-		}
+		fc.setFileFilter(filter);
+		fc.showOpenDialog(null);
+		f = fc.getSelectedFile();
 
 		if (f != null) {
 			instance.clear();

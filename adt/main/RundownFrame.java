@@ -51,7 +51,7 @@ public class RundownFrame extends JFrame {
 	private RundownFrame() {
 
 		// make it look like windows rather than Java
-		Configuration.setLookAndFeel();
+		Configuration.setLookAndFeel(RundownFrame.class);
 
 		// set some frame settings
 		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));

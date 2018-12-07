@@ -6,10 +6,13 @@ import org.apache.logging.log4j.Logger;
 /**
  * Logging wrapper around log4j
  */
-public class DebugUtility {
+public final class DebugUtility {
+
+	private DebugUtility() {
+	}
 
 	/** The logger */
-	private static Logger log4j = LogManager.getLogger("ADTLogger");
+	public static Logger log4j = LogManager.getLogger("ADTLogger");
 
 	private final static int MESSAGE_LENGTH = 40;
 
@@ -91,5 +94,15 @@ public class DebugUtility {
 	 */
 	public static void error(Class<?> class1, String string) {
 		log4j.error("(" + class1.getSimpleName() + ") " + string);
+	}
+
+	/**
+	 * Trace logging
+	 * 
+	 * @param class1 class doing the logging
+	 * @param msg    Message to log
+	 */
+	public static void trace(Class<?> class1, String msg) {
+		log4j.trace("(" + class1.getSimpleName() + ") " + msg);
 	}
 }

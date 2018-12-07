@@ -1,4 +1,4 @@
-package structures;
+package utilities;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import structures.AddNew;
 import swing.Singleton;
-import utilities.DebugUtility;
 
 /**
  * @param <T>
