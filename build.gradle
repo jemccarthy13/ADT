@@ -32,9 +32,6 @@ dependencies {
     
     testCompile 'junit:junit:4.12'
     compile 'junit:junit:4.12'
-    
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
 }
 sourceSets {
     main {
