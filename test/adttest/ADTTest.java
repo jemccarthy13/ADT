@@ -53,9 +53,7 @@ public class ADTTest extends BaseTest {
 	 */
 	@Test
 	public void edit() throws AWTException {
-		RundownTable.getInstance().requestFocus();
-		RundownTable.getInstance().setEditingRow(0);
-		RundownTable.getInstance().editCellAt(0, 0);
+		setEditing(RundownTable.getInstance(), 0, 0);
 		ADTRobot.type("Y");
 		ADTRobot.tab();
 		Assert.assertTrue("Y".equals(RundownTable.getInstance().getValueAt(0, 0).toString()));
