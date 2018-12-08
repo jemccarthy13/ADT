@@ -62,7 +62,7 @@ public class ADTClient extends Thread {
 	public void establishSession() {
 
 		// call the run part of the thread
-		DebugUtility.debug(ADTClient.class, "(Client) Establishing session with ADT server...");
+		DebugUtility.debug(ADTClient.class, "Establishing session with ADT server...");
 		this.start();
 
 		// wait until the connection is established before proceeding
@@ -82,20 +82,19 @@ public class ADTClient extends Thread {
 	public void establishConnection() {
 		while (this.socket == null || this.printWriter == null) {
 			try {
-				DebugUtility.debug(ADTClient.class, "(Client) Trying to establish connection...");
+				DebugUtility.debug(ADTClient.class, "Trying to establish connection...");
 				tryConnect();
 			} catch (BindException e) {
-				DebugUtility.error("(Client) Bind Exception: " + e.getMessage());
+				DebugUtility.error(ADTClient.class, "Bind Exception: " + e.getMessage());
 			} catch (ConnectException e) {
-				DebugUtility.error("(Client) " + e.getMessage());
-				DebugUtility.error("(Client) Connection refused.");
-				DebugUtility.error("(Client) Port " + Configuration.portNum + " may have no response.");
+				DebugUtility.error(ADTClient.class, "Connection refused.");
+				DebugUtility.error(ADTClient.class, "Port " + Configuration.portNum + " may have no response.");
 
 				tryStartServer();
 			} catch (UnknownHostException e) {
-				DebugUtility.error("(Client) Uknown host: " + e.getMessage());
+				DebugUtility.error(ADTClient.class, "Uknown host: " + e.getMessage());
 			} catch (IOException e) {
-				DebugUtility.error("(Client) IO Error: " + e.getMessage());
+				DebugUtility.error(ADTClient.class, "IO Error: " + e.getMessage());
 			}
 		}
 	}
@@ -122,7 +121,7 @@ public class ADTClient extends Thread {
 
 		this.established = true;
 
-		DebugUtility.debug(ADTClient.class, "(Client) Connection established: port (" + Configuration.portNum + ")");
+		DebugUtility.debug(ADTClient.class, "Connection established: port (" + Configuration.portNum + ")");
 	}
 
 	/**
@@ -131,11 +130,11 @@ public class ADTClient extends Thread {
 	 */
 	public static void tryStartServer() {
 		try {
-			DebugUtility.debug(ADTClient.class, "(Client) Trying to start server...");
+			DebugUtility.debug(ADTClient.class, "Trying to start server...");
 			ADTServer.getInstance().start();
 		} catch (IllegalThreadStateException e) {
-			DebugUtility.error("(Client) Illegal server thread state.");
-			DebugUtility.error("(Client) Resetting server thread.");
+			DebugUtility.error("Illegal server thread state.");
+			DebugUtility.error("Resetting server thread.");
 			ADTServer.getInstance().interrupt();
 			ADTServer.resetInstance();
 		}
@@ -163,13 +162,13 @@ public class ADTClient extends Thread {
 				this.reader = null;
 				establishConnection();
 			} catch (IOException e) {
-				DebugUtility.error("(Client) " + e.getMessage());
+				DebugUtility.error(this.sessionID + " " + e.getMessage());
 			} catch (NullPointerException e1) {
-				DebugUtility.error("(Client) " + e1.getMessage());
+				DebugUtility.error(this.sessionID + " " + e1.getMessage());
 			}
 		}
 		if (end) {
-			DebugUtility.debug(ADTClient.class, "(Client) " + this.sessionID + " disconnected.");
+			DebugUtility.debug(ADTClient.class, this.sessionID + " disconnected.");
 		}
 	}
 
@@ -181,7 +180,7 @@ public class ADTClient extends Thread {
 	 */
 	public boolean processLine(String inputLine) {
 		boolean end = false;
-		DebugUtility.debug(ADTClient.class, "Processing " + inputLine);
+		DebugUtility.debug(ADTClient.class, this.sessionID + " Processing " + inputLine);
 
 		String[] data = inputLine.split(",");
 		String command = data[1];
@@ -196,7 +195,7 @@ public class ADTClient extends Thread {
 			int row = Integer.parseInt(data[3]);
 			int col = Integer.parseInt(data[4]);
 
-			((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).setValueAt(val, row, col, false,
+			((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).setValueAt(val, row, col + 1, false,
 					false);
 			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		} else if (command.equals("atodat")) {
@@ -239,7 +238,7 @@ public class ADTClient extends Thread {
 	 * @param string - the message to send
 	 */
 	public void sendMessage(String string) {
-		DebugUtility.debug(ADTClient.class, "Sending message: " + string);
+		DebugUtility.debug(ADTClient.class, "Sending message: " + this.sessionID + string);
 		try {
 			this.printWriter.println(this.sessionID + "," + string);
 		} catch (NullPointerException e) {
@@ -252,7 +251,10 @@ public class ADTClient extends Thread {
 	 * Disconnect from the session
 	 */
 	public void endSession() {
+		this.sendMessage("unlock all");
 		this.sendMessage("end");
+		this.sessionID = -1;
+		this.stop();
 		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
 	}
 }

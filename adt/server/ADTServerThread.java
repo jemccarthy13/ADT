@@ -58,6 +58,8 @@ public class ADTServerThread extends Thread {
 					DebugUtility.debug(ADTServerThread.class, "Server thread started. User: " + this.id);
 				} else if (inputLine.contains("end")) {
 					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " left session.");
+					ADTServer.getInstance().removeClient(this.id);
+					this.interrupt();
 				} else {
 					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " sending command: " + inputLine);
 					String[] msgArr = inputLine.split(",");

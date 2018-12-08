@@ -113,4 +113,13 @@ public class ADTServer extends Thread {
 			}
 		}
 	}
+
+	/**
+	 * Stop sending messages to the given client.
+	 * 
+	 * @param id
+	 */
+	public void removeClient(int id) {
+		clients.remove(id);
+	}
 }
