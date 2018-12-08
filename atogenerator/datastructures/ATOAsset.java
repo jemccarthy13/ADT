@@ -26,11 +26,17 @@ public class ATOAsset extends ArrayList<Object> {
 		String retVal = "AMSNDAT/";
 		for (int x = 0; x < 17; x++) {
 			switch (x) {
+			case 0:
+				retVal += "I" + this.get(x);
+				break;
 			case 7:
 				retVal += "DEPLOC:" + this.get(x);
 				break;
 			case 8:
-				retVal += "ARRLOC:" + this.get(x) + "/";
+				retVal += "ARRLOC:" + this.get(x) + "/\n";
+				break;
+			case 9:
+				retVal += "MSNACFT:" + this.get(x);
 				break;
 			case 14:
 				retVal += "1" + this.get(x);
@@ -47,7 +53,8 @@ public class ATOAsset extends ArrayList<Object> {
 			}
 			retVal += "/";
 		}
-		return retVal + "/";
+		retVal += "\nAMSNLOC/04000ZJUN2018/042359ZJUN2018//\n";
+		return retVal;
 	}
 
 	/**

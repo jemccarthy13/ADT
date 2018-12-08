@@ -8,19 +8,18 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
 import swing.GUI;
 import swing.MyTableCellEditor;
 import utilities.Configuration;
+import utilities.DebugUtility;
 import utilities.Fonts;
 
 /**
  * A rundown JTable to display rundown information
- * 
- * @author John McCarthy
- *
  */
 public class RundownTable extends JTable {
 
@@ -79,7 +78,7 @@ public class RundownTable extends JTable {
 		this.setRowHeight(25 + 10);
 		this.setPreferredScrollableViewportSize(new Dimension(523, 233));
 
-		Configuration.setCompact(true);
+		Configuration.setCompact(3);
 
 		for (int x = 0; x < getModel().getColumnCount(); x++) {
 			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor() {
@@ -102,42 +101,25 @@ public class RundownTable extends JTable {
 	 * Resize the rundown columns based on compact mode or not
 	 */
 	public void resizeColumns() {
+		DebugUtility.trace(RundownTable.class, "Resizing...");
+		int[] minWidths = { 60, 60, 140, 60, 60, 90, 60, 60, 60 };
+		int[] widths = { 60, 60, 140, 60, 60, 60, 100, 100, 100 };
+		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100 };
+
 		// size the columns
-		this.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		this.getColumnModel().getColumn(0).setMinWidth(60);
-		this.getColumnModel().getColumn(0).setWidth(60);
-		this.getColumnModel().getColumn(0).setMaxWidth(60);
-		this.getColumnModel().getColumn(1).setMinWidth(60);
-		this.getColumnModel().getColumn(1).setWidth(60);
-		this.getColumnModel().getColumn(1).setMaxWidth(60);
-		this.getColumnModel().getColumn(2).setMinWidth(140);
-		this.getColumnModel().getColumn(3).setMinWidth(60);
-		this.getColumnModel().getColumn(3).setWidth(60);
-		this.getColumnModel().getColumn(3).setMaxWidth(60);
-		this.getColumnModel().getColumn(4).setMinWidth(60);
-		this.getColumnModel().getColumn(4).setWidth(60);
-		this.getColumnModel().getColumn(4).setMaxWidth(60);
-		this.getColumnModel().getColumn(5).setMinWidth(90);
-
-		if (Configuration.isCompactMode() == false) {
-			this.getColumnModel().getColumn(6).setMinWidth(60);
-			this.getColumnModel().getColumn(6).setWidth(60);
-			this.getColumnModel().getColumn(6).setMaxWidth(60);
-
-			this.getColumnModel().getColumn(7).setMinWidth(60);
-			this.getColumnModel().getColumn(7).setWidth(60);
-			this.getColumnModel().getColumn(7).setMaxWidth(60);
-
-			this.getColumnModel().getColumn(8).setMinWidth(5);
-
-		} else if (Configuration.isCompactMode() == true) {
-			this.getColumnModel().getColumn(6).setMinWidth(5);
-			this.getColumnModel().getColumn(6).setWidth(5);
-
-			this.getColumnModel().getColumn(7).setMinWidth(5);
-			this.getColumnModel().getColumn(7).setWidth(5);
-
-			this.getColumnModel().getColumn(8).setWidth(5);
+		/** TODO - reduce the amount of code? */
+		TableColumnModel cModel = this.getColumnModel();
+		int columnCount = GUI.MODELS.getInstanceOf(RundownTableModel.class).getColumnCount();
+		DebugUtility.trace(RundownTable.class, "Columns: " + columnCount);
+		for (int x = 0; x < columnCount; x++) {
+			cModel.getColumn(x).setMinWidth(minWidths[x]);
+			cModel.getColumn(x).setWidth(widths[x]);
+			cModel.getColumn(x).setMaxWidth(maxWidths[x]);
+			if (Configuration.getCompact() != 0 && x > 5) {
+				cModel.getColumn(x).setMinWidth(5);
+				cModel.getColumn(x).setWidth(5);
+				cModel.getColumn(x).setMaxWidth(5);
+			}
 		}
 	}
 }

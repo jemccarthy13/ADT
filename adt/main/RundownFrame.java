@@ -58,10 +58,11 @@ public class RundownFrame extends BaseFrame {
 	 */
 	public void handleCompact() {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		if (Configuration.isCompactMode()) {
-			this.setSize((int) (d.width * 0.30), (int) (d.height * 0.7));
+		if (Configuration.getCompact() != 0) {
+			/** @TODO change this to not be a hard value */
+			this.setSize(800, (int) (d.height * 0.7));
 		} else {
-			this.setSize((int) (d.width * 0.4), (int) (d.height * 0.7));
+			this.setSize(800, (int) (d.height * 0.7));
 		}
 		RundownTable.getInstance().resizeColumns();
 		this.repaint();

@@ -15,8 +15,6 @@ import utilities.ADTTableModel;
 public class RundownTableModel extends ADTTableModel<Asset> {
 	private static final long serialVersionUID = -9017185692217463087L;
 
-	private boolean compactMode = false;
-
 	@Override
 	public void create() {
 		this.fullColumnNames.add("VCS");
@@ -30,15 +28,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Full Callsign");
 
 		this.items = RundownAssets.getInstance();
-	}
-
-	@Override
-	public int getColumnCount() {
-		int colCount = this.fullColumnNames.size();
-		if (this.compactMode) {
-			colCount = this.fullColumnNames.size() - 3;
-		}
-		return colCount;
 	}
 
 	@Override
@@ -88,9 +77,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex, boolean sendMessage, boolean doLookup) {
 		while (this.items.size() <= rowIndex) {
-			this.items.add(new Asset());
-		}
-		if (this.items.size() <= rowIndex) {
 			this.items.add(new Asset());
 		}
 		String val = aValue.toString().toUpperCase();

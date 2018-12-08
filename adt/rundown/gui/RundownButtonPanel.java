@@ -16,7 +16,6 @@ import swing.BaseFrame;
 import swing.BasePanel;
 import swing.GUI;
 import utilities.Configuration;
-import utilities.DebugUtility;
 
 /**
  * The panel containing all of the rundown buttons (i.e. a form header of
@@ -30,6 +29,9 @@ public class RundownButtonPanel extends BasePanel {
 
 	/** manage airspaces */
 	public ActionButton asMgrBtn;
+	/** publicize compact mode for unit test */
+	public JCheckBox compactCheck;
+
 	private ActionButton mildeconBtn;
 
 	private ActionListener rdBtnListener;
@@ -79,16 +81,15 @@ public class RundownButtonPanel extends BasePanel {
 		this.lowdownMgrBtn = new ActionButton("Lowdown Manager", this.rdBtnListener);
 		this.getLowdownBtn = new ActionButton("Get Lowdown", this.rdBtnListener);
 
-		JCheckBox compactCheck = new JCheckBox("Compact Mode");
-		compactCheck.addActionListener(new ActionListener() {
+		this.compactCheck = new JCheckBox("Compact Mode");
+		this.compactCheck.setSelected(true);
+		this.compactCheck.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Configuration.setCompact(((JCheckBox) (e.getSource())).isSelected());
-				DebugUtility.debug(getClass(), "Setting compact: " + Configuration.isCompactMode());
+				Configuration.switchCompact();
 				((RundownFrame) GUI.FRAMES.getInstanceOf(RundownFrame.class)).handleCompact();
 			}
 		});
-		compactCheck.setSelected(true);
 
 		add(this.atoLookupBtn);
 		add(this.stacksBtn);
@@ -97,6 +98,6 @@ public class RundownButtonPanel extends BasePanel {
 		add(this.metricsBtn);
 		add(this.getLowdownBtn);
 		add(this.mildeconBtn);
-		add(compactCheck);
+		add(this.compactCheck);
 	}
 }

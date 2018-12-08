@@ -7,6 +7,8 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
+import main.ADTClient;
+
 /**
  * Logging wrapper around log4j
  */
@@ -32,7 +34,17 @@ public final class DebugUtility {
 		loggerConfig.setLevel(Level.TRACE);
 		ctx.updateLoggers();
 
-		log4j.trace("Log4j Set to trace");
+		log4j.trace(formatClassName(DebugUtility.class) + "Log4j Set to trace");
+	}
+
+	/**
+	 * To keep everything looking nice, format the class name for output.
+	 * 
+	 * @param c the class to format
+	 * @return formatted String
+	 */
+	public static String formatClassName(Class<?> c) {
+		return String.format("(%-15s) ", c.getSimpleName());
 	}
 
 	/**
@@ -44,7 +56,7 @@ public final class DebugUtility {
 	 */
 	public synchronized static void debug(Class<?> c, String string) {
 		if (log4j.isDebugEnabled()) {
-			log4j.debug("(" + c.getSimpleName() + ") " + string);
+			log4j.debug(formatClassName(c) + string);
 		}
 	}
 
@@ -66,7 +78,7 @@ public final class DebugUtility {
 	 * @param e       the exception that was thrown
 	 */
 	public synchronized static void error(Class<?> class1, String message, Exception e) {
-		log4j.error("(" + class1.getSimpleName() + ") " + message, e);
+		log4j.error(formatClassName(class1) + message, e);
 	}
 
 	/**
@@ -85,7 +97,7 @@ public final class DebugUtility {
 	 * @param string
 	 */
 	public synchronized static void error(Class<?> class1, String string) {
-		log4j.error("(" + class1.getSimpleName() + ") " + string);
+		log4j.error(formatClassName(class1) + string);
 	}
 
 	/**
@@ -95,6 +107,16 @@ public final class DebugUtility {
 	 * @param msg    Message to log
 	 */
 	public synchronized static void trace(Class<?> class1, String msg) {
-		log4j.trace("(" + class1.getSimpleName() + ") " + msg);
+		log4j.trace(formatClassName(class1) + msg);
+	}
+
+	/**
+	 * Log for exceptions
+	 * 
+	 * @param class1 class causing the exception
+	 * @param e      the exception being logged
+	 */
+	public synchronized static void error(Class<ADTClient> class1, Exception e) {
+		error(class1, e.getMessage(), e);
 	}
 }

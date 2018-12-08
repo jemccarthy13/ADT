@@ -10,7 +10,7 @@ public class Configuration {
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
 
-	private static boolean compact = false;
+	private static int compact = 0;
 
 	private final boolean SHOW_MESSAGES = false;
 
@@ -103,14 +103,28 @@ public class Configuration {
 	/**
 	 * @return true iff compact checkbox is true (checked)
 	 */
-	public static boolean isCompactMode() {
+	public static int getCompact() {
 		return compact;
 	}
 
 	/**
-	 * @param selected set the compact mode based on selected option
+	 * @param i set the compact mode based on selected option
 	 */
-	public static void setCompact(boolean selected) {
-		compact = selected;
+	public static void setCompact(int i) {
+		compact = i;
+	}
+
+	/**
+	 * Switch the compact mode on or off
+	 */
+	public static void switchCompact() {
+		DebugUtility.trace(Configuration.class, "Compact switching...");
+		DebugUtility.trace(Configuration.class, "Before: " + compact);
+		if (compact == 3) {
+			compact = 0;
+		} else if (compact == 0) {
+			compact = 3;
+		}
+		DebugUtility.trace(Configuration.class, "After: " + compact);
 	}
 }

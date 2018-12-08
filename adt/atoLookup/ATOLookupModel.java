@@ -38,4 +38,9 @@ public class ATOLookupModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Off Station");
 		this.items = ATOAssets.staticInstance();
 	}
+
+	@Override
+	public int getColumnCount() {
+		return this.fullColumnNames.size();
+	}
 }
