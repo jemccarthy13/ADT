@@ -35,7 +35,7 @@ public class Log4JCoverage extends BaseTest {
 	@Test
 	public void Testlog() {
 		DebugUtility.fatal("Hello");
-		DebugUtility.error("Oh no!", new Exception("Exception Hello World"));
+		DebugUtility.error(Log4JCoverage.class, "Oh no!", new Exception("Exception Hello World"));
 		Assert.assertTrue(BaseTest.outContent.toString().contains("Exception Hello World"));
 
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);

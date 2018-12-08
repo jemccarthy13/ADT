@@ -1,9 +1,9 @@
 package managers;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import main.RundownFrame;
+import swing.BaseFrame;
 import swing.GUI;
 import utilities.ImageLibrary;
 
@@ -13,32 +13,14 @@ import utilities.ImageLibrary;
  * TODO - massive implementation needed
  *
  */
-public class ManagerFrame extends JFrame {
+public class ManagerFrame extends BaseFrame {
 
 	private static final long serialVersionUID = 311927586878557417L;
 
-	private static ManagerFrame instance = new ManagerFrame();
-
 	private JPanel content;
 
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static ManagerFrame getInstance() {
-		return instance;
-	}
-
-	/**
-	 * Display the manager frame
-	 */
-	public static void openManager() {
-		instance.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
-		instance.setVisible(true);
-	}
-
-	private ManagerFrame() {
+	@Override
+	public void create() {
 		setSize(800, 900);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

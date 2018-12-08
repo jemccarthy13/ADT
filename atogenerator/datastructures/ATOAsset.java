@@ -21,43 +21,33 @@ public class ATOAsset extends ArrayList<Object> {
 		this.add(new ActionButton("Add", null));
 	}
 
-	/**
-	 * String together the information for the asset, to be written to the ATO
-	 */
 	@Override
 	public String toString() {
 		String retVal = "AMSNDAT/";
-		for (int x = 0; x < this.size(); x++) {
-			if (x == 7) {
-				retVal += "DEPLOC:";
-			} else if (x == 8) {
-				retVal += "ARRLOC:";
+		for (int x = 0; x < 17; x++) {
+			switch (x) {
+			case 7:
+				retVal += "DEPLOC:" + this.get(x);
+				break;
+			case 8:
+				retVal += "ARRLOC:" + this.get(x) + "/";
+				break;
+			case 14:
+				retVal += "1" + this.get(x);
+				break;
+			case 15:
+				retVal += "2" + this.get(x);
+				break;
+			case 16:
+				retVal += "3" + this.get(x);
+				break;
+			default:
+				retVal += this.get(x);
+				break;
 			}
-			if (x == 14) {
-				retVal += "1";
-			}
-			if (x == 15) {
-				retVal += "2";
-			}
-			if (x == 16) {
-				retVal += "3";
-			}
-			retVal += this.get(x) + "/";
-			if (x == 8) {
-				retVal += "/\nMSNACFT/";
-			}
-
+			retVal += "/";
 		}
-		retVal += "/";
-		return retVal;
-	}
-
-	/**
-	 * @param x
-	 * @return the attribute desired
-	 */
-	public String getVal(int x) {
-		return (String) this.get(x);
+		return retVal + "/";
 	}
 
 	/**

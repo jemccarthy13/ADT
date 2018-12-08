@@ -8,7 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import atoLookup.ATOLookupForm;
+import atoLookup.ATOLookupFrame;
 import main.RundownFrame;
 import rundown.model.RundownTable;
 import structures.ATOAssets;
@@ -96,7 +96,7 @@ public class RundownMenuBar extends JMenuBar {
 					RundownAssets.zeroize();
 					RundownAssets.checkAddNew();
 				}
-				GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
+				GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
 				DebugUtility.debug(RundownMenuBar.class, "Refresh option pressed.");

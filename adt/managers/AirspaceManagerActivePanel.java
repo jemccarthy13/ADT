@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
-import atoLookup.ATOLookupForm;
+import atoLookup.ATOLookupFrame;
 import structures.Airspace;
 import structures.AirspaceList;
 import swing.ADTLabel;
@@ -35,8 +35,8 @@ public class AirspaceManagerActivePanel extends BasePanel {
 				}
 			}
 
-			GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
-			ManagerFrame.getInstance().repaint();
+			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
+			GUI.FRAMES.getInstanceOf(ManagerFrame.class).repaint();
 		}
 	};
 

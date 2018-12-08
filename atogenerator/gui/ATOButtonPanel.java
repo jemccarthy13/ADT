@@ -3,7 +3,6 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.border.EmptyBorder;
 
@@ -50,14 +49,8 @@ public class ATOButtonPanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			if (e.getSource().equals(this.pnl.saveBtn)) {
-
-				try {
-					ATOData.getInstance().save();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				ATOData.getInstance().save();
 			} else if (e.getSource().equals(this.pnl.loadBtn)) {
 				ATOData.loadAssets();
 			} else if (e.getSource().equals(this.pnl.genBtn)) {

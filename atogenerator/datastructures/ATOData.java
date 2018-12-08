@@ -11,18 +11,22 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gui.ATOGeneratorFrame;
 import swing.GUI;
 import table.ATOTableModel;
+import utilities.Configuration;
 import utilities.DebugUtility;
 
 /**
  * A list of assets that are in the ATO.
  */
 public class ATOData extends ArrayList<ATOAsset> {
+	/**
+	 * A file chooser to help choose files.
+	 */
+	static JFileChooser fc = new JFileChooser();
 
 	private static final long serialVersionUID = 1480309653414453245L;
 	private static ATOData instance = new ATOData();
@@ -38,13 +42,6 @@ public class ATOData extends ArrayList<ATOAsset> {
 	 */
 	public static ATOData getInstance() {
 		return instance;
-	}
-
-	/**
-	 * Remove all assets from the rundown.
-	 */
-	public static void zeroize() {
-		instance.clear();
 	}
 
 	/**
@@ -75,18 +72,29 @@ public class ATOData extends ArrayList<ATOAsset> {
 	 * Choose and load a file that is an ATO project
 	 */
 	public static void loadAssets() {
-		JFileChooser fc = new JFileChooser();
+		Configuration.getInstance().setLoadSuccess(false);
 		File f = new File(".");
 
 		fc.setDialogTitle("Choose ATO projecct file...");
 		fc.setCurrentDirectory(f);
-		FileFilter filter = new FileNameExtensionFilter("ATO Proj Files", "proj", "PROJ");
+		fc.setFileFilter(new FileNameExtensionFilter("ATO Proj Files", "proj", "PROJ"));
 
-		fc.setFileFilter(filter);
-		int result = fc.showOpenDialog(null);
+		int result = JFileChooser.CANCEL_OPTION;
+		String configFilePath = Configuration.getInstance().getATOProjFileLoc();
 
-		switch (result) {
-		case JFileChooser.APPROVE_OPTION:
+		if (!configFilePath.equals("")) {
+			File testFile = new File(configFilePath);
+			if (testFile.exists()) {
+				fc.setSelectedFile(testFile);
+				fc.approveSelection();
+				result = JFileChooser.APPROVE_OPTION;
+			}
+		} else {
+			result = fc.showOpenDialog(null);
+		}
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			Configuration.getInstance().setLoadSuccess(true);
 			f = fc.getSelectedFile();
 
 			if (f != null) {
@@ -101,18 +109,15 @@ public class ATOData extends ArrayList<ATOAsset> {
 					ois.close();
 					is.close();
 
-					String message = "Project loaded: \n" + "-- " + f.getAbsolutePath() + "/" + f.getName();
+					String message = "Project loaded: \n" + "-- " + f.getAbsolutePath();
 					DebugUtility.debug(ATOData.class, message);
 
 				} catch (IOException e) {
-					DebugUtility.error(ATOData.class, "Unable to read from file.");
+					DebugUtility.error(ATOData.class, "Error loading " + f.getName(), e);
 				} catch (ClassNotFoundException e) {
 					DebugUtility.error(ATOData.class, "Unable to cast to ATOData.");
 				}
 			}
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -174,7 +179,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 	 * @throws IOException
 	 * 
 	 */
-	public void save() throws IOException {
+	public void save() {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try {
@@ -188,8 +193,12 @@ public class ATOData extends ArrayList<ATOAsset> {
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			oos.close();
-			fos.close();
+			try {
+				oos.close();
+				fos.close();
+			} catch (IOException e2) {
+				DebugUtility.error(ATOData.class, "Unable to close resources.");
+			}
 		}
 	}
 }

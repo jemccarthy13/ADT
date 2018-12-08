@@ -6,6 +6,7 @@ import javax.swing.UIManager;
  * Holds program configuration and constants
  */
 public class Configuration {
+
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
 
@@ -14,6 +15,9 @@ public class Configuration {
 	private final boolean SHOW_MESSAGES = false;
 
 	private String ATODatFileLoc = " ";
+	private String ATOProjFileLoc = "";
+
+	private boolean loadSuccess = false;
 
 	private static Configuration instance = new Configuration();
 
@@ -32,8 +36,40 @@ public class Configuration {
 	/**
 	 * @return Current ATO data file location
 	 */
+	public String getATOProjFileLoc() {
+		return this.ATOProjFileLoc;
+	}
+
+	/**
+	 * @param loc The new location of the ATO data file.
+	 */
+	public void setATOProjFileLoc(String loc) {
+		this.ATOProjFileLoc = loc;
+	}
+
+	/**
+	 * @return Current ATO data file location
+	 */
 	public String getATODatFileLoc() {
 		return this.ATODatFileLoc;
+	}
+
+	/**
+	 * Was the file load successful
+	 * 
+	 * @return iff successful was set
+	 */
+	public boolean isLoadSuccess() {
+		return this.loadSuccess;
+	}
+
+	/**
+	 * Set file load successful flag
+	 * 
+	 * @param b true if success
+	 */
+	public void setLoadSuccess(boolean b) {
+		this.loadSuccess = b;
 	}
 
 	/**
@@ -60,7 +96,7 @@ public class Configuration {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			DebugUtility.trace(class1, "Look and feel set");
 		} catch (Exception e1) {
-			DebugUtility.error("Unable to set system look and feel. ", e1);
+			DebugUtility.error(Configuration.class, "Unable to set system look and feel. ", e1);
 		}
 	}
 

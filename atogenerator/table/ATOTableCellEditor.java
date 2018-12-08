@@ -53,7 +53,7 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 			int vColIndex) {
 		super.getTableCellEditorComponent(table, value, isSelected, rowIndex, vColIndex);
 
-		if (ATOTable.getPrevCol() != -1 && ATOTable.getPrevCol() != -1
+		if (ATOTable.getPrevCol() != -1 && ATOTable.getPrevRow() != -1
 				&& ATOTable.getInstance().getValueAt(rowIndex, vColIndex).equals("-")) {
 			((JTextField) this.component).setText("");
 			ATOTable.getInstance().setValueAt("", rowIndex, vColIndex);

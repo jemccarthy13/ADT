@@ -8,14 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
 
-import atoLookup.ATOLookupForm;
+import atoLookup.ATOLookupFrame;
 import main.RundownFrame;
 import managers.ManagerFrame;
 import swing.ActionButton;
 import swing.BaseFrame;
 import swing.BasePanel;
 import swing.GUI;
-import test.Tester;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -30,7 +29,7 @@ public class RundownButtonPanel extends BasePanel {
 	public ActionButton atoLookupBtn;
 
 	/** manage airspaces */
-	ActionButton asMgrBtn;
+	public ActionButton asMgrBtn;
 	private ActionButton mildeconBtn;
 
 	private ActionListener rdBtnListener;
@@ -43,8 +42,6 @@ public class RundownButtonPanel extends BasePanel {
 
 	private ActionButton getLowdownBtn;
 
-	private ActionButton testBtn;
-
 	/**
 	 * Listen to the rundown buttons
 	 */
@@ -53,11 +50,11 @@ public class RundownButtonPanel extends BasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(RundownButtonPanel.this.atoLookupBtn)) {
-				BaseFrame atoLookup = GUI.FRAMES.getInstanceOf(ATOLookupForm.class);
+				BaseFrame atoLookup = GUI.FRAMES.getInstanceOf(ATOLookupFrame.class);
 				atoLookup.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				atoLookup.setVisible(true);
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
-				ManagerFrame mgrForm = ManagerFrame.getInstance();
+				ManagerFrame mgrForm = (ManagerFrame) GUI.FRAMES.getInstanceOf(ManagerFrame.class);
 				mgrForm.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				mgrForm.setVisible(true);
 			}
@@ -93,13 +90,6 @@ public class RundownButtonPanel extends BasePanel {
 		});
 		compactCheck.setSelected(true);
 
-		this.testBtn = new ActionButton("test", new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Tester.main(null);
-			}
-		});
-
 		add(this.atoLookupBtn);
 		add(this.stacksBtn);
 		add(this.lowdownMgrBtn);
@@ -108,6 +98,5 @@ public class RundownButtonPanel extends BasePanel {
 		add(this.getLowdownBtn);
 		add(this.mildeconBtn);
 		add(compactCheck);
-		add(this.testBtn);
 	}
 }

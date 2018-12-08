@@ -17,7 +17,7 @@ import utilities.ImageLibrary;
 /**
  * The main frame of the ATO Lookup.
  */
-public class ATOLookupForm extends BaseFrame {
+public class ATOLookupFrame extends BaseFrame {
 
 	private static final long serialVersionUID = 4569010347602817674L;
 

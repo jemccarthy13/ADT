@@ -60,11 +60,13 @@ public final class DebugUtility {
 	/**
 	 * Error with exception
 	 * 
+	 * @param class1
+	 * 
 	 * @param message the message to explain the error
 	 * @param e       the exception that was thrown
 	 */
-	public synchronized static void error(String message, Exception e) {
-		log4j.error(message, e);
+	public synchronized static void error(Class<?> class1, String message, Exception e) {
+		log4j.error("(" + class1.getSimpleName() + ") " + message, e);
 	}
 
 	/**

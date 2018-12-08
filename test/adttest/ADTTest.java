@@ -33,6 +33,7 @@ public class ADTTest extends BaseTest {
 	 */
 	@AfterClass
 	public static void dispose() {
+		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(false);
 		GUI.FRAMES.getInstanceOf(RundownFrame.class).dispose();
 	}
 

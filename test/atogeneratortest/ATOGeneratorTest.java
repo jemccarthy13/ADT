@@ -18,6 +18,7 @@ import table.ATOTable;
 import table.ATOTableModel;
 import utilities.ADTRobot;
 import utilities.BaseTest;
+import utilities.Configuration;
 import utilities.DebugUtility;
 
 /**
@@ -37,6 +38,7 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@AfterClass
 	public static void dispose() {
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).setVisible(false);
 		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).dispose();
 	}
 
@@ -71,6 +73,13 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testSave() {
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+		setEditing(ATOTable.getInstance(), 0, 0);
+		ADTRobot.type("1001");
+		ADTRobot.tab();
+
 		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).saveBtn.doClick();
 
 		BaseTest.fail("Implement save button to ask which file");
@@ -81,8 +90,47 @@ public class ATOGeneratorTest extends BaseTest {
 	 * Test using set value at to set data in a row we don't have data in
 	 */
 	@Test
+	public void testGenerate() {
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+		setEditing(ATOTable.getInstance(), 0, 0);
+		ADTRobot.type("1001");
+		ADTRobot.tab();
+		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).genBtn.doClick();
+		Assert.assertTrue(outContent.toString().contains("TASKUNIT/552 AEW"));
+	}
+
+	/**
+	 * Test using set value at to set data in a row we don't have data in
+	 */
+	@Test
 	public void testLoad() {
-		BaseTest.fail("need to implement");
+		Configuration.getInstance().setATOProjFileLoc("TESTPROJ.proj");
+		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
+
+		Assert.assertTrue(outContent.toString().contains("Project loaded:"));
+		Assert.assertTrue(outContent.toString().contains(Configuration.getInstance().getATOProjFileLoc()));
+		Assert.assertTrue(Configuration.getInstance().isLoadSuccess());
+
+		Configuration.getInstance().setATOProjFileLoc("MyProj.proj");
+		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
+
+	}
+
+	/**
+	 * Test using set value at to set data in a row we don't have data in
+	 */
+	@Test
+	public void testDynamicAdd() {
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 1);
+		setEditing(ATOTable.getInstance(), 0, 0);
+		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 2);
+		setEditing(ATOTable.getInstance(), 1, 5);
+		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 3);
 	}
 
 	/**

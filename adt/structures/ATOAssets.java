@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import atoLookup.ATOLookupForm;
+import atoLookup.ATOLookupFrame;
 import rundown.model.RundownTableModel;
 import swing.GUI;
 import utilities.Configuration;
@@ -61,7 +61,7 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 	 */
 	public static void resetInstance(ATOAssets newInstance) {
 		instance = newInstance;
-		GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
+		GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 		}
 
 		Configuration.getInstance().setATODatFileLoc(atoInfoFile.getAbsolutePath());
-		GUI.FRAMES.getInstanceOf(ATOLookupForm.class).repaint();
+		GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
 
 	}
 
