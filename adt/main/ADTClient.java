@@ -80,7 +80,8 @@ public class ADTClient extends Thread {
 	 * connection
 	 */
 	public void establishConnection() {
-		while (this.socket == null || this.printWriter == null) {
+		int counter = 0;
+		while ((this.socket == null || this.printWriter == null) && counter < 1000) {
 			try {
 				DebugUtility.debug(ADTClient.class, "Trying to establish connection...");
 				tryConnect();
