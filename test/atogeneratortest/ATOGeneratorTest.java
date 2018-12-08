@@ -1,6 +1,6 @@
 package atogeneratortest;
 
-import java.awt.AWTException;
+import java.awt.event.KeyEvent;
 
 import javax.swing.CellEditor;
 
@@ -44,6 +44,32 @@ public class ATOGeneratorTest extends BaseTest {
 	 * Test using set value at to set data in a row we don't have data in
 	 */
 	@Test
+	public void testCancelEdit() {
+
+		setEditing(ATOTable.getInstance(), 0, 1);
+		Assert.assertTrue(ATOTable.getInstance().getValueAt(0, 1).equals(""));
+
+		ADTRobot.tab();
+		Assert.assertTrue(ATOTable.getInstance().getValueAt(0, 1).equals("-"));
+
+		setEditing(ATOTable.getInstance(), 0, 0);
+
+		ADTRobot.simulatePressKey(KeyEvent.VK_SPACE);
+		for (int x = 0; x < 10; x++) {
+			ADTRobot.simulatePressKey(KeyEvent.VK_RIGHT);
+		}
+		for (int x = 0; x < 10; x++) {
+			ADTRobot.backspace();
+		}
+		ADTRobot.tab();
+
+		Assert.assertTrue(ATOTable.getInstance().getValueAt(0, 1).equals("-"));
+	}
+
+	/**
+	 * Test using set value at to set data in a row we don't have data in
+	 */
+	@Test
 	public void testSave() {
 		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).saveBtn.doClick();
 
@@ -68,20 +94,17 @@ public class ATOGeneratorTest extends BaseTest {
 		GUI.MODELS.getInstanceOf(ATOTableModel.class).setValueAt("Invalid", 2, 5);
 		Assert.assertTrue("INVALID".equals(ATOTable.getInstance().getValueAt(2, 5).toString()));
 		Assert.assertNull(GUI.MODELS.getInstanceOf(ATOTableModel.class).getValueAt(100, 100));
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 	}
 
 	/**
 	 * Test load
-	 * 
-	 * @throws AWTException
 	 */
 	@Test
-	public void test() throws AWTException {
-		ADTRobot r = new ADTRobot();
-
+	public void test() {
 		setEditing(ATOTable.getInstance(), 0, 0);
-		r.type("1001");
-		r.tab();
+		ADTRobot.type("1001");
+		ADTRobot.tab();
 		CellEditor editor = ATOTable.getInstance().getCellEditor(0, 0);
 
 		String y = editor.getCellEditorValue().toString();

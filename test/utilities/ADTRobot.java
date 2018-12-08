@@ -4,16 +4,26 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
+import org.junit.Assert;
+
 /**
  * Wrapper around JRobot to provide enhanced capability.
  */
-public class ADTRobot extends Robot {
+public class ADTRobot {
 
 	/**
-	 * @throws AWTException ?
+	 * Static instance of robot
 	 */
-	public ADTRobot() throws AWTException {
-		super();
+	public Robot r;
+
+	private static ADTRobot instance = new ADTRobot();
+
+	private ADTRobot() {
+		try {
+			this.r = new Robot();
+		} catch (AWTException e) {
+			Assert.fail("Couldn't create test robot.");
+		}
 	}
 
 	/**
@@ -24,26 +34,32 @@ public class ADTRobot extends Robot {
 	}
 
 	/**
+	 * Behaves like a human was pressing the keyboard buttons
+	 * 
+	 * @param e
+	 */
+	public static void simulatePressKey(int e) {
+		instance.r.keyPress(e);
+		sleep();
+		instance.r.keyRelease(e);
+		sleep();
+	}
+
+	/**
 	 * @param message
 	 */
-	public void type(String message) {
+	public static void type(String message) {
 		char[] letters = message.toCharArray();
 		for (char ch : letters) {
-			this.keyPress((byte) ch);
-			sleep();
-			this.keyRelease((byte) ch);
-			sleep();
+			simulatePressKey((byte) ch);
 		}
 	}
 
 	/**
 	 * @param message
 	 */
-	public void tab() {
-		this.keyPress(KeyEvent.VK_TAB);
-		sleep();
-		this.keyRelease(KeyEvent.VK_TAB);
-		sleep();
+	public static void tab() {
+		simulatePressKey(KeyEvent.VK_TAB);
 	}
 
 	/**
@@ -55,5 +71,12 @@ public class ADTRobot extends Robot {
 		} catch (InterruptedException e) {
 			// do nothing
 		}
+	}
+
+	/**
+	 * Press the backspace key
+	 */
+	public static void backspace() {
+		simulatePressKey(KeyEvent.VK_BACK_SPACE);
 	}
 }

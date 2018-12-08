@@ -35,8 +35,7 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 
 			@Override
 			public void editingCanceled(ChangeEvent e) {
-				// TODO Auto-generated method stub
-
+				// Do nothing
 			}
 		});
 	}
