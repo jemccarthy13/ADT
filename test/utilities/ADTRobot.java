@@ -30,7 +30,7 @@ public class ADTRobot {
 	 * Sleep for button input
 	 */
 	public static void sleep() {
-		sleep(50);
+		sleep(100);
 	}
 
 	/**
