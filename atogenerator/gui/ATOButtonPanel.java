@@ -20,11 +20,11 @@ public class ATOButtonPanel extends BasePanel {
 	private static final long serialVersionUID = 6980336047696920906L;
 
 	/** button to load ATO project */
-	protected ActionButton loadBtn;
+	public ActionButton loadBtn;
 	/** button to generate the ATO from current data */
-	protected ActionButton genBtn;
+	public ActionButton genBtn;
 	/** button to load ATO project */
-	protected ActionButton saveBtn;
+	public ActionButton saveBtn;
 
 	/**
 	 * ActionListener to be added to the buttons

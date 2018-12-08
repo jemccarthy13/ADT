@@ -1,4 +1,4 @@
-package test;
+package customtest;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import datastructures.TestStruct;
 import swing.SwingContainer;
+import utilities.BaseTest;
 
 /**
  * Test the remainder of the custom swing utilities.

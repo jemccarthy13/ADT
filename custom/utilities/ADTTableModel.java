@@ -2,8 +2,6 @@ package utilities;
 
 import java.util.ArrayList;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import structures.AddNew;
@@ -12,7 +10,7 @@ import swing.Singleton;
 /**
  * @param <T>
  */
-public abstract class ADTTableModel<T> extends AbstractTableModel implements AddNew, Singleton, TableModelListener {
+public abstract class ADTTableModel<T> extends AbstractTableModel implements AddNew, Singleton {
 
 	/** Serialization variable */
 	private static final long serialVersionUID = -2333045189615857224L;
@@ -31,6 +29,13 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 	 * The items being stored in this model
 	 */
 	protected ArrayList<T> items;
+
+	/**
+	 * Remove all items from the table
+	 */
+	public void clear() {
+		this.items.clear();
+	}
 
 	@Override
 	public int getRowCount() {
@@ -65,10 +70,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		while (this.items.size() <= rowIndex) {
-			addNew();
-		}
-		if (this.items.size() <= rowIndex) {
-			addNew();
+			this.addNew();
 		}
 		((ArrayList<Object>) this.items.get(rowIndex)).set(columnIndex, aValue);
 	}
@@ -79,15 +81,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 	}
 
 	@Override
-	public void addNew() {
-		DebugUtility.error(ADTTableModel.class, "Can't add to parent ADTTableModel.");
-	}
-
-	// By default forward all events to all the listeners.
-	@Override
-	public void tableChanged(TableModelEvent e) {
-		fireTableChanged(e);
-	}
+	public abstract void addNew();
 
 	/**
 	 * @param instance

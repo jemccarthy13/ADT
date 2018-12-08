@@ -1,10 +1,11 @@
-package test;
+package customtest;
 
 import java.awt.Image;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import utilities.BaseTest;
 import utilities.ImageLibrary;
 
 /**

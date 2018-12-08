@@ -14,7 +14,7 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 
 	@Override
 	public void create() {
-		this.addTableModelListener(this);
+		// this.addTableModelListener(this);
 		this.fullColumnNames.add("MSN#");
 		this.fullColumnNames.add("AMCMSN");
 		this.fullColumnNames.add("PKGID");
@@ -57,5 +57,10 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		super.setValueAt(aValue.toString().toUpperCase(), rowIndex, columnIndex);
 		ATOData.checkAddNew();
+	}
+
+	@Override
+	public void addNew() {
+		this.items.add(new ATOAsset());
 	}
 }

@@ -19,7 +19,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 
 	@Override
 	public void create() {
-		this.addTableModelListener(this);
 		this.fullColumnNames.add("VCS");
 		this.fullColumnNames.add("Mode 2");
 		this.fullColumnNames.add("Location");
@@ -138,5 +137,10 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		RundownAssets.checkAddNew();
 
 		((DefaultRowSorter) RundownTable.getInstance().getRowSorter()).setRowFilter(null);
+	}
+
+	@Override
+	public void addNew() {
+		this.items.add(new Asset());
 	}
 }

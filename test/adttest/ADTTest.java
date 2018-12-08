@@ -1,10 +1,6 @@
-package test;
+package adttest;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-
-import javax.swing.CellEditor;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -16,7 +12,8 @@ import main.RundownFrame;
 import rundown.gui.RundownButtonPanel;
 import rundown.model.RundownTable;
 import swing.GUI;
-import utilities.DebugUtility;
+import utilities.ADTRobot;
+import utilities.BaseTest;
 
 /**
  * For the ADT
@@ -56,43 +53,12 @@ public class ADTTest extends BaseTest {
 	@Test
 	public void edit() throws AWTException {
 		RundownTable.getInstance().requestFocus();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		RundownTable.getInstance().setEditingRow(0);
 		RundownTable.getInstance().editCellAt(0, 0);
-		Robot r;
-		r = new Robot();
-		r.keyPress(KeyEvent.VK_Y);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r.keyRelease(KeyEvent.VK_Y);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r.keyPress(KeyEvent.VK_TAB);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r.keyRelease(KeyEvent.VK_TAB);
-
-		CellEditor editor = RundownTable.getInstance().getCellEditor(0, 0);
-
-		String y = editor.getCellEditorValue().toString();
-		DebugUtility.debug(ADTTest.class, "TO STRING: " + y.toString());
+		ADTRobot r = new ADTRobot();
+		r.type("Y");
+		r.tab();
 		Assert.assertTrue("Y".equals(RundownTable.getInstance().getValueAt(0, 0).toString()));
 	}
 }
