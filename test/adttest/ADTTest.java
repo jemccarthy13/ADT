@@ -80,9 +80,10 @@ public class ADTTest extends BaseTest {
 	public void multiUserADT() {
 		ADTClient client = new ADTClient();
 		client.establishSession();
+		ADTRobot.sleep(3000);
 		client.sendMessage("locked,0,4");
 
-		ADTRobot.sleep(6000);
+		ADTRobot.sleep(3000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));
 		client.endSession();
 		ADTRobot.sleep(4000);
