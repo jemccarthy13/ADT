@@ -19,7 +19,6 @@ import utilities.ImageLibrary;
 public class RundownFrame extends BaseFrame {
 
 	private static final long serialVersionUID = -5736125343545871775L;
-
 	private static ADTClient client;
 
 	/**
@@ -44,7 +43,7 @@ public class RundownFrame extends BaseFrame {
 
 		// start the client - and start the server if one isn't found
 		client = new ADTClient();
-		client.establishSession();
+		client.connect();
 
 		// handle the original sizing
 		this.handleCompact();
@@ -70,9 +69,11 @@ public class RundownFrame extends BaseFrame {
 	}
 
 	/**
-	 * @return the ADT client associated with this rundown
+	 * Expose the Rundown client
+	 * 
+	 * @return the client
 	 */
 	public static ADTClient getClient() {
-		return client;
+		return RundownFrame.client;
 	}
 }
