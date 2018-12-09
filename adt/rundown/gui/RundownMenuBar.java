@@ -4,25 +4,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import atoLookup.ATOLookupFrame;
 import main.RundownFrame;
 import rundown.model.RundownTable;
 import structures.ATOAssets;
+import structures.ATOImporter;
 import structures.RundownAssets;
 import swing.GUI;
 import utilities.Configuration;
 import utilities.DebugUtility;
+import utilities.FileChooser;
 import utilities.Output;
 
 /**
  * The custom menu bar for this application.
- * 
- * @author John McCarthy
- *
  */
 public class RundownMenuBar extends JMenuBar {
 
@@ -41,15 +42,15 @@ public class RundownMenuBar extends JMenuBar {
 
 	private JMenu settings = new JMenu("Settings");
 	/** the import ATO menu option */
-	JMenuItem doImport = new JMenuItem("ATO Import");
+	public JMenuItem doImport = new JMenuItem("ATO Import");
 	/** the grid settings menu option */
-	JMenuItem setGrid = new JMenuItem("Grid Settings");
+	public JMenuItem setGrid = new JMenuItem("Grid Settings");
 	/** the type manager menu option */
-	JMenuItem typeManager = new JMenuItem("Type Manager");
+	public JMenuItem typeManager = new JMenuItem("Type Manager");
 	/** the zeroize menu option */
-	JMenuItem zeroize = new JMenuItem("Zeroize");
+	public JMenuItem zeroize = new JMenuItem("Zeroize");
 	/** the refresh menu option */
-	JMenuItem refresh = new JMenuItem("Refresh");
+	public JMenuItem refresh = new JMenuItem("Refresh");
 
 	private RundownMenuListener listener = new RundownMenuListener();
 
@@ -84,7 +85,9 @@ public class RundownMenuBar extends JMenuBar {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(RundownMenuBar.this.doImport)) {
-				ATOAssets.doImport();
+				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO",
+						new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATOProjFileLoc(),
+						new ATOImporter());
 				RundownFrame.getClient().sendMessage("-1,atodat," + Configuration.getInstance().getATODatFileLoc());
 			} else if (e.getSource().equals(RundownMenuBar.this.setGrid)) {
 				DebugUtility.error(RundownMenuBar.class, "Setting grid not implemented");

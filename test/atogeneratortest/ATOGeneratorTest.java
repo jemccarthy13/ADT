@@ -120,6 +120,7 @@ public class ATOGeneratorTest extends BaseTest {
 
 		Configuration.getInstance().setATOProjFileLoc("MyProj.proj");
 		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
+		Assert.assertTrue(!Configuration.getInstance().isLoadSuccess());
 
 	}
 

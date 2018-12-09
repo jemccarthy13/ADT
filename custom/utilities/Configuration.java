@@ -16,6 +16,7 @@ public class Configuration {
 
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
+	private String ATOLoadLoc = "";
 
 	private boolean loadSuccess = false;
 
@@ -126,5 +127,23 @@ public class Configuration {
 			compact = 3;
 		}
 		DebugUtility.trace(Configuration.class, "After: " + compact);
+	}
+
+	/**
+	 * Set the ATO load from location
+	 * 
+	 * @param location
+	 */
+	public void setATOLoadLoc(String location) {
+		this.ATOLoadLoc = location;
+	}
+
+	/**
+	 * Retrieve the ATO load from location
+	 * 
+	 * @return location of desired ATO load
+	 */
+	public String getATOLoadLoc() {
+		return this.ATOLoadLoc;
 	}
 }

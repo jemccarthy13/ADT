@@ -4,12 +4,17 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFileChooser;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import datastructures.ATOData;
+import datastructures.ATOProjectImporter;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
+import utilities.Configuration;
+import utilities.FileChooser;
 
 /**
  * The panel containing all of the ATO functional buttons.
@@ -52,7 +57,9 @@ public class ATOButtonPanel extends BasePanel {
 			if (e.getSource().equals(this.pnl.saveBtn)) {
 				ATOData.getInstance().save();
 			} else if (e.getSource().equals(this.pnl.loadBtn)) {
-				ATOData.loadAssets();
+				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO Proj",
+						new FileNameExtensionFilter("ATO Proj", "proj"),
+						Configuration.getInstance().getATOProjFileLoc(), new ATOProjectImporter());
 			} else if (e.getSource().equals(this.pnl.genBtn)) {
 				ATOData.output();
 			}

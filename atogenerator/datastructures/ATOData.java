@@ -1,22 +1,16 @@
 package datastructures;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gui.ATOGeneratorFrame;
 import swing.GUI;
-import table.ATOTableModel;
-import utilities.Configuration;
 import utilities.DebugUtility;
 
 /**
@@ -69,56 +63,10 @@ public class ATOData extends ArrayList<ATOAsset> {
 	}
 
 	/**
-	 * Choose and load a file that is an ATO project
+	 * @param readObject
 	 */
-	public static void loadAssets() {
-		Configuration.getInstance().setLoadSuccess(false);
-		File f = new File(".");
-
-		fc.setDialogTitle("Choose ATO projecct file...");
-		fc.setCurrentDirectory(f);
-		fc.setFileFilter(new FileNameExtensionFilter("ATO Proj Files", "proj", "PROJ"));
-
-		int result = JFileChooser.CANCEL_OPTION;
-		String configFilePath = Configuration.getInstance().getATOProjFileLoc();
-
-		if (!configFilePath.equals("")) {
-			File testFile = new File(configFilePath);
-			if (testFile.exists()) {
-				fc.setSelectedFile(testFile);
-				fc.approveSelection();
-				result = JFileChooser.APPROVE_OPTION;
-			}
-		} else {
-			result = fc.showOpenDialog(null);
-		}
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-			Configuration.getInstance().setLoadSuccess(true);
-			f = fc.getSelectedFile();
-
-			if (f != null) {
-				try {
-					FileInputStream is = new FileInputStream(f.getAbsolutePath());
-					ObjectInputStream ois = new ObjectInputStream(is);
-					ATOData.instance = (ATOData) ois.readObject();
-					GUI.MODELS.getInstanceOf(ATOTableModel.class).setItems(instance);
-
-					GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
-					GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).validate();
-					ois.close();
-					is.close();
-
-					String message = "Project loaded: \n" + "-- " + f.getAbsolutePath();
-					DebugUtility.debug(ATOData.class, message);
-
-				} catch (IOException e) {
-					DebugUtility.error(ATOData.class, "Error loading " + f.getName(), e);
-				} catch (ClassNotFoundException e) {
-					DebugUtility.error(ATOData.class, "Unable to cast to ATOData.");
-				}
-			}
-		}
+	protected static void setInstance(ATOData readObject) {
+		ATOData.instance = readObject;
 	}
 
 	/**

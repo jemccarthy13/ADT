@@ -16,12 +16,11 @@ public class ServerTest {
 	/** The test server instance */
 	static TestServer ts = TestServer.getInstance();
 
+	/**
+	 * Before this test we need to stop the server
+	 */
 	public static void b4test() {
 		ADTServer.getInstance().setStop();
-		// while (BaseTest.outContent.toString().contains("RundownFrame")
-		// && !BaseTest.outContent.toString().contains("(ADTServer ) Stopped")) {
-		// ADTRobot.sleep(500);
-		// }
 	}
 
 	/**

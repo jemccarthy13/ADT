@@ -73,7 +73,7 @@ public abstract class BaseTest extends TestSuite {
 	/**
 	 * 
 	 */
-	protected static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	public static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	/**
 	 * 
 	 */
