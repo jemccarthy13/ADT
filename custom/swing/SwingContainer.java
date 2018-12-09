@@ -24,16 +24,19 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 		if (!this.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
-				DebugUtility.trace(SwingContainer.class, "On the fly creating " + c.getName());
 				y = c.newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-
-			DebugUtility.trace(SwingContainer.class,
-					"first time adding " + c.getSimpleName() + " " + y + " found, " + c.hashCode());
+			String obj;
+			if (y == null) {
+				obj = "null";
+			} else {
+				obj = y.hashCode() + "";
+			}
+			DebugUtility.trace(SwingContainer.class, "On the fly created " + c.getName() + obj);
 
 			this.put(c.hashCode(), (T) y);
 		}
