@@ -82,7 +82,7 @@ public class ADTTest extends BaseTest {
 		client.establishSession();
 		client.sendMessage("locked,0,4");
 
-		ADTRobot.sleep(4000);
+		ADTRobot.sleep(6000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));
 		client.endSession();
 		ADTRobot.sleep(4000);
