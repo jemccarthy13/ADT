@@ -46,10 +46,11 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	public static Image getImage(String name) {
 		Image img = null;
 		ImageIcon icon = getInstance().getImageIcon(name);
-		DebugUtility.debug(ImageLibrary.class, "Icon: " + icon);
 		if (icon == null) {
 			DebugUtility.debug(ImageLibrary.class, "Unable to resolve " + name);
 		} else {
+			icon.setDescription(name);
+			DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
 			img = icon.getImage();
 		}
 		return img;
