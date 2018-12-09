@@ -47,7 +47,7 @@ public class ADTServerThread extends Thread {
 	public synchronized void start() {
 		// Get the client message
 		String inputLine = "";
-		while (!inputLine.contains("end")) {
+		while (inputLine != null && !inputLine.contains("end")) {
 			try {
 				inputLine = this.input.readLine();
 			} catch (IOException e) {

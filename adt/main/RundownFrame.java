@@ -43,7 +43,7 @@ public class RundownFrame extends BaseFrame {
 
 		// start the client - and start the server if one isn't found
 		client = new ADTClient();
-		client.connect();
+		client.establishSession();
 
 		// handle the original sizing
 		this.handleCompact();

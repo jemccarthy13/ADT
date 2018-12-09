@@ -112,6 +112,9 @@ public abstract class BaseTest extends TestSuite {
 	public static void restoreStreams() {
 		originalOut.println(outContent);
 		originalErr.println(errContent);
+
+		BaseTest.outContent.reset();
+		BaseTest.errContent.reset();
 	}
 
 	/**

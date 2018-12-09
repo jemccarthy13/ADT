@@ -6,6 +6,7 @@ import javax.swing.CellEditor;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,6 +32,16 @@ public class ATOGeneratorTest extends BaseTest {
 	@BeforeClass
 	public static void load() {
 		ATOGenerator.main(null);
+	}
+
+	/**
+	 * Reset the model with a clean slate
+	 */
+	@Before
+	public void reset() {
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
+		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
+		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 	}
 
 	/**
@@ -73,9 +84,6 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testSave() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 		setEditing(ATOTable.getInstance(), 0, 0);
 		ADTRobot.type("1001");
 		ADTRobot.tab();
@@ -91,9 +99,6 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testGenerate() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 		setEditing(ATOTable.getInstance(), 0, 0);
 		ADTRobot.type("1001");
 		ADTRobot.tab();
@@ -123,9 +128,6 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testDynamicAdd() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
 		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 1);
 		setEditing(ATOTable.getInstance(), 0, 0);
 		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 2);
@@ -138,7 +140,6 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testADTTableModel() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
 		GUI.MODELS.getInstanceOf(ATOTableModel.class).setValueAt("Invalid", 2, 5);
 		Assert.assertTrue("INVALID".equals(ATOTable.getInstance().getValueAt(2, 5).toString()));
 		Assert.assertNull(GUI.MODELS.getInstanceOf(ATOTableModel.class).getValueAt(100, 100));
@@ -149,7 +150,7 @@ public class ATOGeneratorTest extends BaseTest {
 	 * Test load
 	 */
 	@Test
-	public void test() {
+	public void testEdit() {
 		setEditing(ATOTable.getInstance(), 0, 0);
 		ADTRobot.type("1001");
 		ADTRobot.tab();

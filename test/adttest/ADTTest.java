@@ -79,17 +79,13 @@ public class ADTTest extends BaseTest {
 	@Test
 	public void multiUserADT() {
 		ADTClient client = new ADTClient();
-		client.establishConnection();
-		client.start();
-
-		while (client.getSessionID() == -1) {
-			ADTRobot.sleep(50);
-		}
+		client.establishSession();
 		client.sendMessage("locked,0,4");
-		ADTRobot.sleep(1000);
+
+		ADTRobot.sleep(4000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));
 		client.endSession();
-		ADTRobot.sleep(5000);
+		ADTRobot.sleep(4000);
 		Assert.assertTrue(RundownTable.getInstance().isCellEditable(0, 4));
 		client.interrupt();
 	}

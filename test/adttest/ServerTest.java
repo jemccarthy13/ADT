@@ -1,50 +1,70 @@
 package adttest;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import main.RundownFrame;
 import server.ADTServer;
 import swing.GUI;
+import utilities.ADTRobot;
 import utilities.BaseTest;
+import utilities.DebugUtility;
 import utilities.TestServer;
 
 /**
  * Test what happens when a server is already bound
  */
-public class ServerTest extends BaseTest {
+public class ServerTest {
 
 	/** The test server instance */
 	static TestServer ts = TestServer.getInstance();
 
-	/**
-	 * Start the test server first
-	 */
-	@BeforeClass
-	public static void startServer() {
-		ts.start();
-	}
-
-	/**
-	 * Stop the test server after this test is complete to prevent TestServer from
-	 * blocking follow on tests
-	 */
-	@AfterClass
-	public static void stopServer() {
-		ts.stopCondition = true;
+	public static void b4test() {
+		ADTServer.getInstance().setStop();
+		// while (BaseTest.outContent.toString().contains("RundownFrame")
+		// && !BaseTest.outContent.toString().contains("(ADTServer ) Stopped")) {
+		// ADTRobot.sleep(500);
+		// }
 	}
 
 	/**
 	 * Now test the ADT Server
 	 */
-	@Test
 	public void testADTServer() {
+		ADTServer.getInstance().setStop();
+		// while (BaseTest.outContent.toString().contains("RundownFrame")
+		// && !BaseTest.outContent.toString().contains("(ADTServer ) Stopped")) {
+		// ADTRobot.sleep(500);
+		// }
 		ADTServer.resetInstance();
-		ADTServer.getInstance().start();
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(true);
+		ADTRobot.sleep(5000);
+		DebugUtility.debug(ServerTest.class, "Starting test server...");
+		ts.start();
 
-		/** TODO */
+		ADTRobot.sleep(5000);
+
+		/** TODO - assert no ADTServer connections were made */
+		BaseTest.fail("Need to implement verification of the correct server");
+
+		DebugUtility.debug(ServerTest.class, "Restarting test server...");
+		ADTServer.resetInstance();
+		ADTRobot.sleep(5000);
+
+		ADTServer.getInstance().start();
+
+		/** TODO - assert a successful connection to ADTServer */
+		// BaseTest.fail("Need to implement verification of the correct server");
+
+		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(true);
+		ts.stopCondition = true;
+
+		// while (!BaseTest.outContent.toString().contains("(TestServer")) {
+		// ADTRobot.sleep(500);
+		// }
+
+		ADTServer.resetInstance();
+		/** TODO - assert connection was lost */
+		BaseTest.fail("Need to implement verification of the correct server");
+
+		ADTServer.getInstance().start();
+		/** TODO - assert rundown frame is now the owner */
 		BaseTest.fail("Need to implement verification of the correct server");
 	}
 }

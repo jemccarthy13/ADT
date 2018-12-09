@@ -43,7 +43,6 @@ public class TestServer extends Thread {
 			e2.printStackTrace();
 		}
 		while (!this.stopCondition) {
-			BaseTest.originalOut.println("Waiting for stop");
 			ADTRobot.sleep(250);
 		}
 

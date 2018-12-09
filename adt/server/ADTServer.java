@@ -26,6 +26,7 @@ public class ADTServer extends Thread {
 	private static HashMap<Integer, ADTServerThread> clients;
 
 	private static ADTServer instance = new ADTServer();
+	private boolean endCondition;
 
 	private ADTServer() {
 		clients = new HashMap<Integer, ADTServerThread>();
@@ -46,6 +47,7 @@ public class ADTServer extends Thread {
 	 * thread to .start if needed.
 	 */
 	public static void resetInstance() {
+		instance.endCondition = true;
 		instance = new ADTServer();
 	}
 
@@ -75,7 +77,7 @@ public class ADTServer extends Thread {
 			e2.printStackTrace();
 		}
 
-		while (serverSocket != null) {
+		while (this.endCondition == false && serverSocket != null) {
 			try {
 				clientSocket = serverSocket.accept();
 				// Create a reader
@@ -97,6 +99,14 @@ public class ADTServer extends Thread {
 				DebugUtility.error(ADTServer.class, e.getMessage());
 			}
 		}
+		try {
+			if (serverSocket != null) {
+				serverSocket.close();
+			}
+		} catch (IOException e) {
+			// idk
+		}
+		DebugUtility.debug(ADTServer.class, "Stopped");
 	}
 
 	/**
@@ -109,7 +119,7 @@ public class ADTServer extends Thread {
 		for (Integer key : clients.keySet()) {
 			if (key != origin) {
 				clients.get(key).sendMessage(message);
-				DebugUtility.debug(ADTServer.class, "(Server) Sent " + message + " to " + key);
+				DebugUtility.debug(ADTServer.class, "Sent " + message + " to " + key);
 			}
 		}
 	}
@@ -121,5 +131,15 @@ public class ADTServer extends Thread {
 	 */
 	public void removeClient(int id) {
 		clients.remove(id);
+	}
+
+	/**
+	 * Set flag to end the server
+	 */
+	public void setStop() {
+		this.endCondition = true;
+		for (int client : clients.keySet()) {
+			clients.get(client).sendMessage("-1,end");
+		}
 	}
 }

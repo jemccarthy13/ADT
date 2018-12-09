@@ -61,7 +61,7 @@ public class ADTClient extends Thread {
 	/**
 	 * Setup and start the session
 	 */
-	public void newSession() {
+	public void establishSession() {
 
 		// call the run part of the thread
 		DebugUtility.debug(ADTClient.class, "Establishing session with ADT server...");
@@ -83,7 +83,7 @@ public class ADTClient extends Thread {
 	 * While the socket and printWriter are unavailable, try to establish a
 	 * connection
 	 */
-	public void connect() {
+	public void establishConnection() {
 		int counter = 0;
 		while ((this.socket == null || this.printWriter == null) && counter < 1000) {
 			try {
@@ -148,7 +148,7 @@ public class ADTClient extends Thread {
 	 */
 	@Override
 	public void run() {
-		connect();
+		establishConnection();
 
 		String inputLine;
 
@@ -161,7 +161,7 @@ public class ADTClient extends Thread {
 				this.socket = null;
 				this.printWriter = null;
 				this.reader = null;
-				connect();
+				establishConnection();
 			} catch (IOException e) {
 				DebugUtility.error(this.sessionID + " " + e.getMessage());
 			} catch (NullPointerException e1) {
