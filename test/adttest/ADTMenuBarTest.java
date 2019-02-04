@@ -1,38 +1,60 @@
 package adttest;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import main.ADTApp;
+import main.RundownFrame;
 import rundown.gui.RundownMenuBar;
-import structures.ATOImporter;
+import structures.ATOAssets;
+import swing.GUI;
 import utilities.BaseTest;
 import utilities.Configuration;
-import utilities.FileChooser;
 
 /**
  * Test the ADT's menu bar options
  */
-public class ADTMenuBarTest {
+public class ADTMenuBarTest extends BaseTest {
+	/**
+	 * Load the ADTApp before any tests are run
+	 */
+	@BeforeClass
+	public static void load() {
+		ADTApp.main(null);
+	}
+
+	/**
+	 * Destroy frame after test
+	 */
+	@AfterClass
+	public static void dispose() {
+		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(false);
+		GUI.FRAMES.getInstanceOf(RundownFrame.class).dispose();
+	}
 
 	/**
 	 * Test the settings options
 	 */
 	@Test
 	public void testSettings() {
-		Configuration.getInstance().setATOLoadLoc("TESTATO.txt");
+		Configuration.getInstance().setATOLoadLoc("./TESTATO.txt");
 		RundownMenuBar.getInstance().doImport.doClick();
-		FileChooser.selectAndLoadFile(new JFileChooser(), "Choose an ATO file",
-				new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATODatFileLoc(),
-				new ATOImporter());
 
-		/** TODO - implement ATO import the same as ATO generator test */
+		Assert.assertTrue(ATOAssets.staticInstance().size() == 1000);
 
-		// If running a test, import a test ATO
-		// Select it in the ATO import file chooser
-		// test to verify checksum of all assets added to ATO search
 		// random sample one to make sure it's the right guy
+	}
+
+	/**
+	 * Test to make sure rundown can be zeroized
+	 */
+	@Test
+	public void testZeroize() {
+		RundownMenuBar.getInstance().zeroize.doClick();
+
+		BaseTest.fail("Zeroize not implemented");
 	}
 
 	/**

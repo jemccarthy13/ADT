@@ -7,8 +7,6 @@ import javax.swing.JTextField;
 
 /**
  * A altitude "cell listener" which verifies altitudes are only 3 digit numbers.
- * 
- * @author John McCarthy
  */
 public class AltCellListener implements FocusListener {
 
@@ -17,8 +15,7 @@ public class AltCellListener implements FocusListener {
 	/**
 	 * Constructor
 	 * 
-	 * @param field
-	 *            - save the field so I can access text value
+	 * @param field - save the field so I can access text value
 	 */
 	public AltCellListener(JTextField field) {
 		this.field = field;
@@ -27,10 +24,8 @@ public class AltCellListener implements FocusListener {
 	/**
 	 * TODO - move this as a helper utility elsewhere
 	 * 
-	 * @param s
-	 *            - the altitude string to check
-	 * @param err
-	 *            - if the check should cause an error
+	 * @param s   - the altitude string to check
+	 * @param err - if the check should cause an error
 	 * @return - the string truncated to 3 digits, or "" if invalid
 	 */
 	public static String checkAltitude(String s) {

@@ -7,8 +7,6 @@ import swing.GUI;
 
 /**
  * A list of assets that are in the rundown.
- * 
- * @author John McCarthy
  */
 public class RundownAssets extends ArrayList<Asset> {
 

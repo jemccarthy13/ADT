@@ -31,7 +31,7 @@ public class AirspaceManagerActivePanel extends BasePanel {
 				Airspace aspace = AirspaceList.getInstance().get(x);
 				if (aspace.isAddToRundown()) {
 					DebugUtility.debug(this.getClass(), aspace.getName() + " being activated.");
-					DebugUtility.error("TODO - activate");
+					DebugUtility.error(AirspaceManagerActivePanel.class, "TODO - activate");
 				}
 			}
 

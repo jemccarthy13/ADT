@@ -86,7 +86,7 @@ public class RundownMenuBar extends JMenuBar {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(RundownMenuBar.this.doImport)) {
 				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO",
-						new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATOProjFileLoc(),
+						new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATOLoadLoc(),
 						new ATOImporter());
 				RundownFrame.getClient().sendMessage("-1,atodat," + Configuration.getInstance().getATODatFileLoc());
 			} else if (e.getSource().equals(RundownMenuBar.this.setGrid)) {
@@ -106,11 +106,6 @@ public class RundownMenuBar extends JMenuBar {
 				RundownTable.getInstance().setRowSorter(null);
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 				RundownTable.getInstance().setAutoCreateRowSorter(true);
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					// do nothing
-				}
 			}
 		}
 

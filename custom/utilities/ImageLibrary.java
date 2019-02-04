@@ -117,14 +117,14 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 		File f = new File(path);
 		ImageIcon thisIcon = null;
 		if (!f.exists()) {
-			DebugUtility.error("Image path does not exist: " + path);
+			DebugUtility.error(ImageLibrary.class, "Image path does not exist: " + path);
 		}
 		String fullPath = "/" + path.replace("resources/", "").replace("resources\\", "");
 		URL iconURL = System.class.getResource(fullPath);
 		// this is the path within the jar file
 
 		if (iconURL == null) {
-			DebugUtility.error("Cannot find resource" + fullPath);
+			DebugUtility.error(ImageLibrary.class, "Cannot find resource" + fullPath);
 		} else {
 			thisIcon = new ImageIcon(System.class.getResource(fullPath));
 		}

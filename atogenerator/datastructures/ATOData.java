@@ -117,7 +117,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 			try {
 				writer.close();
 			} catch (IOException e) {
-				DebugUtility.error("Error writing test ATO.");
+				DebugUtility.error(ATOData.class, "Error writing test ATO.");
 				e.printStackTrace();
 			}
 		}

@@ -7,32 +7,25 @@ import swing.GUI;
 import utilities.BaseTest;
 
 /**
- * Tests for airspace manager functionality
+ * Test the ATO Lookup functionality
  */
-public class ASManagerTest extends BaseTest {
+public class ATOLookupTest extends BaseTest {
 
 	/**
-	 * Main manager for named airspace
+	 * Main manager for searching through the ATO.
 	 */
 	@Test
-	public void testOpenASManager() {
+	public void testATOLookup() {
 		RundownButtonPanel panel = (RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class);
-		panel.asMgrBtn.doClick();
+		panel.atoLookupBtn.doClick();
 	}
 
 	/**
-	 * 
+	 * Test searching for a player in the ATO Lookup
 	 */
 	@Test
-	public void testAddAirspace() {
+	public void testATOSearch() {
 		BaseTest.fail("Unimplemented");
 	}
 
-	/**
-	 * 
-	 */
-	@Test
-	public void testActivateAirspace() {
-		BaseTest.fail("Unimplemented");
-	}
 }

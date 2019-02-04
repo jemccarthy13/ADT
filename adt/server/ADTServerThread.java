@@ -36,7 +36,7 @@ public class ADTServerThread extends Thread {
 		try {
 			this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
 		} catch (IOException e) {
-			DebugUtility.error("(ServerThread) Unable to create printWriter");
+			DebugUtility.error(ADTServerThread.class, "Unable to create printWriter");
 		}
 	}
 

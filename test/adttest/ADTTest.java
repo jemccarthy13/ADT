@@ -92,6 +92,14 @@ public class ADTTest extends BaseTest {
 	}
 
 	/**
+	 * Test altitude cell listener
+	 */
+	@Test
+	public void testAltCellValidation() {
+		BaseTest.fail("Try to enter an invalid altitude");
+	}
+
+	/**
 	 * Test edit
 	 * 
 	 * @throws AWTException

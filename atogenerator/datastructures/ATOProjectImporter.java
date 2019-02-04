@@ -35,7 +35,7 @@ public class ATOProjectImporter implements Importer {
 		} catch (IOException e) {
 			DebugUtility.error(ATOData.class, "Error loading " + f.getName(), e);
 		} catch (ClassNotFoundException e) {
-			DebugUtility.error(ATOData.class, "Unable to cast to ATOData.");
+			DebugUtility.error(ATOData.class, "Unable to load ATOData from " + f.getName());
 		}
 	}
 }

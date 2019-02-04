@@ -135,8 +135,8 @@ public class ADTClient extends Thread {
 			DebugUtility.debug(ADTClient.class, "Trying to start server...");
 			ADTServer.getInstance().start();
 		} catch (IllegalThreadStateException e) {
-			DebugUtility.error("Illegal server thread state.");
-			DebugUtility.error("Resetting server thread.");
+			DebugUtility.error(ADTClient.class, "Illegal server thread state.");
+			DebugUtility.error(ADTClient.class, "Resetting server thread.");
 			ADTServer.getInstance().interrupt();
 			ADTServer.resetInstance();
 		}
@@ -157,15 +157,15 @@ public class ADTClient extends Thread {
 				inputLine = this.reader.readLine();
 				processLine(inputLine);
 			} catch (SocketException e) {
-				DebugUtility.error("Lost connection to server. Attempting to re-establish...");
+				DebugUtility.error(ADTClient.class, "Lost connection to server. Attempting to re-establish...");
 				this.socket = null;
 				this.printWriter = null;
 				this.reader = null;
 				establishConnection();
 			} catch (IOException e) {
-				DebugUtility.error(this.sessionID + " " + e.getMessage());
+				DebugUtility.error(ADTClient.class, this.sessionID + " " + e.getMessage());
 			} catch (NullPointerException e1) {
-				DebugUtility.error(this.sessionID + " " + e1.getMessage());
+				DebugUtility.error(ADTClient.class, this.sessionID + " " + e1.getMessage());
 			}
 		}
 		try {

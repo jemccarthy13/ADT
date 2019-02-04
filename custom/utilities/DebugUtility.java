@@ -7,8 +7,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
-import main.ADTClient;
-
 /**
  * Logging wrapper around log4j
  */
@@ -61,15 +59,6 @@ public final class DebugUtility {
 	}
 
 	/**
-	 * Print an error without exiting
-	 * 
-	 * @param string - the message to print
-	 */
-	public synchronized static void error(String string) {
-		log4j.error(string);
-	}
-
-	/**
 	 * Error with exception
 	 * 
 	 * @param class1
@@ -108,15 +97,5 @@ public final class DebugUtility {
 	 */
 	public synchronized static void trace(Class<?> class1, String msg) {
 		log4j.trace(formatClassName(class1) + msg);
-	}
-
-	/**
-	 * Log for exceptions
-	 * 
-	 * @param class1 class causing the exception
-	 * @param e      the exception being logged
-	 */
-	public synchronized static void error(Class<ADTClient> class1, Exception e) {
-		error(class1, e.getMessage(), e);
 	}
 }

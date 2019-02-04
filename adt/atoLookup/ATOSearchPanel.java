@@ -19,9 +19,6 @@ import utilities.ADTTableModel;
 /**
  * A panel for the ATO lookup that holds the functionality to search the ATO
  * assets
- * 
- * @author John McCarthy
- *
  */
 public class ATOSearchPanel extends BasePanel {
 

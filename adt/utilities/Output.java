@@ -4,9 +4,6 @@ import javax.swing.JOptionPane;
 
 /**
  * Handle generating user output.
- * 
- * @author John McCarthy
- * 
  */
 public class Output {
 

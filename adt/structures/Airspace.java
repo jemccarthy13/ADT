@@ -6,8 +6,6 @@ import java.awt.Color;
  * Representation of an airspace.
  * 
  * Has lower and upper altitude, location, and name.
- * 
- * @author John McCarthy
  */
 public class Airspace extends Asset {
 	private static final long serialVersionUID = -534783494176132498L;
@@ -49,16 +47,14 @@ public class Airspace extends Asset {
 	}
 
 	/**
-	 * @param val
-	 *            - the new name for this airspace
+	 * @param val - the new name for this airspace
 	 */
 	public void setName(String val) {
 		this.name = val;
 	}
 
 	/**
-	 * @param c
-	 *            - new color for this airspace
+	 * @param c - new color for this airspace
 	 */
 	public void setColor(Color c) {
 		this.color = c;

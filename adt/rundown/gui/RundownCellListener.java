@@ -5,9 +5,12 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SwingUtilities;
 
+import main.ADTClient;
 import main.RundownFrame;
 import rundown.model.RundownTable;
 import structures.LockedCells;
+import utilities.DebugUtility;
+import utilities.Output;
 
 /**
  * This class listens for changes made to the data in the table via the
@@ -72,6 +75,27 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	 * Update the Cell history when necessary
 	 */
 	private void processEditingStopped() {
+
+		String errMsg = "";
+
+		if (this.column == 3 || this.column == 4) {
+			if (((String) (RundownTable.getInstance().getValueAt(this.row, this.column))).length() != 3) {
+				errMsg = "Altitude needs to be 3 digit FL (000-999)";
+			}
+		}
+
+		if (this.column == 1) {
+			if (((String) (RundownTable.getInstance().getValueAt(this.row, this.column))).length() < 4) {
+				errMsg = "Mode 2 must be four digits (XXXX)";
+			}
+		}
+
+		if (!errMsg.equals("")) {
+			DebugUtility.error(ADTClient.class, errMsg);
+			Output.forceInfoMessage("", errMsg);
+			RundownTable.getInstance().setValueAt("", this.row, this.column);
+		}
+
 		RundownFrame.getClient().sendMessage("unlocked," + this.row + "," + this.column);
 		LockedCells.setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 	}

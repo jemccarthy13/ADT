@@ -38,6 +38,7 @@ public class ATOImporter implements Importer {
 			HashMap<String, String> typeMap = new HashMap<String, String>();
 			System.err.println("Need to store type map / type manager.");
 
+			DebugUtility.trace(ATOImporter.class, rootFolder);
 			File rootDir = new File(rootFolder);
 
 			for (File file : rootDir.listFiles()) {
@@ -183,7 +184,7 @@ public class ATOImporter implements Importer {
 
 		// String msnNum = strDataArray[0];
 		// String msnType = strDataArray[4];
-
+		System.out.println(line);
 		String location = strDataArray[6].replaceAll("DEPLOC:", "");
 
 		if (Patterns.acTypePattern.matcher(data).find() == false) {

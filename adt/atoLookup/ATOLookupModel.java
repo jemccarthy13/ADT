@@ -13,6 +13,7 @@ public class ATOLookupModel extends ADTTableModel<Asset> {
 
 	@Override
 	public void addNew() {
+		// Required method
 		this.items.add(new Asset());
 	}
 

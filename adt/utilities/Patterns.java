@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 /**
  * A static location for compiled Patterns.
  * 
- * @author John McCarthy
  */
 public class Patterns {
 	/** ATO file extension pattern */
@@ -38,6 +37,10 @@ public class Patterns {
 	public static Pattern rangePattern = Pattern.compile("([0-9])-([0-9])");
 	/** killbox pattern */
 	public static Pattern killboxPattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-9]*)");
+	/** airspace pattern */
+	public static Pattern airspacePattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-9]*-*[0-9]*)([+4cC]+)*");
+	/** words that aren't airspace approvals that should be ignored */
+	public static Pattern ignorePattern = Pattern.compile("(tx|TX|Tx|via|VIA|Via|from|FROM|From|to|TO|To)");
 
 	/** altitude block pattern */
 	public static Pattern altBlockPattern = Pattern.compile("([0-9][0-9][0-9])-([0-9][0-9][0-9])");

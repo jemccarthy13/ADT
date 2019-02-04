@@ -310,7 +310,7 @@ public class Asset extends ArrayList<Object> {
 	public static Comparator<Asset> AssetMode2Compare = new Comparator<Asset>() {
 		@Override
 		public int compare(Asset o1, Asset o2) {
-			return (o1.getMode2().toUpperCase().compareTo(o2.getMode2().toLowerCase()));
+			return (o1.getMode2().toUpperCase().compareTo(o2.getMode2().toUpperCase()));
 		}
 	};
 
@@ -320,7 +320,7 @@ public class Asset extends ArrayList<Object> {
 	public static Comparator<Asset> AltLowerompare = new Comparator<Asset>() {
 		@Override
 		public int compare(Asset o1, Asset o2) {
-			return (o1.getLowerAlt().toUpperCase().compareTo(o2.getLowerAlt().toLowerCase()));
+			return (o1.getLowerAlt().toUpperCase().compareTo(o2.getLowerAlt().toUpperCase()));
 		}
 	};
 
@@ -330,7 +330,7 @@ public class Asset extends ArrayList<Object> {
 	public static Comparator<Asset> AltUpperCompare = new Comparator<Asset>() {
 		@Override
 		public int compare(Asset o1, Asset o2) {
-			return (o1.getUpperAlt().toUpperCase().compareTo(o2.getUpperAlt().toLowerCase()));
+			return (o1.getUpperAlt().toUpperCase().compareTo(o2.getUpperAlt().toUpperCase()));
 		}
 	};
 
