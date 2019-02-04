@@ -14,8 +14,6 @@ import utilities.Output;
 
 /**
  * A server used to communicate between Rundowns.
- * 
- * @author John McCarthy
  */
 public class ADTServer extends Thread {
 

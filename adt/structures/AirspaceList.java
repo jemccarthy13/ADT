@@ -6,8 +6,6 @@ import java.util.ArrayList;
  * An ArrayList of Airspaces for the Airspace Manager
  * 
  * TODO - think of a way to store and load airspaces (probably another file)
- * 
- * @author John McCarthy
  */
 public class AirspaceList extends ArrayList<Airspace> {
 

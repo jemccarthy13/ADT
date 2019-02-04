@@ -2,6 +2,8 @@ package utilities;
 
 import javax.swing.UIManager;
 
+import structures.KeypadFinder;
+
 /**
  * Holds program configuration and constants
  */
@@ -9,6 +11,8 @@ public class Configuration {
 
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
+	/** The server address used for client connections */
+	public static String serverAddr = "localhost";
 
 	private static int compact = 0;
 
@@ -17,6 +21,8 @@ public class Configuration {
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
 	private String ATOLoadLoc = "";
+
+	private KeypadFinder finder = new CGRSKeypadFinder();
 
 	private boolean loadSuccess = false;
 
@@ -145,5 +151,15 @@ public class Configuration {
 	 */
 	public String getATOLoadLoc() {
 		return this.ATOLoadLoc;
+	}
+
+	/**
+	 * The current configuration of keypad finder. Interprets how airspaces are
+	 * represented in 2D and determines 2D overlap
+	 * 
+	 * @return the finder currently being used. default is CGRS
+	 */
+	public KeypadFinder getKeypadFinder() {
+		return this.finder;
 	}
 }

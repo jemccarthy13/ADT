@@ -3,6 +3,7 @@ package managers;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
@@ -27,8 +28,9 @@ public class AirspaceManagerActivePanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			for (int x = 0; x < AirspaceList.getInstance().size(); x++) {
-				Airspace aspace = AirspaceList.getInstance().get(x);
+			Iterator<Airspace> it = AirspaceList.getInstance().iterator();
+			while (it.hasNext()) {
+				Airspace aspace = it.next();
 				if (aspace.isAddToRundown()) {
 					DebugUtility.debug(this.getClass(), aspace.getName() + " being activated.");
 					DebugUtility.error(AirspaceManagerActivePanel.class, "TODO - activate");

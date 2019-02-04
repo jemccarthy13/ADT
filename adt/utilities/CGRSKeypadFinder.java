@@ -3,8 +3,11 @@ package utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 
+import structures.Airspace;
+import structures.AirspaceList;
 import structures.KeypadFinder;
 
 /**
@@ -101,10 +104,20 @@ public class CGRSKeypadFinder implements KeypadFinder {
 		if (this.killboxDict.containsKey(representation) == false) {
 			Matcher m = Patterns.airspacePattern.matcher(representation);
 			m.find();
-			String row = m.group(1);
-			String col = m.group(2);
-			String keypad = m.group(3);
-			String modifier = m.group(4);
+			String row = "";
+			String col = "";
+			String keypad = "";
+			String modifier = "";
+
+			try {
+				row = m.group(1);
+				col = m.group(2);
+				keypad = m.group(3);
+				modifier = m.group(4);
+			} catch (IllegalStateException e) {
+				DebugUtility.error(this.getClass(), "BAD CGRS grid:  " + representation);
+				DebugUtility.error(this.getClass(), "Attempting named airspaces expansion...");
+			}
 
 			String keypadNums;
 			String keypadRangeBottom;
@@ -122,6 +135,7 @@ public class CGRSKeypadFinder implements KeypadFinder {
 				row = namedAS;
 				String expansion = expandNamedASToKillbox(representation);
 
+				DebugUtility.trace(this.getClass(), "Expanded " + representation + " to '" + expansion + "'");
 				for (String box : expansion.split(" ")) {
 					Matcher m2 = Patterns.ignorePattern.matcher(box);
 					if (m2.find() == false) {
@@ -260,10 +274,16 @@ public class CGRSKeypadFinder implements KeypadFinder {
 	 * @return the set of keypads that a named airspace contains
 	 */
 	private String expandNamedASToKillbox(String representation) {
-		// TODO Auto-generated method stub
+		String result = "";
 		DebugUtility.trace(CGRSKeypadFinder.class, "Trying to find keypads for " + representation);
-		DebugUtility.error(CGRSKeypadFinder.class, "Unimplemented", new UnsupportedOperationException("Unimplemented"));
-		return null;
+		Iterator<Airspace> it = AirspaceList.getInstance().iterator();
+		while (it.hasNext()) {
+			Airspace as = it.next();
+			if (as.getName().equals(representation)) {
+				result = as.getAirspace();
+			}
+		}
+		return result;
 	}
 
 	@Override

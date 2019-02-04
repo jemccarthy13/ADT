@@ -8,7 +8,9 @@ import javax.swing.SwingUtilities;
 import main.ADTClient;
 import main.RundownFrame;
 import rundown.model.RundownTable;
+import structures.Asset;
 import structures.LockedCells;
+import structures.RundownAssets;
 import utilities.DebugUtility;
 import utilities.Output;
 
@@ -98,5 +100,51 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 		RundownFrame.getClient().sendMessage("unlocked," + this.row + "," + this.column);
 		LockedCells.setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
+
+		// HO-REE SHIT. The time has come.
+		boolean hasConflict = false;
+		if (this.column == 2 || this.column == 3 || this.column == 4) {
+			Asset first = RundownAssets.getInstance().get(this.row);
+			int count = 0;
+			for (Asset other : RundownAssets.getInstance()) {
+				if (this.row != count) {
+					if (first.sharesAirspaceWith(other).size() > 0) {
+						DebugUtility.error(this.getClass(), "OVERLAP");
+						hasConflict = true;
+						other.inConflict = true;
+					}
+				}
+				count++;
+			}
+			if (hasConflict) {
+				first.inConflict = true;
+			} else {
+				first.inConflict = false;
+			}
+
+			int cnt1 = 0;
+			hasConflict = false;
+			for (Asset fst : RundownAssets.getInstance()) {
+				if (fst.inConflict == true) {
+					count = 0;
+					for (Asset other : RundownAssets.getInstance()) {
+						if (cnt1 != count) {
+							if (fst.sharesAirspaceWith(other).size() > 0) {
+								DebugUtility.error(this.getClass(), "OVERLAP");
+								hasConflict = true;
+								other.inConflict = true;
+							}
+						}
+						count++;
+					}
+					if (hasConflict) {
+						fst.inConflict = true;
+					} else {
+						fst.inConflict = false;
+					}
+				}
+				cnt1++;
+			}
+		}
 	}
 }

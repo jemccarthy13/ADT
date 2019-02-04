@@ -15,6 +15,14 @@ public class Airspace extends Asset {
 	private Color color;
 
 	/**
+	 * Override hashcode for comparisons to only allow unique airspace names
+	 */
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+
+	/**
 	 * Constructor
 	 * 
 	 * @param name

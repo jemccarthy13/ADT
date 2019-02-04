@@ -13,6 +13,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import javax.swing.JOptionPane;
+
+import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import server.ADTServer;
 import structures.ATOAssets;
@@ -115,7 +118,10 @@ public class ADTClient extends Thread {
 	 *                              socket
 	 */
 	private void tryConnect() throws UnknownHostException, IOException, ConnectException {
-		this.socket = new Socket("localhost", Configuration.portNum);
+		if (Configuration.serverAddr.equals("")) {
+			Configuration.serverAddr = JOptionPane.showInputDialog(null, "Server address:");
+		}
+		this.socket = new Socket(Configuration.serverAddr, Configuration.portNum);
 		this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
 		this.printWriter.println("establish");
 
@@ -187,9 +193,18 @@ public class ADTClient extends Thread {
 
 		String[] data = inputLine.split(",");
 		String command = data[1];
-
-		if (command.equals("id")) {
+		if (command.equals("forced")) {
+			DebugUtility.debug(getClass(), "Canceling edits?");
+			RundownTable.getInstance().editCellAt(-1, -1);
+			LockedCells.getLockedCells().clear();
+			for (Integer user : LockedCells.getLockedCells().keySet()) {
+				this.sendMessage("unlock all");
+				LockedCells.unlockUser(user);
+			}
+		} else if (command.equals("id")) {
 			this.sessionID = Integer.parseInt(data[2]);
+			GUI.FRAMES.getInstanceOf(RundownFrame.class)
+					.setTitle("Airspace Deconfliction Tool - User " + this.sessionID);
 			DebugUtility.debug(ADTClient.class, "Joined as user: " + this.sessionID);
 			Output.showInfoMessage("Connected", "You are now connected to the host and will receive updates.");
 
@@ -258,5 +273,14 @@ public class ADTClient extends Thread {
 		this.sessionID = -1;
 		this.endSession = true;
 		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
+	}
+
+	/**
+	 * The server configuration has changed, so the client needs to restart
+	 */
+	public void newServer() {
+		endSession();
+		this.socket = null;
+		this.run();
 	}
 }

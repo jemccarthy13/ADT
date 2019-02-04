@@ -1,7 +1,9 @@
 package structures;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashSet;
+
+import utilities.Configuration;
 
 /**
  * Representation of an asset under control.
@@ -26,6 +28,7 @@ public class Asset extends ArrayList<Object> {
 	private String offStation = "";
 	private String arData = "";
 	private String airspace = "";
+	public boolean inConflict = false;
 
 	@Override
 	public Object set(int columnIndex, Object aValue) {
@@ -296,43 +299,21 @@ public class Asset extends ArrayList<Object> {
 	}
 
 	/**
-	 * Compare two assets with their VCS
+	 * Determine if this asset shares airspace with another asset
+	 * 
+	 * @param other - the other asset to compare to
+	 * @return - any overlapping keypads, if found
 	 */
-	public static Comparator<Asset> AssetVCSCompare = new Comparator<Asset>() {
-		@Override
-		public int compare(Asset o1, Asset o2) {
-			return (o1.getVCS().toUpperCase().compareTo(o2.getVCS().toUpperCase()));
-		}
-	};
-	/**
-	 * Compare two assets by Mode 2.
-	 */
-	public static Comparator<Asset> AssetMode2Compare = new Comparator<Asset>() {
-		@Override
-		public int compare(Asset o1, Asset o2) {
-			return (o1.getMode2().toUpperCase().compareTo(o2.getMode2().toUpperCase()));
-		}
-	};
+	public HashSet<String> sharesAirspaceWith(Asset other) {
+		KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
 
-	/**
-	 * Compare two assets with their lower altitude.
-	 */
-	public static Comparator<Asset> AltLowerompare = new Comparator<Asset>() {
-		@Override
-		public int compare(Asset o1, Asset o2) {
-			return (o1.getLowerAlt().toUpperCase().compareTo(o2.getLowerAlt().toUpperCase()));
-		}
-	};
+		HashSet<String> thisKeypads = finder.getKeypads(this.airspace);
+		HashSet<String> otherKeypads = finder.getKeypads(other.airspace);
 
-	/**
-	 * Comapre two assets with their upper altitude.
-	 */
-	public static Comparator<Asset> AltUpperCompare = new Comparator<Asset>() {
-		@Override
-		public int compare(Asset o1, Asset o2) {
-			return (o1.getUpperAlt().toUpperCase().compareTo(o2.getUpperAlt().toUpperCase()));
-		}
-	};
+		HashSet<String> overlap = new HashSet<String>(thisKeypads);
+		overlap.retainAll(otherKeypads);
+		return overlap;
+	}
 
 	/**
 	 * @return true iff Asset is entirely blank

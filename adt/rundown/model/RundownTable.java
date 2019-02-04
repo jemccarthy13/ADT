@@ -3,15 +3,18 @@ package rundown.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.HashSet;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
+import structures.RundownAssets;
 import swing.GUI;
 import swing.MyTableCellEditor;
 import utilities.Configuration;
@@ -27,6 +30,12 @@ public class RundownTable extends JTable {
 
 	private static RundownTable instance = new RundownTable();
 
+	private TableCellRenderer renderer;
+	/**
+	 * list of current recognized conflicts
+	 */
+	public HashSet<String> listOfConflicts = new HashSet<String>();
+
 	/**
 	 * Singleton implementation
 	 * 
@@ -40,7 +49,7 @@ public class RundownTable extends JTable {
 
 		// set the data
 		this.setModel(GUI.MODELS.getInstanceOf(RundownTableModel.class));
-		this.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+		this.renderer = new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 8107150085372915277L;
 
@@ -49,14 +58,17 @@ public class RundownTable extends JTable {
 					boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				RundownTable.getInstance().getModel();
-				if (LockedCells.isLocked(row, column)) {
+				if (RundownAssets.getInstance().get(row).inConflict == true && (column == 3 || column == 4)) {
+					c.setBackground(Color.RED);
+				} else if (LockedCells.isLocked(row, column)) {
 					c.setBackground(Color.gray.darker());
 				} else if (!isSelected) {
 					c.setBackground(RundownTable.getInstance().getBackground());
 				}
 				return c;
 			}
-		});
+		};
+		this.setDefaultRenderer(String.class, this.renderer);
 
 		// font
 		this.getTableHeader().setFont(Fonts.serifBold);
@@ -80,7 +92,11 @@ public class RundownTable extends JTable {
 
 		Configuration.setCompact(3);
 
-		for (int x = 0; x < getModel().getColumnCount(); x++) {
+		for (
+
+				int x = 0; x <
+
+				getModel().getColumnCount(); x++) {
 			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor() {
 
 				/**
@@ -115,6 +131,7 @@ public class RundownTable extends JTable {
 			cModel.getColumn(x).setMinWidth(minWidths[x]);
 			cModel.getColumn(x).setWidth(widths[x]);
 			cModel.getColumn(x).setMaxWidth(maxWidths[x]);
+			cModel.getColumn(x).setCellRenderer(this.renderer);
 			if (Configuration.getCompact() != 0 && x > 5) {
 				cModel.getColumn(x).setMinWidth(5);
 				cModel.getColumn(x).setWidth(5);

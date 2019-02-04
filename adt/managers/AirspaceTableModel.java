@@ -8,8 +8,6 @@ import structures.AirspaceList;
 /**
  * A table model for the airspace manager's airspaces
  * 
- * @author John McCarthy
- *
  */
 public class AirspaceTableModel extends AbstractTableModel {
 
