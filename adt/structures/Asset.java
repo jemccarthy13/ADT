@@ -28,6 +28,9 @@ public class Asset extends ArrayList<Object> {
 	private String offStation = "";
 	private String arData = "";
 	private String airspace = "";
+	/**
+	 * A flag whether this asst is in conflict with another, or not
+	 */
 	public boolean inConflict = false;
 
 	@Override
