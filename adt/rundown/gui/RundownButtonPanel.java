@@ -8,8 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
 
+import asmanager.ASManagerFrame;
 import atoLookup.ATOLookupFrame;
-import managers.ManagerFrame;
+import stacksmanager.StacksFrame;
 import swing.ActionButton;
 import swing.BaseFrame;
 import swing.BasePanel;
@@ -35,7 +36,8 @@ public class RundownButtonPanel extends BasePanel {
 
 	private ActionListener rdBtnListener;
 
-	private ActionButton stacksBtn;
+	/** generate stacks on stacks on stacks */
+	public ActionButton stacksBtn;
 
 	private ActionButton metricsBtn;
 
@@ -55,9 +57,13 @@ public class RundownButtonPanel extends BasePanel {
 				atoLookup.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				atoLookup.setVisible(true);
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
-				ManagerFrame mgrForm = (ManagerFrame) GUI.FRAMES.getInstanceOf(ManagerFrame.class);
+				ASManagerFrame mgrForm = (ASManagerFrame) GUI.FRAMES.getInstanceOf(ASManagerFrame.class);
 				mgrForm.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 				mgrForm.setVisible(true);
+			} else if (e.getSource().equals(RundownButtonPanel.this.stacksBtn)) {
+				GUI.FRAMES.getInstanceOf(StacksFrame.class).setVisible(true);
+				GUI.FRAMES.getInstanceOf(StacksFrame.class)
+						.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
 			}
 		}
 	}

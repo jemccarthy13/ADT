@@ -170,7 +170,7 @@ public class RundownMenuBar extends JMenuBar {
 				GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
-				DebugUtility.debug(RundownMenuBar.class, "Refresh option pressed.");
+				DebugUtility.trace(RundownMenuBar.class, "Refresh option pressed.");
 
 				List<? extends SortKey> keys = RundownTable.getInstance().getRowSorter().getSortKeys();
 				RundownTable.getInstance().setRowSorter(null);

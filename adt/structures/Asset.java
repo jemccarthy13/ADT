@@ -327,6 +327,13 @@ public class Asset extends ArrayList<Object> {
 	}
 
 	/**
+	 * @return - a formatted "FL XXX to FL XXX" altitude range
+	 */
+	public String getAltRangeStr() {
+		return "FL " + getAltRange().replaceAll("-", " to FL ");
+	}
+
+	/**
 	 * @param other - the other asset to check for altitude overlap
 	 * @return true iff altitude ranges overlap given the asset type
 	 */

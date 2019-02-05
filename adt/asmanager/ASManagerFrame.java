@@ -1,4 +1,4 @@
-package managers;
+package asmanager;
 
 import javax.swing.JPanel;
 
@@ -13,7 +13,7 @@ import utilities.ImageLibrary;
  * TODO - massive implementation needed
  *
  */
-public class ManagerFrame extends BaseFrame {
+public class ASManagerFrame extends BaseFrame {
 
 	private static final long serialVersionUID = 311927586878557417L;
 

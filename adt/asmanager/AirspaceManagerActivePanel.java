@@ -1,4 +1,4 @@
-package managers;
+package asmanager;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -38,7 +38,7 @@ public class AirspaceManagerActivePanel extends BasePanel {
 			}
 
 			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
-			GUI.FRAMES.getInstanceOf(ManagerFrame.class).repaint();
+			GUI.FRAMES.getInstanceOf(ASManagerFrame.class).repaint();
 		}
 	};
 

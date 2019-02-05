@@ -1,4 +1,4 @@
-package managers;
+package asmanager;
 
 import javax.swing.JTable;
 
