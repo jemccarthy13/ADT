@@ -2,7 +2,7 @@ package managers;
 
 import javax.swing.JPanel;
 
-import main.RundownFrame;
+import rundown.gui.RundownFrame;
 import swing.BaseFrame;
 import swing.GUI;
 import utilities.ImageLibrary;

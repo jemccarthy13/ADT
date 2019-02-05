@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import main.ADTApp;
-import main.RundownFrame;
+import rundown.gui.RundownFrame;
 import rundown.gui.RundownMenuBar;
 import structures.ATOAssets;
 import swing.GUI;

@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,11 +16,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import atoLookup.ATOLookupFrame;
-import main.RundownFrame;
 import rundown.model.RundownTable;
+import rundown.model.RundownTableModel;
 import structures.ATOAssets;
 import structures.ATOImporter;
 import structures.LockedCells;
@@ -167,9 +171,16 @@ public class RundownMenuBar extends JMenuBar {
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
 				DebugUtility.debug(RundownMenuBar.class, "Refresh option pressed.");
+
+				List<? extends SortKey> keys = RundownTable.getInstance().getRowSorter().getSortKeys();
 				RundownTable.getInstance().setRowSorter(null);
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
-				RundownTable.getInstance().setAutoCreateRowSorter(true);
+
+				TableRowSorter<TableModel> sorter;
+				sorter = new TableRowSorter<TableModel>(GUI.MODELS.getInstanceOf(RundownTableModel.class));
+				sorter.setSortKeys(keys);
+				sorter.setRowFilter(null);
+				RundownTable.getInstance().setRowSorter(sorter);
 			}
 		}
 

@@ -2,8 +2,9 @@ package structures;
 
 import java.util.ArrayList;
 
-import main.RundownFrame;
+import rundown.gui.RundownFrame;
 import swing.GUI;
+import utilities.DebugUtility;
 
 /**
  * A list of assets that are in the rundown.
@@ -12,6 +13,7 @@ public class RundownAssets extends ArrayList<Asset> {
 
 	private static final long serialVersionUID = 1480309653414453245L;
 	private static RundownAssets instance = new RundownAssets();
+	private static int forcedRow = -1;
 
 	private RundownAssets() {
 		this.add(new Asset());
@@ -55,5 +57,31 @@ public class RundownAssets extends ArrayList<Asset> {
 			addNew();
 			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		}
+	}
+
+	/**
+	 * @return true iff add is overwriting data
+	 */
+	public boolean forceAdd() {
+		return RundownAssets.forcedRow != -1;
+	}
+
+	/**
+	 * @param ass
+	 */
+	public static void force(Asset ass) {
+		instance.get(RundownAssets.forcedRow).setVCS(ass.getVCS());
+		instance.get(RundownAssets.forcedRow).setMode2(ass.getMode2());
+		instance.get(RundownAssets.forcedRow).setSpecType(ass.getSpecType());
+		instance.get(RundownAssets.forcedRow).setTypeCat(ass.getTypeCat());
+		instance.get(RundownAssets.forcedRow).setFullCallsign(ass.getFullCallsign());
+	}
+
+	/**
+	 * @param i
+	 */
+	public static void setForcedRow(int i) {
+		DebugUtility.debug(RundownAssets.class, "Setting forced row - " + i);
+		RundownAssets.forcedRow = i;
 	}
 }

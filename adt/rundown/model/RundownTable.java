@@ -18,7 +18,6 @@ import javax.swing.text.JTextComponent;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
-import structures.RundownAssets;
 import swing.GUI;
 import swing.MyTableCellEditor;
 import utilities.Configuration;
@@ -91,8 +90,8 @@ public class RundownTable extends JTable {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				RundownTable.getInstance().getModel();
-				if (RundownAssets.getInstance().get(row).inConflict == true && (column == 3 || column == 4)) {
+				if (RundownTable.getInstance().getValueAt(row, 9).equals(Boolean.TRUE)
+						&& (column == 3 || column == 4)) {
 					c.setBackground(Color.RED);
 				} else if (LockedCells.isLocked(row, column)) {
 					c.setBackground(Color.gray.darker());
@@ -152,9 +151,9 @@ public class RundownTable extends JTable {
 	 */
 	public void resizeColumns() {
 		DebugUtility.trace(RundownTable.class, "Resizing...");
-		int[] minWidths = { 60, 60, 140, 60, 60, 90, 60, 60, 60 };
-		int[] widths = { 60, 60, 140, 60, 60, 60, 100, 100, 100 };
-		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100 };
+		int[] minWidths = { 60, 60, 140, 60, 60, 90, 60, 60, 60, 0 };
+		int[] widths = { 60, 60, 140, 60, 60, 60, 100, 100, 100, 0 };
+		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100, 0 };
 
 		// size the columns
 		/** TODO - reduce the amount of code? */

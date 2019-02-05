@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SwingUtilities;
 
-import main.RundownFrame;
 import rundown.model.RundownTable;
 import structures.Asset;
 import structures.LockedCells;

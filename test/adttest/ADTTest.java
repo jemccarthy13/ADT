@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import main.ADTApp;
 import main.ADTClient;
-import main.RundownFrame;
 import rundown.gui.RundownButtonPanel;
+import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import swing.GUI;

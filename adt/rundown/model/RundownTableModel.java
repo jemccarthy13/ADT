@@ -2,7 +2,7 @@ package rundown.model;
 
 import javax.swing.DefaultRowSorter;
 
-import main.RundownFrame;
+import rundown.gui.RundownFrame;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.LockedCells;
@@ -26,6 +26,7 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Type");
 		this.fullColumnNames.add("Category");
 		this.fullColumnNames.add("Full Callsign");
+		this.fullColumnNames.add("In Conflict");
 
 		this.items = RundownAssets.getInstance();
 	}
@@ -54,6 +55,8 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 			return RundownAssets.getInstance().get(rowIndex).getTypeCat();
 		case 7:
 			return RundownAssets.getInstance().get(rowIndex).getSpecType();
+		case 9:
+			return RundownAssets.getInstance().get(rowIndex).inConflict;
 		default:
 			return RundownAssets.getInstance().get(rowIndex).getFullCallsign();
 		}
@@ -84,13 +87,17 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		switch (columnIndex) {
 		case 0:
 			this.items.get(rowIndex).setVCS(val);
-			if (doLookup)
+			if (doLookup) {
+				RundownAssets.setForcedRow(rowIndex);
 				ATOAssets.staticInstance().lookup(rowIndex, 0, val);
+			}
 			break;
 		case 1:
 			this.items.get(rowIndex).setMode2(val);
-			if (doLookup)
+			if (doLookup) {
+				RundownAssets.setForcedRow(rowIndex);
 				ATOAssets.staticInstance().lookup(rowIndex, 1, val);
+			}
 			break;
 		case 2:
 			this.items.get(rowIndex).setAirspace(val);

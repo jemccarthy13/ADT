@@ -1,12 +1,11 @@
-package main;
+package rundown.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import rundown.gui.RundownMenuBar;
-import rundown.gui.RundownPanel;
+import main.ADTClient;
 import rundown.model.RundownTable;
 import swing.BaseFrame;
 import swing.GUI;
@@ -14,7 +13,10 @@ import utilities.Configuration;
 import utilities.ImageLibrary;
 
 /**
- * The starting point of the Rundown application
+ * The main Frame of the ADT
+ * 
+ * TODO - Add a refresh thread. Store the current column sort selection do the
+ * menu bar refresh click, then resort based on user's previous preference
  */
 public class RundownFrame extends BaseFrame {
 

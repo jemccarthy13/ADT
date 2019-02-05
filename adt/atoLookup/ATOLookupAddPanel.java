@@ -4,10 +4,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
-import main.RundownFrame;
+import rundown.gui.RundownMenuBar;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.RundownAssets;
@@ -25,35 +24,51 @@ public class ATOLookupAddPanel extends BasePanel {
 
 	private static final long serialVersionUID = 4469189062928123724L;
 
-	private ActionListener AddToRundownButtonListener = new ActionListener() {
+	/** Button for adding from ATO Lookup to rundown */
+	ActionButton addToRundown;
 
+	/**
+	 * Handle the "Add to Rundown" button click
+	 */
+	public class ATOLookupButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			DebugUtility.trace(this.getClass(), "Add to rundown button pressed");
 			for (int x = 0; x < ATOAssets.staticInstance().size(); x++) {
 				Asset atoAsset = ATOAssets.staticInstance().get(x);
 				if (atoAsset.isAddToRundown()) {
 					DebugUtility.debug(ATOLookupAddPanel.class, atoAsset.getVCS() + " being added from ATO Lookup");
 					GUI.MODELS.getInstanceOf(ATOLookupModel.class).setValueAt(Boolean.FALSE, x, 0);
-					if (!RundownAssets.getInstance().contains(atoAsset)) {
-						RundownAssets.getInstance().add(atoAsset);
-					} else {
+
+					if (RundownAssets.getInstance().contains(atoAsset)) {
 						Output.forceInfoMessage("Duplicate", "Duplicate asset " + atoAsset.getFullCallsign() + " ("
 								+ atoAsset.getMode2() + ") will not be added.");
+					} else if (RundownAssets.getInstance().forceAdd()) {
+						DebugUtility.debug(this.getClass(), "Should be overwritten.");
+						RundownAssets.force(atoAsset);
+						RundownAssets.setForcedRow(-1);
+					} else {
+						RundownAssets.getInstance().add(atoAsset);
 					}
 				}
 			}
+			RundownMenuBar.getInstance().refresh.doClick();
 			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
-			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		}
-	};
+	}
+
+	private ActionListener AddToRundownButtonListener;
 
 	@Override
 	public void create() {
-		JButton addSelectedBtn = new ActionButton("Add to Rundown", this.AddToRundownButtonListener);
 		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		this.setLayout(new GridLayout(1, 3, 50, 30));
-		this.add(new ADTLabel(""));
-		this.add(addSelectedBtn);
-		this.add(new ADTLabel(""));
+
+		this.AddToRundownButtonListener = new ATOLookupButtonListener();
+		this.addToRundown = new ActionButton("Add to Rundown", this.AddToRundownButtonListener);
+
+		add(new ADTLabel(""));
+		add(this.addToRundown);
+		add(new ADTLabel(""));
 	}
 }

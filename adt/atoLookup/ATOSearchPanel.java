@@ -24,6 +24,15 @@ public class ATOSearchPanel extends BasePanel {
 
 	private static final long serialVersionUID = 4495220896320668705L;
 
+	/** Callsign search field */
+	public static JTextField callsignBox;
+	/** VCS search field */
+	public static JTextField vcsBox;
+	/** mode 2 search field */
+	public static JTextField mode2Box;
+	/** button to perform the lookup */
+	public static ActionButton searchBtn;
+
 	@Override
 	public void create() {
 		setLayout(new GridLayout(4, 4, 5, 5));
@@ -32,16 +41,16 @@ public class ATOSearchPanel extends BasePanel {
 				GUI.MODELS.getInstanceOf(ATOLookupModel.class));
 		ATOLookupTable.getInstance().setRowSorter(sorter);
 
-		final JTextField callsignBox = new JTextField();
+		callsignBox = new JTextField();
 		ADTLabel csLbl = new ADTLabel("Callsign: ");
 
-		final JTextField vcsBox = new JTextField();
+		vcsBox = new JTextField();
 		ADTLabel vcsLbl = new ADTLabel("VCS: ");
 
-		final JTextField mode2Box = new JTextField();
+		mode2Box = new JTextField();
 		ADTLabel mode2Lbl = new ADTLabel("Mode 2: ");
 
-		ActionButton searchBtn = new ActionButton("Search", new ActionListener() {
+		searchBtn = new ActionButton("Search", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();

@@ -1,6 +1,6 @@
 package adttest;
 
-import main.RundownFrame;
+import rundown.gui.RundownFrame;
 import server.ADTServer;
 import swing.GUI;
 import utilities.ADTRobot;

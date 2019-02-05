@@ -9,7 +9,6 @@ import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
 
 import atoLookup.ATOLookupFrame;
-import main.RundownFrame;
 import managers.ManagerFrame;
 import swing.ActionButton;
 import swing.BaseFrame;

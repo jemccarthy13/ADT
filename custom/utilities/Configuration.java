@@ -20,7 +20,7 @@ public class Configuration {
 
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
-	private String ATOLoadLoc = "";
+	private String ATOLoadLoc = "./TESTATO.txt";
 
 	private KeypadFinder finder = new CGRSKeypadFinder();
 

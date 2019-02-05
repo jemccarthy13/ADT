@@ -9,8 +9,6 @@ import utilities.Patterns;
 
 /**
  * Representation of an asset under control.
- * 
- * @author John McCarthy
  */
 public class Asset extends ArrayList<Object> {
 
@@ -66,6 +64,12 @@ public class Asset extends ArrayList<Object> {
 			break;
 		}
 		return aValue;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		Asset oth = (Asset) (other);
+		return (this.mode2.equals(oth.mode2) && this.fullCallsign.equals(oth.fullCallsign) && this.vcs.equals(oth.vcs));
 	}
 
 	@Override
