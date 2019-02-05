@@ -32,7 +32,7 @@ public final class DebugUtility {
 		loggerConfig.setLevel(Level.TRACE);
 		ctx.updateLoggers();
 
-		log4j.trace(formatClassName(DebugUtility.class) + "Log4j Set to trace");
+		log4j.trace(formatClassName(DebugUtility.class) + "Log4j Set to " + loggerConfig.getLevel().toString());
 	}
 
 	/**

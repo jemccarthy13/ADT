@@ -3,6 +3,9 @@ package rundown.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 import java.util.HashSet;
 
 import javax.swing.JTable;
@@ -11,6 +14,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.JTextComponent;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
@@ -43,6 +47,36 @@ public class RundownTable extends JTable {
 	 */
 	public static RundownTable getInstance() {
 		return instance;
+	}
+
+	/**
+	 * Will select / delete text on edit
+	 * 
+	 * @param row    - row to be edited
+	 * @param column - column to be edited
+	 * @param e      - event of edit
+	 * @return true if cell at was successful
+	 */
+	@Override
+	public boolean editCellAt(int row, int column, EventObject e) {
+		boolean result = super.editCellAt(row, column, e);
+		final Component editor = getEditorComponent();
+		if (editor == null || !(editor instanceof JTextComponent)) {
+			return result;
+		}
+		if (e instanceof MouseEvent) {
+			EventQueue.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					if (column == 3 || column == 4)
+						((JTextComponent) editor).setText("");
+				}
+			});
+		} else {
+			((JTextComponent) editor).selectAll();
+		}
+		return result;
 	}
 
 	private RundownTable() {

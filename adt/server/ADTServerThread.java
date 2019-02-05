@@ -61,10 +61,9 @@ public class ADTServerThread extends Thread {
 					ADTServer.getInstance().removeClient(this.id);
 					this.interrupt();
 				} else {
-					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " sending command: " + inputLine);
+					DebugUtility.trace(ADTServerThread.class, "User " + this.id + " sending command: " + inputLine);
 					String[] msgArr = inputLine.split(",");
-					int origin = Integer.parseInt(msgArr[0]);
-					ADTServer.sendMessage(inputLine, origin);
+					ADTServer.sendMessage(inputLine, Integer.parseInt(msgArr[0]));
 				}
 			}
 		}

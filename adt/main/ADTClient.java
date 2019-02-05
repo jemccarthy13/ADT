@@ -189,12 +189,12 @@ public class ADTClient extends Thread {
 	 * @param inputLine - the next command to process
 	 */
 	public void processLine(String inputLine) {
-		DebugUtility.debug(ADTClient.class, this.sessionID + " Processing " + inputLine);
+		DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + inputLine);
 
 		String[] data = inputLine.split(",");
 		String command = data[1];
 		if (command.equals("forced")) {
-			DebugUtility.debug(getClass(), "Canceling edits?");
+			DebugUtility.debug(getClass(), "Forced unlock all");
 			RundownTable.getInstance().editCellAt(-1, -1);
 			LockedCells.getLockedCells().clear();
 			for (Integer user : LockedCells.getLockedCells().keySet()) {
@@ -255,7 +255,7 @@ public class ADTClient extends Thread {
 	 * @param string - the message to send
 	 */
 	public void sendMessage(String string) {
-		DebugUtility.debug(ADTClient.class, "Sending message: " + this.sessionID + string);
+		DebugUtility.trace(ADTClient.class, "Sending message: " + this.sessionID + string);
 		try {
 			this.printWriter.println(this.sessionID + "," + string);
 		} catch (NullPointerException e) {

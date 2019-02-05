@@ -117,7 +117,7 @@ public class ADTServer extends Thread {
 		for (Integer key : clients.keySet()) {
 			if (key != origin) {
 				clients.get(key).sendMessage(message);
-				DebugUtility.debug(ADTServer.class, "Sent " + message + " to " + key);
+				DebugUtility.trace(ADTServer.class, "Sent " + message + " to " + key);
 			}
 		}
 	}

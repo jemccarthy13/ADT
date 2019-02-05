@@ -2,8 +2,10 @@ package structures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.regex.Matcher;
 
 import utilities.Configuration;
+import utilities.Patterns;
 
 /**
  * Representation of an asset under control.
@@ -179,14 +181,14 @@ public class Asset extends ArrayList<Object> {
 	 * @param val - new value for asset's upper altitude
 	 */
 	public void setLowerAlt(String val) {
-		this.altlower = val;
+		this.altlower = val.replaceAll(" ", "");
 	}
 
 	/**
 	 * @return Asset's upper altitude
 	 */
 	public String getUpperAlt() {
-		return this.altupper;
+		return this.altupper.replaceAll(" ", "");
 	}
 
 	/**
@@ -302,10 +304,77 @@ public class Asset extends ArrayList<Object> {
 	}
 
 	/**
+	 * Get the string representation of the altitude range for this asset
+	 * 
+	 * @return - altitude range, "XXX-XXX"
+	 */
+	public String getAltRange() {
+		String rng = "";
+		if (this.altlower.equals("") && this.altupper.equals("")) {
+			rng = "-";
+		} else if (this.altlower.equals("")) {
+			rng = this.altupper + "-" + this.altupper;
+		} else if (this.altupper.equals("")) {
+			rng = this.altlower + "-" + this.altlower;
+		} else {
+			rng = this.altlower + "-" + this.altupper;
+		}
+		return rng;
+	}
+
+	/**
+	 * @param other - the other asset to check for altitude overlap
+	 * @return true iff altitude ranges overlap given the asset type
+	 */
+	public boolean checkAltOverlaps(Asset other) {
+		String curRng = getAltRange();
+		String othRng = other.getAltRange();
+
+		int max = 1;
+		int min = 0;
+
+		if (!(curRng.equals("-") || othRng.equals("-"))) {
+			int altSep = 9;
+			if (this.getTypeCat().equals(other.getTypeCat()) && this.getTypeCat().equals("RPA")) {
+				altSep = 4;
+			}
+			Matcher rng1Match = Patterns.altBlockPattern.matcher(curRng);
+			Matcher rng2Match = Patterns.altBlockPattern.matcher(othRng);
+			rng1Match.find();
+			rng2Match.find();
+
+			int newAltB = Integer.parseInt(rng1Match.group(1));
+			int newAltT = Integer.parseInt(rng1Match.group(2));
+
+			int curAltB = Integer.parseInt(rng2Match.group(1)) - altSep;
+			int curAltT = Integer.parseInt(rng2Match.group(2)) + altSep;
+
+			max = newAltB >= curAltB ? newAltB : curAltB;
+			min = newAltT <= curAltT ? newAltT : curAltT;
+		}
+		return (max - min) <= 0;
+	}
+
+	/**
+	 * Determine if this asset's 3D airspace approval conflicts with another asset's
+	 * 
+	 * @param other - the other asset to compare with
+	 * @return - a HashSet of any overlapping keypads, if found
+	 */
+	public HashSet<String> conflictsWith(Asset other) {
+		HashSet<String> result = new HashSet<String>();
+		if (checkAltOverlaps(other)) {
+			result = this.sharesAirspaceWith(other);
+		}
+		// otherwise return empty keypad set (no overlap)
+		return result;
+	}
+
+	/**
 	 * Determine if this asset shares airspace with another asset
 	 * 
 	 * @param other - the other asset to compare to
-	 * @return - any overlapping keypads, if found
+	 * @return - a HashSet of any overlapping keypads, if found
 	 */
 	public HashSet<String> sharesAirspaceWith(Asset other) {
 		KeypadFinder finder = Configuration.getInstance().getKeypadFinder();

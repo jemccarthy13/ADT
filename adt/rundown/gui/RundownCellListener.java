@@ -5,12 +5,12 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SwingUtilities;
 
-import main.ADTClient;
 import main.RundownFrame;
 import rundown.model.RundownTable;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
+import swing.GUI;
 import utilities.DebugUtility;
 import utilities.Output;
 
@@ -73,6 +73,25 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 	}
 
+	/**
+	 * Check if a cell entry is a number
+	 * 
+	 * @param str - the value from the cell
+	 * @return true iff string represents an integer
+	 */
+	private boolean isInt(String str) {
+		boolean result = false;
+		try {
+			Integer.parseInt(str);
+			result = true;
+		} catch (NullPointerException e) {
+			result = false;
+		} catch (NumberFormatException e1) {
+			result = false;
+		}
+		return result;
+	}
+
 	/*
 	 * Update the Cell history when necessary
 	 */
@@ -80,20 +99,26 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 		String errMsg = "";
 
+		String newValue = (String) (RundownTable.getInstance().getValueAt(this.row, this.column));
+
 		if (this.column == 3 || this.column == 4) {
-			if (((String) (RundownTable.getInstance().getValueAt(this.row, this.column))).length() != 3) {
-				errMsg = "Altitude needs to be 3 digit FL (000-999)";
+			if (!newValue.equals("")) {
+				if (newValue.length() != 3 || !isInt(newValue)) {
+					errMsg = "Altitude needs to be 3 digit FL (000-999)";
+				}
 			}
 		}
 
 		if (this.column == 1) {
-			if (((String) (RundownTable.getInstance().getValueAt(this.row, this.column))).length() < 4) {
-				errMsg = "Mode 2 must be four digits (XXXX)";
+			if (!newValue.equals("")) {
+				if (newValue.length() < 4 || !isInt(newValue)) {
+					errMsg = "Mode 2 must be four digits (####)";
+				}
 			}
 		}
 
 		if (!errMsg.equals("")) {
-			DebugUtility.error(ADTClient.class, errMsg);
+			DebugUtility.error(this.getClass(), errMsg);
 			Output.forceInfoMessage("", errMsg);
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
 		}
@@ -102,18 +127,30 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		LockedCells.setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 
 		// HO-REE SHIT. The time has come.
+
 		boolean hasConflict = false;
+
+		// we've changed airspace or altitude
 		if (this.column == 2 || this.column == 3 || this.column == 4) {
+
+			// so get the 'current' - changed asset
 			Asset first = RundownAssets.getInstance().get(this.row);
 			int count = 0;
+
+			// loop through all other assets
 			for (Asset other : RundownAssets.getInstance()) {
+				// if not itself
 				if (this.row != count) {
-					if (first.sharesAirspaceWith(other).size() > 0) {
-						DebugUtility.error(this.getClass(), "OVERLAP");
+					// check for new overlaps
+					if (first.conflictsWith(other).size() > 0) {
+						DebugUtility.trace(this.getClass(),
+								"New conflict between " + first.getAirspace() + " and " + other.getAirspace());
+						// flag it
 						hasConflict = true;
 						other.inConflict = true;
 					}
 				}
+				// next
 				count++;
 			}
 			if (hasConflict) {
@@ -123,16 +160,19 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			}
 
 			int cnt1 = 0;
-			hasConflict = false;
+
+			// now loop through every asset that has a conflict
 			for (Asset fst : RundownAssets.getInstance()) {
 				if (fst.inConflict == true) {
+					hasConflict = false;
+					DebugUtility.trace(this.getClass(), "Checking " + fst.getAirspace());
 					count = 0;
 					for (Asset other : RundownAssets.getInstance()) {
 						if (cnt1 != count) {
-							if (fst.sharesAirspaceWith(other).size() > 0) {
-								DebugUtility.error(this.getClass(), "OVERLAP");
+							if (fst.conflictsWith(other).size() > 0) {
+								DebugUtility.trace(this.getClass(), "Existing conflict between " + fst.getAirspace()
+										+ " and " + other.getAirspace());
 								hasConflict = true;
-								other.inConflict = true;
 							}
 						}
 						count++;
@@ -145,6 +185,8 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				}
 				cnt1++;
 			}
+
+			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 		}
 	}
 }
