@@ -1,15 +1,20 @@
 package server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 
+import messages.ADTAtoDatMessage;
+import messages.ADTBaseMessage;
+import messages.ADTBlankMessage;
+import messages.ADTEndSessionMessage;
+import messages.ADTEstablishMessage;
+import messages.ADTLockedCellsMessage;
+import messages.ADTUpdateMessage;
 import rundown.model.RundownTableModel;
 import structures.LockedCells;
 import swing.GUI;
-import utilities.Configuration;
 import utilities.DebugUtility;
 
 /**
@@ -18,9 +23,9 @@ import utilities.DebugUtility;
 public class ADTServerThread extends Thread {
 
 	private int id;
-	private BufferedReader input;
 	private Socket socket;
-	private PrintWriter printWriter;
+	private ObjectInputStream input;
+	private ObjectOutputStream output;
 
 	/**
 	 * Constructor for a server thread.
@@ -29,12 +34,12 @@ public class ADTServerThread extends Thread {
 	 * @param reader - input to process
 	 * @param socket - the connection socket to create a writer for
 	 */
-	public ADTServerThread(int id, BufferedReader reader, Socket socket) {
+	public ADTServerThread(int id, ObjectInputStream reader, Socket socket) {
 		this.input = reader;
 		this.id = id;
 		this.socket = socket;
 		try {
-			this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
+			this.output = new ObjectOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
 			DebugUtility.error(ADTServerThread.class, "Unable to create printWriter");
 		}
@@ -46,27 +51,32 @@ public class ADTServerThread extends Thread {
 	@Override
 	public synchronized void start() {
 		// Get the client message
-		String inputLine = "";
-		while (inputLine != null && !inputLine.contains("end")) {
+		ADTBaseMessage msg = new ADTBlankMessage();
+		while (!(msg instanceof ADTEndSessionMessage)) {
 			try {
-				inputLine = this.input.readLine();
+				DebugUtility.debug(ADTServerThread.class, "Trying to retrieve msg");
+				msg = (ADTBaseMessage) (this.input.readObject());
+				DebugUtility.debug(ADTServerThread.class, "Received: " + msg.getCommand());
 			} catch (IOException e) {
 				DebugUtility.error(ADTServerThread.class, "Unable to readline! User:" + this.id);
+			} catch (ClassNotFoundException e) {
+				DebugUtility.error(ADTServerThread.class, "Could not cast to ADTMessage.");
+				e.printStackTrace();
 			}
-			if (inputLine != null) {
-				if (inputLine.contains("establish")) {
+			if (msg != null) {
+				if (msg instanceof ADTEstablishMessage) {
 					DebugUtility.debug(ADTServerThread.class, "Server thread started. User: " + this.id);
-				} else if (inputLine.contains("end")) {
-					DebugUtility.debug(ADTServerThread.class, "User " + this.id + " left session.");
-					ADTServer.getInstance().removeClient(this.id);
-					this.interrupt();
 				} else {
-					DebugUtility.trace(ADTServerThread.class, "User " + this.id + " sending command: " + inputLine);
-					String[] msgArr = inputLine.split(",");
-					ADTServer.sendMessage(inputLine, Integer.parseInt(msgArr[0]));
+					DebugUtility.trace(ADTServerThread.class,
+							"User " + this.id + " sending command: " + msg.getSender() + "," + msg.getCommand());
+					ADTServer.sendMessage(msg);
 				}
 			}
 		}
+
+		DebugUtility.debug(ADTServerThread.class, "User " + this.id + " left session.");
+		ADTServer.getInstance().removeClient(this.id);
+		this.interrupt();
 	}
 
 	/**
@@ -80,13 +90,17 @@ public class ADTServerThread extends Thread {
 	/**
 	 * Send a message to the game server.
 	 * 
-	 * @param string - the message to send
+	 * @param msg - the message to send
 	 */
-	public void sendMessage(String string) {
+	public void sendMessage(ADTBaseMessage msg) {
 		try {
-			this.printWriter.println(string);
+			DebugUtility.debug(ADTServerThread.class, "Forwarding " + msg.getCommand());
+			this.output.writeObject(msg);
 		} catch (NullPointerException e) {
 			DebugUtility.error(ADTServerThread.class, "Server/client connection wasn't established.");
+		} catch (IOException e) {
+			e.printStackTrace();
+			DebugUtility.error(ADTServerThread.class, "Unable to send message:" + msg.getCommand());
 		}
 	}
 
@@ -96,7 +110,7 @@ public class ADTServerThread extends Thread {
 	 * the processing time
 	 */
 	public void sendATOData() {
-		sendMessage("-1,atodat," + Configuration.getInstance().getATODatFileLoc());
+		sendMessage(new ADTAtoDatMessage());
 	}
 
 	/**
@@ -104,9 +118,8 @@ public class ADTServerThread extends Thread {
 	 * locked cells to the newly joined client.
 	 */
 	public void sendLocks() {
-		HashMap<Integer, Integer[]> lockedCells = LockedCells.getLockedCells();
-		for (Integer key : lockedCells.keySet()) {
-			sendMessage(key + ",locked," + lockedCells.get(key)[0] + "," + lockedCells.get(key)[1]);
+		for (Integer key : LockedCells.getLockedCells().keySet()) {
+			sendMessage(new ADTLockedCellsMessage(key));
 		}
 	}
 
@@ -117,7 +130,7 @@ public class ADTServerThread extends Thread {
 		RundownTableModel model = (RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class);
 		for (int r = 0; r < model.getRowCount(); r++) {
 			for (int c = 0; c < model.getColumnCount(); c++) {
-				sendMessage("-1,set," + model.getValueAt(r, c) + "," + r + "," + c);
+				sendMessage(new ADTUpdateMessage(r, c, model.getValueAt(r, c).toString()));
 			}
 		}
 	}

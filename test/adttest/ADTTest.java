@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import main.ADTApp;
 import main.ADTClient;
+import messages.ADTLockedMessage;
 import rundown.gui.RundownButtonPanel;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
@@ -81,7 +82,7 @@ public class ADTTest extends BaseTest {
 		ADTClient client = new ADTClient();
 		client.establishSession();
 		ADTRobot.sleep(3000);
-		client.sendMessage("locked,0,4");
+		client.sendMessage(new ADTLockedMessage(0, 4, true));
 
 		ADTRobot.sleep(3000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));

@@ -22,6 +22,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import atoLookup.ATOLookupFrame;
+import messages.ADTAtoDatMessage;
+import messages.ADTForceUnlockMessage;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import structures.ATOAssets;
@@ -121,7 +123,8 @@ public class RundownMenuBar extends JMenuBar {
 				Configuration.serverAddr = JOptionPane.showInputDialog(null, "Input new server IP address:");
 				RundownFrame.getClient().newServer();
 			} else if (e.getSource().equals(RundownMenuBar.this.forceUnlock)) {
-				RundownFrame.getClient().sendMessage("forced");
+				RundownFrame.getClient().sendMessage(new ADTForceUnlockMessage());
+				// RundownFrame.getClient().sendMessage("forced");
 				RundownTable.getInstance().editCellAt(-1, -1);
 				LockedCells.getLockedCells().clear();
 				for (Integer user : LockedCells.getLockedCells().keySet()) {
@@ -132,7 +135,9 @@ public class RundownMenuBar extends JMenuBar {
 				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO",
 						new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATOLoadLoc(),
 						new ATOImporter());
-				RundownFrame.getClient().sendMessage("-1,atodat," + Configuration.getInstance().getATODatFileLoc());
+				RundownFrame.getClient().sendMessage(new ADTAtoDatMessage());
+				// RundownFrame.getClient().sendMessage("-1,atodat," +
+				// Configuration.getInstance().getATODatFileLoc());
 			} else if (e.getSource().equals(RundownMenuBar.this.testKeypadFinder)) {
 				JDialog dialog = new JDialog();
 				dialog.setSize(600, 600);

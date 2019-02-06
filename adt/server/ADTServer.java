@@ -1,13 +1,15 @@
 package server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+import messages.ADTBaseMessage;
+import messages.ADTEndSessionMessage;
+import messages.ADTIdMessage;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.Output;
@@ -19,7 +21,7 @@ public class ADTServer extends Thread {
 
 	private static ServerSocket serverSocket;
 	private static Socket clientSocket;
-	private static BufferedReader bufferedReader;
+	private static ObjectInputStream bufferedReader;
 	private static int connections = 0;
 	private static HashMap<Integer, ADTServerThread> clients;
 
@@ -47,6 +49,7 @@ public class ADTServer extends Thread {
 	public static void resetInstance() {
 		instance.endCondition = true;
 		instance = new ADTServer();
+		instance.start();
 	}
 
 	/**
@@ -79,12 +82,14 @@ public class ADTServer extends Thread {
 			try {
 				clientSocket = serverSocket.accept();
 				// Create a reader
-				bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				bufferedReader = new ObjectInputStream(clientSocket.getInputStream());
 				DebugUtility.debug(ADTServer.class, "Started server thread: " + connections);
 				ADTServerThread client = new ADTServerThread(connections, bufferedReader, clientSocket);
+				// client.start();
 				new Thread(client).start();
 				clients.put(connections, client);
-				client.sendMessage(connections + ",id," + connections);
+				client.sendMessage(new ADTIdMessage(connections));
+				// client.sendMessage(connections + ",id," + connections);
 
 				client.sendRundown();
 				client.sendATOData();
@@ -113,9 +118,9 @@ public class ADTServer extends Thread {
 	 * @param message - the message to send
 	 * @param origin  - the originator of the message
 	 */
-	public static void sendMessage(String message, Integer origin) {
+	public static void sendMessage(ADTBaseMessage message) {
 		for (Integer key : clients.keySet()) {
-			if (key != origin) {
+			if (key != message.getSender()) {
 				clients.get(key).sendMessage(message);
 				DebugUtility.trace(ADTServer.class, "Sent " + message + " to " + key);
 			}
@@ -137,7 +142,7 @@ public class ADTServer extends Thread {
 	public void setStop() {
 		this.endCondition = true;
 		for (int client : clients.keySet()) {
-			clients.get(client).sendMessage("-1,end");
+			clients.get(client).sendMessage(new ADTEndSessionMessage(-1));
 		}
 	}
 }

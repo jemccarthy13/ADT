@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SwingUtilities;
 
+import messages.ADTLockedMessage;
 import rundown.model.RundownTable;
 import structures.Asset;
 import structures.LockedCells;
@@ -68,7 +69,9 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	public void run() {
 		this.row = RundownTable.getInstance().getEditingRow();
 		this.column = RundownTable.getInstance().getEditingColumn();
-		RundownFrame.getClient().sendMessage("locked," + this.row + "," + this.column);
+		RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, true));
+		// RundownFrame.getClient().sendMessage("locked," + this.row + "," +
+		// this.column);
 		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 	}
 
@@ -122,7 +125,9 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
 		}
 
-		RundownFrame.getClient().sendMessage("unlocked," + this.row + "," + this.column);
+		RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, false));
+		// RundownFrame.getClient().sendMessage("unlocked," + this.row + "," +
+		// this.column);
 		LockedCells.setUnlocked(RundownFrame.getClient().getSessionID(), this.row, this.column);
 
 		// HO-REE SHIT. The time has come.

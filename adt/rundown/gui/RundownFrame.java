@@ -21,6 +21,7 @@ import utilities.ImageLibrary;
 public class RundownFrame extends BaseFrame {
 
 	private static final long serialVersionUID = -5736125343545871775L;
+	// private static ADTClient client;
 	private static ADTClient client;
 
 	/**
@@ -44,6 +45,7 @@ public class RundownFrame extends BaseFrame {
 		this.add(GUI.PANELS.getInstanceOf(RundownPanel.class));
 
 		// start the client - and start the server if one isn't found
+		// client = new ADTClient();
 		client = new ADTClient();
 		client.establishSession();
 

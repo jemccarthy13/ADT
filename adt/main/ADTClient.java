@@ -1,12 +1,10 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.BindException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -15,6 +13,10 @@ import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
+import messages.ADTBaseMessage;
+import messages.ADTEndSessionMessage;
+import messages.ADTEstablishMessage;
+import messages.ADTUnlockAllMessage;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
@@ -41,19 +43,15 @@ public class ADTClient extends Thread {
 	private Socket socket = null;
 
 	/** printWriter for sending messages */
-	private PrintWriter printWriter = null;
+	private ObjectOutputStream output = null;
+
 	/** reader for reading messages */
-	private BufferedReader reader = null;
+	private ObjectInputStream input = null;
+
 	/** stores connection state */
 	private boolean established = false;
 
 	private boolean endSession;
-
-	/**
-	 * Construct a new client
-	 */
-	public ADTClient() {
-	}
 
 	/**
 	 * @return ADTClient ID
@@ -64,10 +62,14 @@ public class ADTClient extends Thread {
 
 	/**
 	 * Setup and start the session
+	 * 
+	 * Will wait for a successful connection before leaving this function, so that
+	 * any other part of the application doesn't accidentally use a client w/o
+	 * connection
 	 */
 	public void establishSession() {
 
-		// call the run part of the thread
+		// start the thread (same as run())
 		DebugUtility.debug(ADTClient.class, "Establishing session with ADT server...");
 		this.start();
 
@@ -88,8 +90,7 @@ public class ADTClient extends Thread {
 	 * connection
 	 */
 	public void establishConnection() {
-		int counter = 0;
-		while ((this.socket == null || this.printWriter == null) && counter < 1000) {
+		while (this.socket == null || this.output == null) {
 			try {
 				DebugUtility.debug(ADTClient.class, "Trying to establish connection...");
 				tryConnect();
@@ -123,11 +124,16 @@ public class ADTClient extends Thread {
 			Configuration.serverAddr = JOptionPane.showInputDialog(null, "Server address:");
 		}
 		this.socket = new Socket(Configuration.serverAddr, Configuration.portNum);
-		this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
-		this.printWriter.println("establish");
 
-		this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		this.output = new ObjectOutputStream(this.socket.getOutputStream());
+		this.output.writeObject(new ADTEstablishMessage(-1));
+		try {
+			this.input = new ObjectInputStream(this.socket.getInputStream());
+		} catch (IOException e) {
 
+			e.printStackTrace();
+			System.exit(0);
+		}
 		this.established = true;
 
 		DebugUtility.debug(ADTClient.class, "Connection established: port (" + Configuration.portNum + ")");
@@ -137,7 +143,7 @@ public class ADTClient extends Thread {
 	 * Assumption: no server connection has been made yet, so we need to try and
 	 * start the server.
 	 */
-	public static void tryStartServer() {
+	public void tryStartServer() {
 		try {
 			DebugUtility.debug(ADTClient.class, "Trying to start server...");
 			ADTServer.getInstance().start();
@@ -157,22 +163,30 @@ public class ADTClient extends Thread {
 	public void run() {
 		establishConnection();
 
-		String inputLine;
+		String command;
 
 		while (!this.endSession) {
 			try {
-				inputLine = this.reader.readLine();
-				processLine(inputLine);
+				ADTBaseMessage msg = (ADTBaseMessage) (this.input.readObject());
+				command = msg.getCommand();
+				processLine(msg);
+				// processLine(msg.getSender() + "," + command);
+				DebugUtility.trace(ADTClient.class, "Command: " + command);
 			} catch (SocketException e) {
 				DebugUtility.error(ADTClient.class, "Lost connection to server. Attempting to re-establish...");
 				this.socket = null;
-				this.printWriter = null;
-				this.reader = null;
+				this.output = null;
+				this.input = null;
 				establishConnection();
 			} catch (IOException e) {
+				e.printStackTrace();
 				DebugUtility.error(ADTClient.class, this.sessionID + " " + e.getMessage());
 			} catch (NullPointerException e1) {
+				e1.printStackTrace();
 				DebugUtility.error(ADTClient.class, this.sessionID + " " + e1.getMessage());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				DebugUtility.error(ADTClient.class, this.sessionID + " " + e);
 			}
 		}
 		try {
@@ -187,9 +201,10 @@ public class ADTClient extends Thread {
 	/**
 	 * Read a line and process the received command.
 	 * 
-	 * @param inputLine - the next command to process
+	 * @param msg - the next message to process
 	 */
-	public void processLine(String inputLine) {
+	public void processLine(ADTBaseMessage msg) {
+		String inputLine = msg.getSender() + "," + msg.getCommand();
 		DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + inputLine);
 
 		String[] data = inputLine.split(",");
@@ -199,7 +214,7 @@ public class ADTClient extends Thread {
 			RundownTable.getInstance().editCellAt(-1, -1);
 			LockedCells.getLockedCells().clear();
 			for (Integer user : LockedCells.getLockedCells().keySet()) {
-				this.sendMessage("unlock all");
+				this.sendMessage(new ADTUnlockAllMessage(this.sessionID));
 				LockedCells.unlockUser(user);
 			}
 		} else if (command.equals("id")) {
@@ -245,23 +260,28 @@ public class ADTClient extends Thread {
 			Integer column = Integer.parseInt(data[3]);
 			LockedCells.setLocked(user, row, column);
 		} else if (command.equals("end")) {
-			this.endSession = true;
+			// this.endSession = true;
 		}
 		GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 	}
 
 	/**
-	 * Send a message to the game server.
+	 * Send a message to the ADT server.
 	 * 
-	 * @param string - the message to send
+	 * @param message - the message to forward
 	 */
-	public void sendMessage(String string) {
-		DebugUtility.trace(ADTClient.class, "Sending message: " + this.sessionID + string);
+	public void sendMessage(ADTBaseMessage message) {
 		try {
-			this.printWriter.println(this.sessionID + "," + string);
+			this.output.writeObject(message);
+			DebugUtility.trace(ADTClient.class,
+					"Sent message: " + message.getSender() + "," + message.getCommand());
+
 		} catch (NullPointerException e) {
 			DebugUtility.error(ADTClient.class, "Server/client connection wasn't established.");
 			DebugUtility.error(ADTClient.class, "Could not send message.");
+		} catch (IOException e) {
+			DebugUtility.error(ADTClient.class, "Could not output message: " + message.getCommand());
+			e.printStackTrace();
 		}
 	}
 
@@ -269,8 +289,11 @@ public class ADTClient extends Thread {
 	 * Disconnect from the session
 	 */
 	public void endSession() {
-		this.sendMessage("unlock all");
-		this.sendMessage("end");
+		this.sendMessage(new ADTUnlockAllMessage(this.sessionID));
+		this.sendMessage(new ADTEndSessionMessage(this.sessionID));
+		// ADTBaseMessage(this.sessionID, "end"));
+		// ADTMessageFactory.createMessage(ADTUnlockAllMessage.class, this.sessionID));
+
 		this.sessionID = -1;
 		this.endSession = true;
 		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
