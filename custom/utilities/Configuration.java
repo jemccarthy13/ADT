@@ -1,5 +1,6 @@
 package utilities;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import structures.KeypadFinder;
@@ -12,7 +13,7 @@ public class Configuration {
 	/** The port number used to connect client and server */
 	public static final int portNum = 8085;
 	/** The server address used for client connections */
-	public static String serverAddr = "localhost";
+	private static String serverAddr = "localhost";
 
 	private static int compact = 0;
 
@@ -161,5 +162,27 @@ public class Configuration {
 	 */
 	public KeypadFinder getKeypadFinder() {
 		return this.finder;
+	}
+
+	/**
+	 * If a server IP address hasn't been configured, configure one
+	 * 
+	 * @return - the desired server IP address
+	 */
+	public static String getServerAddress() {
+		if (serverAddr.equals("")) {
+			serverAddr = JOptionPane.showInputDialog(null, "Server address:");
+		}
+
+		return serverAddr;
+	}
+
+	/**
+	 * Reset the configured server IP address
+	 * 
+	 * @param userIn - the new server address
+	 */
+	public static void setServerAddress(String userIn) {
+		serverAddr = userIn;
 	}
 }

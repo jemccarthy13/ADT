@@ -120,7 +120,7 @@ public class RundownMenuBar extends JMenuBar {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(RundownMenuBar.this.newServer)) {
-				Configuration.serverAddr = JOptionPane.showInputDialog(null, "Input new server IP address:");
+				Configuration.setServerAddress(JOptionPane.showInputDialog(null, "Input new server IP address:"));
 				RundownFrame.getClient().newServer();
 			} else if (e.getSource().equals(RundownMenuBar.this.forceUnlock)) {
 				RundownFrame.getClient().sendMessage(new ADTForceUnlockMessage());

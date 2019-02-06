@@ -54,24 +54,20 @@ public class ADTServerThread extends Thread {
 		ADTBaseMessage msg = new ADTBlankMessage();
 		while (!(msg instanceof ADTEndSessionMessage)) {
 			try {
-				DebugUtility.debug(ADTServerThread.class, "Trying to retrieve msg");
+				DebugUtility.trace(ADTServerThread.class, "Trying to retrieve msg");
 				msg = (ADTBaseMessage) (this.input.readObject());
-				DebugUtility.debug(ADTServerThread.class, "Received: " + msg.getCommand());
 			} catch (IOException e) {
 				DebugUtility.error(ADTServerThread.class, "Unable to readline! User:" + this.id);
 			} catch (ClassNotFoundException e) {
 				DebugUtility.error(ADTServerThread.class, "Could not cast to ADTMessage.");
 				e.printStackTrace();
 			}
-			if (msg != null) {
-				if (msg instanceof ADTEstablishMessage) {
-					DebugUtility.debug(ADTServerThread.class, "Server thread started. User: " + this.id);
-				} else {
-					DebugUtility.trace(ADTServerThread.class,
-							"User " + this.id + " sending command: " + msg.getSender() + "," + msg.getCommand());
-					ADTServer.sendMessage(msg);
-				}
+			if (!(msg instanceof ADTEstablishMessage)) {
+				DebugUtility.trace(ADTServerThread.class,
+						"Trying to forward: " + msg.getCommand() + " from " + msg.getSender());
+				ADTServer.sendMessage(msg);
 			}
+
 		}
 
 		DebugUtility.debug(ADTServerThread.class, "User " + this.id + " left session.");
@@ -94,7 +90,7 @@ public class ADTServerThread extends Thread {
 	 */
 	public void sendMessage(ADTBaseMessage msg) {
 		try {
-			DebugUtility.debug(ADTServerThread.class, "Forwarding " + msg.getCommand());
+			DebugUtility.trace(ADTServerThread.class, "Forwarding " + msg.getCommand());
 			this.output.writeObject(msg);
 		} catch (NullPointerException e) {
 			DebugUtility.error(ADTServerThread.class, "Server/client connection wasn't established.");

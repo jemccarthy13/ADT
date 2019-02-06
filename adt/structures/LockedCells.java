@@ -1,5 +1,6 @@
 package structures;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -24,13 +25,14 @@ public class LockedCells extends HashMap<Integer, Integer[]> {
 	 * @param user   - user who has locked the cell
 	 * @param row    - row of the cell
 	 * @param column - col of the cell
+	 * @param locked
 	 */
-	public static void setLocked(Integer user, Integer row, Integer column) {
-		if (!instance.containsKey(user)) {
-			instance.put(user, new Integer[2]);
+	public static void setLocked(Integer user, Integer row, Integer column, boolean locked) {
+		if (locked) {
+			instance.put(user, (Integer[]) Arrays.asList(row, column).toArray());
+		} else {
+			instance.remove(user);
 		}
-		instance.get(user)[0] = row;
-		instance.get(user)[1] = column;
 	}
 
 	/**
@@ -39,20 +41,7 @@ public class LockedCells extends HashMap<Integer, Integer[]> {
 	 * @param user - the user whose locks should be cleared
 	 */
 	public static void unlockUser(Integer user) {
-		setUnlocked(user, -1, -1);
-	}
-
-	/**
-	 * Set a particular cell as unlocked by the given user
-	 * 
-	 * @param user   - user who has unlocked the cell
-	 * @param row    - row of the cell
-	 * @param column - col of the cell
-	 */
-	public static void setUnlocked(Integer user, Integer row, Integer column) {
-		if (instance.containsKey(user)) {
-			instance.remove(user);
-		}
+		setLocked(user, -1, -1, false);
 	}
 
 	/**

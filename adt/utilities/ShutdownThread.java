@@ -1,7 +1,7 @@
 package utilities;
 
 import messages.ADTEndSessionMessage;
-import messages.ADTUnlockAllMessage;
+import messages.ADTUnlockUserMessage;
 import rundown.gui.RundownFrame;
 import server.ADTServer;
 
@@ -16,7 +16,7 @@ public class ShutdownThread extends Thread {
 	@Override
 	public void run() {
 		// unlock all editing holds
-		RundownFrame.getClient().sendMessage(new ADTUnlockAllMessage(RundownFrame.getClient().getSessionID()));
+		RundownFrame.getClient().sendMessage(new ADTUnlockUserMessage(RundownFrame.getClient().getSessionID()));
 		// RundownFrame.getClient().sendMessage("unlock all");
 
 		// unregister the client

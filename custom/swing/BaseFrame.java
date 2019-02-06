@@ -2,6 +2,9 @@ package swing;
 
 import javax.swing.JFrame;
 
+import main.ADTClient;
+import rundown.gui.RundownFrame;
+import utilities.DebugUtility;
 import utilities.Fonts;
 
 /**
@@ -28,4 +31,18 @@ public abstract class BaseFrame extends JFrame implements Singleton {
 
 	@Override
 	public abstract void create();
+
+	/**
+	 * Client session has been established
+	 * 
+	 * @param id - the ID of the client
+	 */
+	public void established(int id) {
+		RundownFrame.getClient().setSessionID(Integer.valueOf(id));
+
+		this.setTitle("Airspace Deconfliction Tool - User " + RundownFrame.getClient().getSessionID());
+
+		DebugUtility.debug(ADTClient.class, "Joined as user: " + id);
+		DebugUtility.debug(ADTClient.class, "You are now connected to the host and will receive updates.");
+	}
 }

@@ -12,7 +12,6 @@ import messages.ADTEndSessionMessage;
 import messages.ADTIdMessage;
 import utilities.Configuration;
 import utilities.DebugUtility;
-import utilities.Output;
 
 /**
  * A server used to communicate between Rundowns.
@@ -70,7 +69,7 @@ public class ADTServer extends Thread {
 	public void run() {
 		try {
 			serverSocket = new ServerSocket(Configuration.portNum);
-			Output.showInfoMessage("Started Server", "Started the rundown server. You are the host.");
+			DebugUtility.debug(ADTServer.class, "Started the rundown server. You are the host.");
 		} catch (BindException e3) {
 			DebugUtility.error(ADTServer.class, "Port already bound: " + Configuration.portNum);
 			serverSocket = null;
@@ -119,6 +118,7 @@ public class ADTServer extends Thread {
 	 * @param origin  - the originator of the message
 	 */
 	public static void sendMessage(ADTBaseMessage message) {
+		DebugUtility.debug(ADTServer.class, "Forwarding " + message.getCommand() + " from " + message.getSender());
 		for (Integer key : clients.keySet()) {
 			if (key != message.getSender()) {
 				clients.get(key).sendMessage(message);

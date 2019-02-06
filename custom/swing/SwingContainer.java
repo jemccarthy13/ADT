@@ -36,7 +36,7 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 			} else {
 				obj = y.hashCode() + "";
 			}
-			DebugUtility.trace(SwingContainer.class, "On the fly created " + c.getName() + obj);
+			DebugUtility.trace(SwingContainer.class, "On the fly created " + c.getSimpleName() + obj);
 
 			this.put(c.hashCode(), (T) y);
 		}

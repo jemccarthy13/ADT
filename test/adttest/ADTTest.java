@@ -80,7 +80,7 @@ public class ADTTest extends BaseTest {
 	@Test
 	public void multiUserADT() {
 		ADTClient client = new ADTClient();
-		client.establishSession();
+		client.start();
 		ADTRobot.sleep(3000);
 		client.sendMessage(new ADTLockedMessage(0, 4, true));
 

@@ -29,7 +29,7 @@ public final class DebugUtility {
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		Configuration config = ctx.getConfiguration();
 		LoggerConfig loggerConfig = config.getLoggerConfig("ADTLogger");
-		loggerConfig.setLevel(Level.TRACE);
+		loggerConfig.setLevel(Level.DEBUG);
 		ctx.updateLoggers();
 
 		log4j.trace(formatClassName(DebugUtility.class) + "Log4j Set to " + loggerConfig.getLevel().toString());

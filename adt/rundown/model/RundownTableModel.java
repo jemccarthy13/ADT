@@ -2,8 +2,6 @@ package rundown.model;
 
 import javax.swing.DefaultRowSorter;
 
-import messages.ADTUpdateMessage;
-import rundown.gui.RundownFrame;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.LockedCells;
@@ -125,11 +123,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 			break;
 		}
 
-		if (sendMessage) {
-			RundownFrame.getClient().sendMessage(new ADTUpdateMessage(rowIndex, columnIndex, val));
-			// RundownFrame.getClient().sendMessage("set," + val + "," + rowIndex + "," +
-			// columnIndex);
-		}
 		RundownAssets.checkAddNew();
 
 		((DefaultRowSorter) RundownTable.getInstance().getRowSorter()).setRowFilter(null);

@@ -56,7 +56,7 @@ public class ATOImporter implements Importer {
 
 			if (numFilesProc == 0) {
 				Output.showInfoMessage("Error", "No ATO files (USMTF00.txt) were imported.\n"
-						+ "PLease ensure you are selecting a valid USMTF00.txt file.");
+						+ "Please ensure you are selecting a valid USMTF00.txt file.");
 			} else
 				Output.showInfoMessage("Proceesed", "Processed " + numFilesProc + " file(s) and added "
 						+ ATOAssets.staticInstance().size() + " asset(s).");

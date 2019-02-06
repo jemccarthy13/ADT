@@ -19,6 +19,15 @@ public class TestServer extends Thread {
 	}
 
 	/**
+	 * Start a test server
+	 * 
+	 * @param args - command line arguments
+	 */
+	public static void main(String[] args) {
+		instance.start();
+	}
+
+	/**
 	 * Singleton implementation.
 	 * 
 	 * @return single instance
@@ -36,7 +45,7 @@ public class TestServer extends Thread {
 	public void run() {
 		try {
 			this.ss = new ServerSocket(Configuration.portNum);
-			Output.showInfoMessage("Started Server", "Started the test server.");
+			DebugUtility.debug(TestServer.class, "Started the test server.");
 		} catch (BindException e3) {
 			DebugUtility.error(TestServer.class, "Port already bound: " + Configuration.portNum);
 		} catch (IOException e2) {

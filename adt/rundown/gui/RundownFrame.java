@@ -10,7 +10,9 @@ import rundown.model.RundownTable;
 import swing.BaseFrame;
 import swing.GUI;
 import utilities.Configuration;
+import utilities.DebugUtility;
 import utilities.ImageLibrary;
+import utilities.Output;
 
 /**
  * The main Frame of the ADT
@@ -29,6 +31,9 @@ public class RundownFrame extends BaseFrame {
 	 */
 	@Override
 	public void create() {
+		// start the client - and start the server if one isn't found
+		client = new ADTClient();
+		client.start();
 
 		// make it look like windows rather than Java
 		Configuration.setLookAndFeel(RundownFrame.class);
@@ -44,16 +49,27 @@ public class RundownFrame extends BaseFrame {
 		// add the rundown (buttons, table)
 		this.add(GUI.PANELS.getInstanceOf(RundownPanel.class));
 
-		// start the client - and start the server if one isn't found
-		// client = new ADTClient();
-		client = new ADTClient();
-		client.establishSession();
-
 		// handle the original sizing
 		this.handleCompact();
 
-		// display!
-		this.setVisible(true);
+		// don't display until the client/server connection has been established
+		int attempts = 0;
+		while (!client.isConnected() && attempts < 10) {
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				// keep waiting
+			}
+			attempts++;
+		}
+
+		// display
+		if (client.isConnected()) {
+			this.setVisible(true);
+		} else {
+			DebugUtility.error(Output.class, "Unable to connect to server.");
+			System.exit(0);
+		}
 	}
 
 	/**
