@@ -3,8 +3,6 @@ package rundown.gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.JFrame;
-
 import main.ADTClient;
 import rundown.model.RundownTable;
 import swing.BaseFrame;
@@ -35,13 +33,14 @@ public class RundownFrame extends BaseFrame {
 		client = new ADTClient();
 		client.start();
 
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 		// make it look like windows rather than Java
 		Configuration.setLookAndFeel(RundownFrame.class);
 
 		// set some frame settings
 		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));
 		this.setTitle("Airspace Deconfliction Tool");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// add the menu bar at top
 		this.setJMenuBar(RundownMenuBar.getInstance());

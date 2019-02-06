@@ -25,5 +25,6 @@ public class ShutdownThread extends Thread {
 
 		// interrupt the server thread to neatly end it if we were the host
 		ADTServer.getInstance().interrupt();
+		RundownFrame.getClient().interrupt();
 	}
 }

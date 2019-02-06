@@ -23,7 +23,7 @@ import utilities.DebugUtility;
  * An ADTClient is a thread started when a Rundown is opened.
  * 
  * The ADT Client thread will process all messages from the server to keep the
- * Rundowns in sync across multiple users.
+ * Rundowns synchronized across multiple users.
  */
 public class ADTClient extends Thread {
 
@@ -39,8 +39,7 @@ public class ADTClient extends Thread {
 	/** reader for reading messages */
 	private ObjectInputStream input = null;
 
-	private boolean endSession;
-
+	// private boolean endSession;
 	private boolean connected = false;
 
 	/**
@@ -48,6 +47,34 @@ public class ADTClient extends Thread {
 	 */
 	public int getSessionID() {
 		return this.sessionID;
+	}
+
+	private boolean tryConnect() {
+		boolean success = false;
+		try {
+			this.socket = new Socket(Configuration.getServerAddress(), Configuration.portNum);
+			this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			this.output.writeObject(new ADTEstablishMessage(-1));
+			this.input = new ObjectInputStream(this.socket.getInputStream());
+
+			success = true;
+
+		} catch (BindException e) {
+			DebugUtility.error(ADTClient.class, "Bind Exception: " + e.getMessage());
+		} catch (ConnectException e) {
+			// if the connection fails, chances are there's nothing listening
+			DebugUtility.trace(ADTClient.class, "Connection refused.");
+			DebugUtility.trace(ADTClient.class, "Port " + Configuration.portNum + " may have no response.");
+
+			// so we should try and become the host
+			tryStartServer();
+
+		} catch (UnknownHostException e) {
+			DebugUtility.error(ADTClient.class, "Uknown host: " + e.getMessage());
+		} catch (IOException e) {
+			DebugUtility.error(ADTClient.class, "Unknown IO Error: " + e.getMessage());
+		}
+		return success;
 	}
 
 	/**
@@ -59,30 +86,8 @@ public class ADTClient extends Thread {
 		while (this.connected == false) {
 			DebugUtility.trace(ADTClient.class, "Trying to connect...");
 			// connect to the socket and setup reader/writer
-			try {
-				this.socket = new Socket(Configuration.getServerAddress(), Configuration.portNum);
-				this.output = new ObjectOutputStream(this.socket.getOutputStream());
-				this.output.writeObject(new ADTEstablishMessage(-1));
-				this.input = new ObjectInputStream(this.socket.getInputStream());
 
-				this.connected = true;
-
-			} catch (BindException e) {
-				DebugUtility.error(ADTClient.class, "Bind Exception: " + e.getMessage());
-			} catch (ConnectException e) {
-				// if the connection fails, chances are there's nothing listening
-				DebugUtility.trace(ADTClient.class, "Connection refused.");
-				DebugUtility.trace(ADTClient.class, "Port " + Configuration.portNum + " may have no response.");
-
-				// so we should try and become the host
-				tryStartServer();
-
-			} catch (UnknownHostException e) {
-				DebugUtility.error(ADTClient.class, "Uknown host: " + e.getMessage());
-			} catch (IOException e) {
-				DebugUtility.error(ADTClient.class, "Unknown IO Error: " + e.getMessage());
-			}
-
+			this.connected = tryConnect();
 			DebugUtility.trace(ADTClient.class, "Connection " + (this.connected ? "established" : "failed") + ": port ("
 					+ Configuration.portNum + ")");
 		}
@@ -113,51 +118,21 @@ public class ADTClient extends Thread {
 
 		this.connect();
 
-		while (!this.endSession) {
+		while (true) {
 			try {
 				ADTBaseMessage msg = (ADTBaseMessage) (this.input.readObject());
-				processLine(msg);
+				DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + msg.getClass().getSimpleName()
+						+ " from " + msg.getSender() + ": " + msg.getCommand());
+				msg.process();
+				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} catch (SocketException e) {
 				DebugUtility.error(ADTClient.class, "Lost connection to server. Attempting to re-establish...");
-				this.socket = null;
-				this.output = null;
-				this.input = null;
 				this.connect();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-				DebugUtility.error(ADTClient.class, this.sessionID + " " + e.getMessage());
-			} catch (NullPointerException e1) {
-				e1.printStackTrace();
-				DebugUtility.error(ADTClient.class, this.sessionID + " " + e1.getMessage());
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				DebugUtility.error(ADTClient.class, this.sessionID + " " + e);
+				DebugUtility.error(ADTClient.class, "Unable to proccess ADTMessage.", e);
 			}
 		}
-		try {
-			this.socket.close();
-			DebugUtility.debug(ADTClient.class, this.sessionID + " disconnected.");
-		} catch (IOException e) {
-			e.printStackTrace();
-			DebugUtility.error(ADTClient.class, "Failed to close connection socket.");
-		}
-	}
-
-	/**
-	 * Read a line and process the received command.
-	 * 
-	 * @param msg - the next message to process
-	 */
-	public void processLine(ADTBaseMessage msg) {
-		DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + msg.getClass().getSimpleName() + " from "
-				+ msg.getSender() + ": " + msg.getCommand());
-
-		msg.process();
-
-		if (msg.getCommand().contains("end")) {
-			// this.endSession = true;
-		}
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 	}
 
 	/**
@@ -174,29 +149,19 @@ public class ADTClient extends Thread {
 			DebugUtility.error(ADTClient.class, "Server/client connection wasn't established.");
 			DebugUtility.error(ADTClient.class, "Could not send message.");
 		} catch (IOException e) {
-			DebugUtility.error(ADTClient.class, "Could not output message: " + message.getCommand());
-			e.printStackTrace();
+			DebugUtility.error(ADTClient.class, "Could not output message: " + message.getCommand(), e);
 		}
-	}
-
-	/**
-	 * Disconnect from the session
-	 */
-	public void endSession() {
-		this.sendMessage(new ADTUnlockUserMessage(this.sessionID));
-		this.sendMessage(new ADTEndSessionMessage(this.sessionID));
-
-		this.sessionID = -1;
-		this.endSession = true;
-		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
 	}
 
 	/**
 	 * The server configuration has changed, so the client needs to restart
 	 */
 	public void newServer() {
-		endSession();
-		this.socket = null;
+		this.sendMessage(new ADTUnlockUserMessage(this.sessionID));
+		this.sendMessage(new ADTEndSessionMessage(this.sessionID));
+
+		this.sessionID = -1;
+		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
 		this.run();
 	}
 
@@ -214,6 +179,5 @@ public class ADTClient extends Thread {
 	 */
 	public void setSessionID(int id) {
 		this.sessionID = id;
-		this.connected = true;
 	}
 }

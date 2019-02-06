@@ -51,7 +51,10 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 	 *                    TODO - check if this is used anywhere
 	 */
 	public static void resetInstance(ATOAssets newInstance) {
-		instance = newInstance;
+		instance.clear();
+		for (Asset ast : newInstance) {
+			instance.add(ast);
+		}
 		GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
 	}
 

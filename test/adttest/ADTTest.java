@@ -86,7 +86,7 @@ public class ADTTest extends BaseTest {
 
 		ADTRobot.sleep(3000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));
-		client.endSession();
+		client.interrupt();
 		ADTRobot.sleep(4000);
 		Assert.assertTrue(RundownTable.getInstance().isCellEditable(0, 4));
 		client.interrupt();
