@@ -21,10 +21,10 @@ public class Configuration {
 
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
-	private String ATOLoadLoc = "./TESTATO.txt";
-	// private String ATOLoadLoc = "";
+	// private String ATOLoadLoc = "./TESTATO.txt";
+	private String ATOLoadLoc = "";
 
-	private KeypadFinder finder = new CGRSKeypadFinder();
+	private KeypadFinder finder = new GARSKeypadFinder();
 
 	private static Configuration instance = new Configuration();
 

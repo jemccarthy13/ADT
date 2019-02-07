@@ -1,6 +1,5 @@
 package structures;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -29,7 +28,8 @@ public class LockedCells extends HashMap<Integer, Integer[]> {
 	 */
 	public static void setLocked(Integer user, Integer row, Integer column, boolean locked) {
 		if (locked) {
-			instance.put(user, (Integer[]) Arrays.asList(row, column).toArray());
+			Integer[] val = { row, column };
+			instance.put(user, val);
 		} else {
 			instance.remove(user);
 		}

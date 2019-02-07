@@ -36,6 +36,12 @@ public class Patterns {
 	public static Pattern rangePattern = Pattern.compile("([0-9])-([0-9])");
 	/** killbox pattern */
 	public static Pattern killboxPattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-9]*)");
+
+	/** GARS pattern */
+	public static Pattern garsPattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-4])([1-9]*)");
+	/** GARS airspace pattern */
+	public static Pattern garsAirspacePattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-4])([0-9]*-*[0-9]*)([+4cC]+)*");
+
 	/** airspace pattern */
 	public static Pattern airspacePattern = Pattern.compile("([0-9]+)([A-Za-z]+)([0-9]*-*[0-9]*)([+4cC]+)*");
 	/** words that aren't airspace approvals that should be ignored */

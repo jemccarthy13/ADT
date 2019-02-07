@@ -1,5 +1,6 @@
 package swing;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import utilities.DebugUtility;
@@ -23,10 +24,18 @@ public class SingletonHolder extends HashMap<Integer, Object> implements Singlet
 		if (!instance.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
-				y = c.newInstance();
+				y = c.getConstructor().newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
 				e.printStackTrace();
 			}
 			String obj;

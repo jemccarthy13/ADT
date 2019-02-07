@@ -5,11 +5,6 @@ import java.io.PrintStream;
 
 import javax.swing.JTable;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -122,12 +117,6 @@ public abstract class BaseTest extends TestSuite {
 	 */
 	@Before
 	public void setTrace() {
-		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		Configuration config = ctx.getConfiguration();
-		LoggerConfig loggerConfig = config.getLoggerConfig("ADTLogger");
-		loggerConfig.setLevel(Level.TRACE);
-		ctx.updateLoggers();
-
-		DebugUtility.log4j.trace("Log4j Set to trace");
+		DebugUtility.trace(BaseTest.class, "Log4j trace");
 	}
 }

@@ -40,9 +40,11 @@ public abstract class BaseFrame extends JFrame implements Singleton {
 	public void established(int id) {
 		RundownFrame.getClient().setSessionID(Integer.valueOf(id));
 
-		this.setTitle("Airspace Deconfliction Tool - User " + RundownFrame.getClient().getSessionID());
+		this.setTitle("Airspace Deconfliction Tool - User " + RundownFrame.getClient().getSessionID()
+				+ System.getProperty("java.version"));
 
 		DebugUtility.debug(ADTClient.class, "Joined as user: " + id);
 		DebugUtility.debug(ADTClient.class, "You are now connected to the host and will receive updates.");
+
 	}
 }

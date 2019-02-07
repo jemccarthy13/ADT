@@ -1,5 +1,7 @@
 package messages;
 
+import javax.swing.JOptionPane;
+
 import rundown.gui.RundownFrame;
 import structures.LockedCells;
 
@@ -31,6 +33,9 @@ public class ADTLockedMessage extends ADTBaseMessage {
 
 	@Override
 	public void process() {
+		JOptionPane.showMessageDialog(null, "" + RundownFrame.getClient().getSessionID() + " " + this.getSender()
+				+ " locked " + this.row + this.column);
+
 		LockedCells.setLocked(getSender(), this.row, this.column, this.locked);
 	}
 

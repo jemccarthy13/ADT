@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -28,10 +29,10 @@ import messages.ADTForceUnlockMessage;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import structures.ATOAssets;
+import structures.KeypadFinder;
 import structures.LockedCells;
 import structures.RundownAssets;
 import swing.SingletonHolder;
-import utilities.CGRSKeypadFinder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.FileChooser;
@@ -143,18 +144,20 @@ public class RundownMenuBar extends JMenuBar {
 				JPanel panel = new JPanel();
 				dialog.setLayout(new GridLayout(3, 1, 200, 50));
 				panel.setLayout(new BorderLayout(200, 50));
-				JTextArea keypadbox = new JTextArea();
+				final JTextArea keypadbox = new JTextArea();
 				panel.add(keypadbox, BorderLayout.NORTH);
-				JTextArea outputbox = new JTextArea();
+				final JTextArea outputbox = new JTextArea();
 				panel.add(outputbox, BorderLayout.CENTER);
 				outputbox.setWrapStyleWord(true);
 				JButton submit = new JButton("Submit");
-				CGRSKeypadFinder finder = new CGRSKeypadFinder();
+				final KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
 				submit.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						outputbox.setText(finder.getKeypads(keypadbox.getText()).toString());
+						outputbox.setLineWrap(true);
+						HashSet<String> result = finder.getKeypads(keypadbox.getText());
+						outputbox.setText(result.toString() + "\r\n" + result.size());
 					}
 
 				});

@@ -6,6 +6,12 @@ import java.util.HashSet;
 
 /**
  * Defines a interface of how to find keypads in a particular reference system
+ * 
+ * To implement a new reference system, extend this class and primarily define
+ * keypadsFromKillbox, which is the base level representation (a singular
+ * killbox such as 88AM in CGRS) expanded into keypads
+ * 
+ * For an example, see how CGRS and GARS KeypadFinders are defined.
  */
 public abstract class KeypadFinder {
 
@@ -41,12 +47,12 @@ public abstract class KeypadFinder {
 
 				String subRep = rep.substring(0, rep.lastIndexOf(" ")).trim();
 
-				keypads.addAll(keypadsFromKillbox(app));
-				keypads.addAll(getKeypads(subRep));
+				keypads.addAll(this.keypadsFromKillbox(app));
+				keypads.addAll(this.getKeypads(subRep));
 
 				this.killboxDict.put(rep, keypads);
 			} else {
-				keypads.addAll(keypadsFromKillbox(rep));
+				keypads.addAll(this.keypadsFromKillbox(rep));
 				this.killboxDict.put(rep, keypads);
 			}
 		}

@@ -1,12 +1,8 @@
 package customtest;
 
 import java.awt.AWTException;
+import java.util.logging.Level;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,22 +30,13 @@ public class Log4JCoverage extends BaseTest {
 	 */
 	@Test
 	public void Testlog() {
-		DebugUtility.fatal("Hello");
 		DebugUtility.error(Log4JCoverage.class, "Oh no!", new Exception("Exception Hello World"));
-		Assert.assertTrue(BaseTest.outContent.toString().contains("Exception Hello World"));
+		Assert.assertTrue(BaseTest.errContent.toString().contains("Exception Hello World"));
 
-		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		Configuration config = ctx.getConfiguration();
-		LoggerConfig loggerConfig = config.getLoggerConfig("ADTLogger");
-		Level prevLevel = loggerConfig.getLevel();
-
-		loggerConfig.setLevel(Level.OFF);
-		ctx.updateLoggers();
+		DebugUtility.setLevel(Level.OFF);
 
 		DebugUtility.debug(Log4JCoverage.class, "Should not appear");
 		Assert.assertFalse(BaseTest.outContent.toString().contains("Should not appear"));
-
-		loggerConfig.setLevel(prevLevel);
 
 		Assert.assertTrue("DebugUtility".equals(DebugUtility.getInstance().getClass().getSimpleName()));
 	}
