@@ -115,7 +115,9 @@ public class ADTServerThread extends Thread {
 	 */
 	public void sendLocks() {
 		for (Integer key : LockedCells.getLockedCells().keySet()) {
-			sendMessage(new ADTLockedCellsMessage(key));
+			int r = LockedCells.getLockedCells().get(key)[0];
+			int c = LockedCells.getLockedCells().get(key)[1];
+			sendMessage(new ADTLockedCellsMessage(key, r, c));
 		}
 	}
 

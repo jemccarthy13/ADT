@@ -1,6 +1,9 @@
 package structures;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import utilities.DebugUtility;
 
 /**
  * An ArrayList of Airspaces for the Airspace Manager
@@ -23,5 +26,26 @@ public class AirspaceList extends ArrayList<Airspace> {
 	 */
 	public static AirspaceList getInstance() {
 		return instance;
+	}
+
+	/**
+	 * Expand an airspace into component killboxes
+	 * 
+	 * @param representation
+	 * @return the expansion of this airspace
+	 */
+	public String expand(String representation) {
+		String result = "";
+		DebugUtility.trace(AirspaceList.class, "Trying to find killboxes for " + representation);
+		Iterator<Airspace> it = this.iterator();
+		while (it.hasNext()) {
+			Airspace as = it.next();
+			if (as.getName().equals(representation)) {
+				result = as.getAirspace();
+			}
+		}
+		DebugUtility.trace(this.getClass(), "Expanded " + representation + " to '" + result + "'");
+
+		return result.trim();
 	}
 }

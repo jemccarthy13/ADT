@@ -1,8 +1,7 @@
 package messages;
 
-import java.util.HashMap;
-
 import structures.LockedCells;
+import utilities.DebugUtility;
 
 /**
  * List of locked cells sent on initial connect to the server
@@ -12,26 +11,31 @@ public class ADTLockedCellsMessage extends ADTBaseMessage {
 	/** Serialization */
 	private static final long serialVersionUID = -5640885616591778178L;
 
+	private int row;
+	private int column;
+
 	/**
 	 * Constructor
 	 * 
 	 * @param key
+	 * @param r   - row to lock
+	 * @param c   - column to lock
 	 */
-	public ADTLockedCellsMessage(Integer key) {
+	public ADTLockedCellsMessage(Integer key, int r, int c) {
 		super(key);
+		this.row = r;
+		this.column = c;
 	}
 
 	@Override
 	public void process() {
-		// TODO Auto-generated method stub
-
+		LockedCells.setLocked(this.getSender(), this.row, this.column, true);
 	}
 
 	@Override
 	public String getCommand() {
-		// TODO Auto-generated method stub
-		HashMap<Integer, Integer[]> lockedCells = LockedCells.getLockedCells();
-		return "locked," + lockedCells.get(this.getSender())[0] + "," + lockedCells.get(this.getSender())[1];
+		DebugUtility.error(Object.class, "locked cells should not be null: " + this.getSender());
+		return "locked," + this.row + "," + this.column;
 	}
 
 }

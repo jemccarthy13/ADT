@@ -1,5 +1,6 @@
 package adtutilitiestest;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import structures.AirspaceList;
 import structures.Asset;
 import structures.KeypadFinder;
 import utilities.CGRSKeypadFinder;
+import utilities.DebugUtility;
 
 /**
  * Tests to ensure translation was valid
@@ -71,6 +73,38 @@ public class CGRSKeypadFinderTest {
 	 * 
 	 */
 	@Test
+	public void performanceTest() {
+		String representation = "";
+		ArrayList<String> representations = new ArrayList<String>();
+
+		for (int x = 1; x < 1001; x += 20) {
+			for (int y = 1; y < 26; y++) {
+				representation += x + String.valueOf((char) (y + 65)) + " ";
+				representations.add(representation);
+			}
+		}
+
+		ArrayList<String> times = new ArrayList<String>();
+		for (String s : representations) {
+			long startTime = System.nanoTime();
+			this.finder.getKeypads(s);
+			long endTime = System.nanoTime();
+			times.add("" + Long.valueOf(endTime - startTime));
+
+			for (int x = 1; x < 10; x++) {
+				startTime = System.nanoTime();
+				this.finder.getKeypads(s);
+				endTime = System.nanoTime();
+				times.add("" + Long.valueOf(endTime - startTime));
+			}
+
+		}
+	}
+
+	/**
+	 * 
+	 */
+	@Test
 	public void breakCGRSFinder() {
 		String representation = "88";
 		HashSet<String> result = this.finder.getKeypads(representation);
@@ -96,7 +130,7 @@ public class CGRSKeypadFinderTest {
 	@Test
 	public void testCGRSKeypadFinder() {
 		String[] keypads = { "1", "2", "3" };
-		HashSet<String> result = this.finder.findKeypads(KeypadFinder.DIR.SELF, "88AM", keypads);
+		HashSet<String> result = this.finder.findKeypads(KeypadFinder.SELF, "88AM", keypads);
 		Assert.assertTrue(result.toString().equals("[88AM3, 88AM2, 88AM1]"));
 	}
 
@@ -125,10 +159,20 @@ public class CGRSKeypadFinderTest {
 		result = this.finder.getKeypads(representation);
 		Assert.assertTrue(result.toString().equals("[94AM2, 94AM1, 95AM7, 94AM5, 94AL3, 94AM4, 94AL6, 95AM8, 95AL9]"));
 
+		representation = "93AL3+";
+		result = this.finder.getKeypads(representation);
+		DebugUtility.error(Object.class, result.toString());
+		Assert.assertTrue(result.toString().equals("[93AM1, 93AM4, 93AL3, 93AL2, 94AL9, 94AL8, 93AL6, 94AM7, 93AL5]"));
+
+		representation = "92AO9+";
+		result = this.finder.getKeypads(representation);
+		DebugUtility.error(Object.class, result.toString());
+		Assert.assertTrue(result.toString().equals("[91AP1, 92AO5, 92AP7, 92AO6, 92AP4, 91AO2, 91AO3, 92AO9, 92AO8]"));
+
 		representation = "94AM 93AM";
 		result = this.finder.getKeypads(representation);
 		Assert.assertTrue(result.toString().equals(
-				"[93AM9, 94AM9, 93AM8, 94AM8, 93AM7, 94AM7, 93AM6, 94AM2, 93AM1, 94AM1, 94AM6, 93AM5, 94AM5, 93AM4, 94AM4, 93AM3, 94AM3, 93AM2]"));
+				"[93AM9, 93AM8, 94AM9, 93AM7, 94AM8, 93AM6, 94AM7, 93AM1, 94AM2, 94AM1, 93AM5, 94AM6, 93AM4, 94AM5, 93AM3, 94AM4, 93AM2, 94AM3]"));
 
 		representation = "94AM123 93AM7+ 99AN9+4c";
 		result = this.finder.getKeypads(representation);
@@ -138,5 +182,9 @@ public class CGRSKeypadFinderTest {
 		result = this.finder.getKeypads(representation);
 		Assert.assertTrue(result.toString().equals("[99AN9, 99AO7, 98AO1, 98AN3]"));
 
+		representation = "99B7+";
+		result = this.finder.getKeypads(representation);
+		DebugUtility.error(Object.class, result.toString());
+		Assert.assertTrue(result.toString().equals("[99A9, 98B1, 98B2, 99B4, 99B5, 98A3, 99B8, 99A6, 99B7]"));
 	}
 }

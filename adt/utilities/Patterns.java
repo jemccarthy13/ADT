@@ -3,8 +3,7 @@ package utilities;
 import java.util.regex.Pattern;
 
 /**
- * A static location for compiled Patterns.
- * 
+ * A static location/container class for compiled Patterns.
  */
 public class Patterns {
 	/** ATO file extension pattern */

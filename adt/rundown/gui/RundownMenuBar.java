@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -132,9 +131,8 @@ public class RundownMenuBar extends JMenuBar {
 				}
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.doImport)) {
-				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO",
-						new FileNameExtensionFilter("ATO", "txt"), Configuration.getInstance().getATOLoadLoc(),
-						new ATOImporter());
+				FileChooser.selectAndLoadFile("Select an ATO", new FileNameExtensionFilter("ATO", "txt"),
+						Configuration.getInstance().getATOLoadLoc(), new ATOImporter());
 				RundownFrame.getClient().sendMessage(new ADTAtoDatMessage());
 				// RundownFrame.getClient().sendMessage("-1,atodat," +
 				// Configuration.getInstance().getATODatFileLoc());

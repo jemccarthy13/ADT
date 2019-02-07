@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -57,8 +56,7 @@ public class ATOButtonPanel extends BasePanel {
 			if (e.getSource().equals(this.pnl.saveBtn)) {
 				ATOData.getInstance().save();
 			} else if (e.getSource().equals(this.pnl.loadBtn)) {
-				FileChooser.selectAndLoadFile(new JFileChooser(), "Select an ATO Proj",
-						new FileNameExtensionFilter("ATO Proj", "proj"),
+				FileChooser.selectAndLoadFile("Select an ATO Proj", new FileNameExtensionFilter("ATO Proj", "proj"),
 						Configuration.getInstance().getATOProjFileLoc(), new ATOProjectImporter());
 			} else if (e.getSource().equals(this.pnl.genBtn)) {
 				ATOData.output();

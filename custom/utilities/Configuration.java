@@ -22,10 +22,9 @@ public class Configuration {
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
 	private String ATOLoadLoc = "./TESTATO.txt";
+	// private String ATOLoadLoc = "";
 
 	private KeypadFinder finder = new CGRSKeypadFinder();
-
-	private boolean loadSuccess = false;
 
 	private static Configuration instance = new Configuration();
 
@@ -60,24 +59,6 @@ public class Configuration {
 	 */
 	public String getATODatFileLoc() {
 		return this.ATODatFileLoc;
-	}
-
-	/**
-	 * Was the file load successful
-	 * 
-	 * @return iff successful was set
-	 */
-	public boolean isLoadSuccess() {
-		return this.loadSuccess;
-	}
-
-	/**
-	 * Set file load successful flag
-	 * 
-	 * @param b true if success
-	 */
-	public void setLoadSuccess(boolean b) {
-		this.loadSuccess = b;
 	}
 
 	/**

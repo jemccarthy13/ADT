@@ -116,11 +116,15 @@ public class ATOGeneratorTest extends BaseTest {
 
 		Assert.assertTrue(outContent.toString().contains("Project loaded:"));
 		Assert.assertTrue(outContent.toString().contains(Configuration.getInstance().getATOProjFileLoc()));
-		Assert.assertTrue(Configuration.getInstance().isLoadSuccess());
+		// Assert.assertTrue(Configuration.getInstance().isLoadSuccess());
+
+		fail("Test to ensure project load was successful by randon sampling");
 
 		Configuration.getInstance().setATOProjFileLoc("MyProj.proj");
 		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
-		Assert.assertTrue(!Configuration.getInstance().isLoadSuccess());
+		// Assert.assertTrue(!Configuration.getInstance().isLoadSuccess());
+
+		fail("Test to ensure project load was successful by random sampling");
 
 	}
 

@@ -39,8 +39,8 @@ public class ADTClient extends Thread {
 	/** reader for reading messages */
 	private ObjectInputStream input = null;
 
-	// private boolean endSession;
 	private boolean connected = false;
+	private boolean stopCondition = false;
 
 	/**
 	 * @return ADTClient ID
@@ -49,6 +49,11 @@ public class ADTClient extends Thread {
 		return this.sessionID;
 	}
 
+	/**
+	 * Try to connect this client with the server
+	 * 
+	 * @return true iff socket is connected to a server
+	 */
 	private boolean tryConnect() {
 		boolean success = false;
 		try {
@@ -57,6 +62,10 @@ public class ADTClient extends Thread {
 			this.output.writeObject(new ADTEstablishMessage(-1));
 			this.input = new ObjectInputStream(this.socket.getInputStream());
 
+			/**
+			 * TODO -- this success should check if the establish message receives a
+			 * response or somehow otherwise checks to verify the right server server
+			 */
 			success = true;
 
 		} catch (BindException e) {
@@ -67,8 +76,7 @@ public class ADTClient extends Thread {
 			DebugUtility.trace(ADTClient.class, "Port " + Configuration.portNum + " may have no response.");
 
 			// so we should try and become the host
-			tryStartServer();
-
+			new Thread(ADTServer.getInstance()).start();
 		} catch (UnknownHostException e) {
 			DebugUtility.error(ADTClient.class, "Uknown host: " + e.getMessage());
 		} catch (IOException e) {
@@ -85,50 +93,40 @@ public class ADTClient extends Thread {
 
 		while (this.connected == false) {
 			DebugUtility.trace(ADTClient.class, "Trying to connect...");
-			// connect to the socket and setup reader/writer
 
 			this.connected = tryConnect();
+
 			DebugUtility.trace(ADTClient.class, "Connection " + (this.connected ? "established" : "failed") + ": port ("
 					+ Configuration.portNum + ")");
 		}
 	}
 
 	/**
-	 * Assumption: no server connection has been made yet, so we need to try and
-	 * start the server.
-	 */
-	public void tryStartServer() {
-		try {
-			DebugUtility.trace(ADTClient.class, "Trying to start server...");
-			ADTServer.getInstance().start();
-		} catch (IllegalThreadStateException e) {
-			DebugUtility.error(ADTClient.class, "Illegal server thread state.");
-			DebugUtility.error(ADTClient.class, "Resetting server thread.");
-			ADTServer.getInstance().interrupt();
-			ADTServer.resetInstance();
-		}
-	}
-
-	/**
 	 * Main entry point for the client.
 	 * 
+	 * run() is called as a result of start()
 	 */
 	@Override
 	public void run() {
 
+		// do the client/server connection
 		this.connect();
 
-		while (true) {
+		// then keep reading messages
+		while (!this.stopCondition) {
 			try {
+				// get the next message and process it
 				ADTBaseMessage msg = (ADTBaseMessage) (this.input.readObject());
 				DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + msg.getClass().getSimpleName()
 						+ " from " + msg.getSender() + ": " + msg.getCommand());
 				msg.process();
 				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
 			} catch (SocketException e) {
+				// or the server connection has been lost
 				DebugUtility.error(ADTClient.class, "Lost connection to server. Attempting to re-establish...");
 				this.connect();
 			} catch (Exception e) {
+				// or an unknown error has occurred
 				e.printStackTrace();
 				DebugUtility.error(ADTClient.class, "Unable to proccess ADTMessage.", e);
 			}
@@ -136,7 +134,7 @@ public class ADTClient extends Thread {
 	}
 
 	/**
-	 * Send a message to the ADT server.
+	 * Send a message to the ADT server, with some error checks
 	 * 
 	 * @param message - the message to forward
 	 */
@@ -179,5 +177,12 @@ public class ADTClient extends Thread {
 	 */
 	public void setSessionID(int id) {
 		this.sessionID = id;
+	}
+
+	/**
+	 * Trigger this client to stop reading messages
+	 */
+	public void setStop() {
+		this.stopCondition = true;
 	}
 }
