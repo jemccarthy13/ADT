@@ -11,7 +11,6 @@ import structures.AirspaceList;
 import structures.Asset;
 import structures.KeypadFinder;
 import utilities.CGRSKeypadFinder;
-import utilities.DebugUtility;
 
 /**
  * Tests to ensure translation was valid
@@ -161,12 +160,10 @@ public class CGRSKeypadFinderTest {
 
 		representation = "93AL3+";
 		result = this.finder.getKeypads(representation);
-		DebugUtility.error(Object.class, result.toString());
 		Assert.assertTrue(result.toString().equals("[93AM1, 93AM4, 93AL3, 93AL2, 94AL9, 94AL8, 93AL6, 94AM7, 93AL5]"));
 
 		representation = "92AO9+";
 		result = this.finder.getKeypads(representation);
-		DebugUtility.error(Object.class, result.toString());
 		Assert.assertTrue(result.toString().equals("[91AP1, 92AO5, 92AP7, 92AO6, 92AP4, 91AO2, 91AO3, 92AO9, 92AO8]"));
 
 		representation = "94AM 93AM";
@@ -184,7 +181,6 @@ public class CGRSKeypadFinderTest {
 
 		representation = "99B7+";
 		result = this.finder.getKeypads(representation);
-		DebugUtility.error(Object.class, result.toString());
 		Assert.assertTrue(result.toString().equals("[99A9, 98B1, 98B2, 99B4, 99B5, 98A3, 99B8, 99A6, 99B7]"));
 	}
 }

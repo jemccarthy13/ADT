@@ -1,7 +1,6 @@
 package messages;
 
 import structures.LockedCells;
-import utilities.DebugUtility;
 
 /**
  * List of locked cells sent on initial connect to the server
@@ -34,7 +33,6 @@ public class ADTLockedCellsMessage extends ADTBaseMessage {
 
 	@Override
 	public String getCommand() {
-		DebugUtility.error(Object.class, "locked cells should not be null: " + this.getSender());
 		return "locked," + this.row + "," + this.column;
 	}
 

@@ -35,7 +35,9 @@ public class AltCellListener implements FocusListener {
 		} else {
 			try {
 				Integer.parseInt(s);
-				retStr = s;
+				if (s.length() == 3) {
+					retStr = s;
+				}
 			} catch (NumberFormatException e) {
 				// do nothing
 			}

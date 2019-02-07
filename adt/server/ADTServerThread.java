@@ -57,6 +57,9 @@ public class ADTServerThread extends Thread {
 				DebugUtility.trace(ADTServerThread.class, "Trying to retrieve msg");
 				msg = (ADTBaseMessage) (this.input.readObject());
 			} catch (IOException e) {
+				/**
+				 * On some disconnects this error loops indefinitely. TODO - find out why
+				 */
 				DebugUtility.error(ADTServerThread.class, "Unable to readline! User:" + this.id);
 			} catch (ClassNotFoundException e) {
 				DebugUtility.error(ADTServerThread.class, "Could not cast to ADTMessage.");

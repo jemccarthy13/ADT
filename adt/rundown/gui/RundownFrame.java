@@ -66,6 +66,7 @@ public class RundownFrame extends BaseFrame {
 		if (client.isConnected()) {
 			this.setVisible(true);
 		} else {
+			/** TODO - better exit handler */
 			DebugUtility.error(Output.class, "Unable to connect to server.");
 			System.exit(0);
 		}
