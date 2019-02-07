@@ -1,5 +1,6 @@
-package structures;
+package atoLookup;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,10 +12,12 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import atoLookup.ATOLookupFrame;
-import swing.GUI;
+import structures.ATOAssets;
+import structures.Asset;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
+import utilities.Importer;
 import utilities.Output;
 import utilities.Patterns;
 
@@ -59,7 +62,7 @@ public class ATOImporter implements Importer {
 						+ "Please ensure you are selecting a valid USMTF00.txt file.");
 			} else
 				Output.showInfoMessage("Proceesed", "Processed " + numFilesProc + " file(s) and added "
-						+ ATOAssets.staticInstance().size() + " asset(s).");
+						+ ATOAssets.getInstance().size() + " asset(s).");
 		} else {
 			Output.showInfoMessage("No file selected.", "No ATO CHG 0 file selected.");
 		}
@@ -68,7 +71,7 @@ public class ATOImporter implements Importer {
 		try {
 			atoInfoFile.createNewFile();
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(atoInfoFile));
-			oos.writeObject(ATOAssets.staticInstance());
+			oos.writeObject(ATOAssets.getInstance());
 			oos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -77,7 +80,7 @@ public class ATOImporter implements Importer {
 		}
 
 		Configuration.getInstance().setATODatFileLoc(atoInfoFile.getAbsolutePath());
-		GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
+		((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
 	}
 
 	/**
@@ -243,7 +246,7 @@ public class ATOImporter implements Importer {
 		// tkd + "/" + mode2 + "/" + arinfo + "/" + specType + "/" + typ + "/" +
 		// callsign + "/" + location);
 
-		ATOAssets.staticInstance().add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));
+		ATOAssets.getInstance().add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));
 
 		// m2boRS.AddNew
 		// m2boRS!VCS = tkd

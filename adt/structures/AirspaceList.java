@@ -1,6 +1,5 @@
 package structures;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import utilities.DebugUtility;
@@ -10,23 +9,9 @@ import utilities.DebugUtility;
  * 
  * TODO - think of a way to store and load airspaces (probably another file)
  */
-public class AirspaceList extends ArrayList<Airspace> {
+public class AirspaceList extends ListOf<Airspace> {
 
 	private static final long serialVersionUID = 2248757932153418225L;
-	private static AirspaceList instance = new AirspaceList();
-
-	private AirspaceList() {
-		this.add(new Airspace("TEST", "98AL", "000", "120"));
-	}
-
-	/**
-	 * Singleton implementation.
-	 * 
-	 * @return single instance
-	 */
-	public static AirspaceList getInstance() {
-		return instance;
-	}
 
 	/**
 	 * Expand an airspace into component killboxes
@@ -47,5 +32,10 @@ public class AirspaceList extends ArrayList<Airspace> {
 		DebugUtility.trace(this.getClass(), "Expanded " + representation + " to '" + result + "'");
 
 		return result.trim();
+	}
+
+	@Override
+	public void create() {
+		this.add(new Airspace("TEST", "98AL", "000", "120"));
 	}
 }

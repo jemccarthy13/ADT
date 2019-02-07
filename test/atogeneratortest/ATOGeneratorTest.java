@@ -1,8 +1,10 @@
 package atogeneratortest;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 
 import javax.swing.CellEditor;
+import javax.swing.JFrame;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -14,7 +16,7 @@ import adttest.ADTTest;
 import gui.ATOButtonPanel;
 import gui.ATOGeneratorFrame;
 import main.ATOGenerator;
-import swing.GUI;
+import swing.SingletonHolder;
 import table.ATOTable;
 import table.ATOTableModel;
 import utilities.ADTRobot;
@@ -39,9 +41,9 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Before
 	public void reset() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).clear();
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).addNew();
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+		((ATOTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class)).clear();
+		((ATOTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class)).addNew();
+		((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 	}
 
 	/**
@@ -49,8 +51,8 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@AfterClass
 	public static void dispose() {
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).setVisible(false);
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).dispose();
+		((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).setVisible(false);
+		((JFrame) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).dispose();
 	}
 
 	/**
@@ -88,7 +90,7 @@ public class ATOGeneratorTest extends BaseTest {
 		ADTRobot.type("1001");
 		ADTRobot.tab();
 
-		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).saveBtn.doClick();
+		((ATOButtonPanel) SingletonHolder.getInstanceOf(ATOButtonPanel.class)).saveBtn.doClick();
 
 		BaseTest.fail("Implement save button to ask which file");
 		BaseTest.fail("Check for file exists");
@@ -102,7 +104,7 @@ public class ATOGeneratorTest extends BaseTest {
 		setEditing(ATOTable.getInstance(), 0, 0);
 		ADTRobot.type("1001");
 		ADTRobot.tab();
-		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).genBtn.doClick();
+		((ATOButtonPanel) SingletonHolder.getInstanceOf(ATOButtonPanel.class)).genBtn.doClick();
 		Assert.assertTrue(outContent.toString().contains("TASKUNIT/552 AEW"));
 	}
 
@@ -112,7 +114,7 @@ public class ATOGeneratorTest extends BaseTest {
 	@Test
 	public void testLoad() {
 		Configuration.getInstance().setATOProjFileLoc("TESTPROJ.proj");
-		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
+		((ATOButtonPanel) SingletonHolder.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
 
 		Assert.assertTrue(outContent.toString().contains("Project loaded:"));
 		Assert.assertTrue(outContent.toString().contains(Configuration.getInstance().getATOProjFileLoc()));
@@ -121,7 +123,7 @@ public class ATOGeneratorTest extends BaseTest {
 		fail("Test to ensure project load was successful by randon sampling");
 
 		Configuration.getInstance().setATOProjFileLoc("MyProj.proj");
-		((ATOButtonPanel) GUI.PANELS.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
+		((ATOButtonPanel) SingletonHolder.getInstanceOf(ATOButtonPanel.class)).loadBtn.doClick();
 		// Assert.assertTrue(!Configuration.getInstance().isLoadSuccess());
 
 		fail("Test to ensure project load was successful by random sampling");
@@ -133,11 +135,12 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testDynamicAdd() {
-		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 1);
+		ATOTableModel model = (ATOTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class);
+		Assert.assertTrue(model.getRowCount() == 1);
 		setEditing(ATOTable.getInstance(), 0, 0);
-		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 2);
+		Assert.assertTrue(model.getRowCount() == 2);
 		setEditing(ATOTable.getInstance(), 1, 5);
-		Assert.assertTrue(GUI.MODELS.getInstanceOf(ATOTableModel.class).getRowCount() == 3);
+		Assert.assertTrue(model.getRowCount() == 3);
 	}
 
 	/**
@@ -145,10 +148,11 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@Test
 	public void testADTTableModel() {
-		GUI.MODELS.getInstanceOf(ATOTableModel.class).setValueAt("Invalid", 2, 5);
+		ATOTableModel model = (ATOTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class);
+		model.setValueAt("Invalid", 2, 5);
 		Assert.assertTrue("INVALID".equals(ATOTable.getInstance().getValueAt(2, 5).toString()));
-		Assert.assertNull(GUI.MODELS.getInstanceOf(ATOTableModel.class).getValueAt(100, 100));
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+		Assert.assertNull(model.getValueAt(100, 100));
+		((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 	}
 
 	/**

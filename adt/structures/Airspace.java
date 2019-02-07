@@ -33,8 +33,7 @@ public class Airspace extends Asset {
 	public Airspace(String name, String location, String lowAlt, String upAlt) {
 		this.setName(name);
 		this.setAirspace(location);
-		this.setLowerAlt(lowAlt);
-		this.setUpperAlt(upAlt);
+		this.setAltBlock(lowAlt, upAlt);
 	}
 
 	/**
@@ -43,8 +42,7 @@ public class Airspace extends Asset {
 	public Airspace() {
 		this.setName("");
 		this.setAirspace("");
-		this.setLowerAlt("");
-		this.setUpperAlt("");
+		this.setAltBlock("", "");
 	}
 
 	/**

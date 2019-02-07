@@ -15,7 +15,6 @@ import messages.ADTEstablishMessage;
 import messages.ADTUnlockUserMessage;
 import rundown.gui.RundownFrame;
 import server.ADTServer;
-import swing.GUI;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -120,7 +119,7 @@ public class ADTClient extends Thread {
 				DebugUtility.trace(ADTClient.class, this.sessionID + " Processing " + msg.getClass().getSimpleName()
 						+ " from " + msg.getSender() + ": " + msg.getCommand());
 				msg.process();
-				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+				RundownFrame.refresh();
 			} catch (SocketException e) {
 				// or the server connection has been lost
 				DebugUtility.error(ADTClient.class, "Lost connection to server. Attempting to re-establish...");

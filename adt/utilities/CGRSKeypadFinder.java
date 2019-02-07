@@ -1,19 +1,18 @@
 package utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 
 import structures.AirspaceList;
+import structures.DIR;
 import structures.KeypadFinder;
+import swing.SingletonHolder;
 
 /**
  * A utility class to help get neighboring keypads
  */
-public class CGRSKeypadFinder implements KeypadFinder {
-
-	private HashMap<String, HashSet<String>> killboxDict = new HashMap<String, HashSet<String>>();
+public class CGRSKeypadFinder extends KeypadFinder {
 
 	/**
 	 * From a starting killbox, travel in a direction direct to find keypads
@@ -46,38 +45,12 @@ public class CGRSKeypadFinder implements KeypadFinder {
 	}
 
 	/**
-	 * 
-	 */
-	@Override
-	public HashSet<String> getKeypads(String rep) {
-		HashSet<String> keypads = new HashSet<String>();
-		if (this.killboxDict.containsKey(rep)) {
-			keypads = this.killboxDict.get(rep);
-		} else {
-			if (rep.contains(" ")) {
-				String app = rep.substring(rep.lastIndexOf(" "));
-
-				String subRep = rep.substring(0, rep.lastIndexOf(" ")).trim();
-
-				keypads.addAll(keypadsFromKillbox(app));
-				keypads.addAll(getKeypads(subRep));
-
-				this.killboxDict.put(rep, keypads);
-			} else {
-				keypads.addAll(keypadsFromKillbox(rep));
-				this.killboxDict.put(rep, keypads);
-			}
-		}
-
-		return keypads;
-	}
-
-	/**
 	 * Get a set of keypads
 	 * 
 	 * @param killbox
 	 * @return keypads from a killbox
 	 */
+	@Override
 	public HashSet<String> keypadsFromKillbox(String killbox) {
 		HashSet<String> keypads = new HashSet<String>();
 		String row = "";
@@ -103,7 +76,7 @@ public class CGRSKeypadFinder implements KeypadFinder {
 		String keypadRangeTop;
 
 		if (row.equals("") && !killbox.trim().equals("")) {
-			String expansion = AirspaceList.getInstance().expand(killbox);
+			String expansion = ((AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class)).expand(killbox);
 			// this call will also recursively expand airspaces and airspace killboxes
 			keypads.addAll(getKeypads(expansion));
 		} else if (modifier == null) {
@@ -132,48 +105,48 @@ public class CGRSKeypadFinder implements KeypadFinder {
 		else if (modifier.equals("+")) {
 			switch (keypad) {
 			case "1":
-				keypads.addAll(findKeypads(KeypadFinder.LT, killbox, new String[] { "3", "6" }));
-				keypads.addAll(findKeypads(KeypadFinder.UPLT, killbox, new String[] { "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.UP, killbox, new String[] { "7", "8" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "1", "2", "4", "5" }));
+				keypads.addAll(findKeypads(DIR.LT, killbox, new String[] { "3", "6" }));
+				keypads.addAll(findKeypads(DIR.UPLT, killbox, new String[] { "9" }));
+				keypads.addAll(findKeypads(DIR.UP, killbox, new String[] { "7", "8" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "1", "2", "4", "5" }));
 				break;
 			case "2":
-				keypads.addAll(findKeypads(KeypadFinder.UP, killbox, new String[] { "7", "8", "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "1", "2", "3", "4", "5", "6" }));
+				keypads.addAll(findKeypads(DIR.UP, killbox, new String[] { "7", "8", "9" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "1", "2", "3", "4", "5", "6" }));
 				break;
 			case "3":
-				keypads.addAll(findKeypads(KeypadFinder.UP, killbox, new String[] { "8", "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.UPRT, killbox, new String[] { "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.RT, killbox, new String[] { "1", "4" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "2", "3", "5", "6" }));
+				keypads.addAll(findKeypads(DIR.UP, killbox, new String[] { "8", "9" }));
+				keypads.addAll(findKeypads(DIR.UPRT, killbox, new String[] { "7" }));
+				keypads.addAll(findKeypads(DIR.RT, killbox, new String[] { "1", "4" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "2", "3", "5", "6" }));
 				break;
 			case "4":
-				keypads.addAll(findKeypads(KeypadFinder.LT, killbox, new String[] { "3", "6", "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "1", "2", "4", "5", "7", "8" }));
+				keypads.addAll(findKeypads(DIR.LT, killbox, new String[] { "3", "6", "9" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "1", "2", "4", "5", "7", "8" }));
 				break;
 			case "5":
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox,
-						new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+				keypads.addAll(
+						findKeypads(DIR.SELF, killbox, new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 				break;
 			case "6":
-				keypads.addAll(findKeypads(KeypadFinder.RT, killbox, new String[] { "1", "4", "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "2", "3", "5", "6", "8", "9" }));
+				keypads.addAll(findKeypads(DIR.RT, killbox, new String[] { "1", "4", "7" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "2", "3", "5", "6", "8", "9" }));
 				break;
 			case "7":
-				keypads.addAll(findKeypads(KeypadFinder.LT, killbox, new String[] { "6", "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWNLT, killbox, new String[] { "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "4", "5", "7", "8" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWN, killbox, new String[] { "1", "2" }));
+				keypads.addAll(findKeypads(DIR.LT, killbox, new String[] { "6", "9" }));
+				keypads.addAll(findKeypads(DIR.DOWNLT, killbox, new String[] { "3" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "4", "5", "7", "8" }));
+				keypads.addAll(findKeypads(DIR.DOWN, killbox, new String[] { "1", "2" }));
 				break;
 			case "8":
-				keypads.addAll(findKeypads(KeypadFinder.DOWN, killbox, new String[] { "1", "2", "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "4", "5", "6", "7", "8", "9" }));
+				keypads.addAll(findKeypads(DIR.DOWN, killbox, new String[] { "1", "2", "3" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "4", "5", "6", "7", "8", "9" }));
 				break;
 			case "9":
-				keypads.addAll(findKeypads(KeypadFinder.RT, killbox, new String[] { "4", "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWNRT, killbox, new String[] { "1" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "5", "6", "8", "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWN, killbox, new String[] { "2", "3" }));
+				keypads.addAll(findKeypads(DIR.RT, killbox, new String[] { "4", "7" }));
+				keypads.addAll(findKeypads(DIR.DOWNRT, killbox, new String[] { "1" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "5", "6", "8", "9" }));
+				keypads.addAll(findKeypads(DIR.DOWN, killbox, new String[] { "2", "3" }));
 				break;
 			default:
 				break;
@@ -183,28 +156,28 @@ public class CGRSKeypadFinder implements KeypadFinder {
 		else if (modifier.toUpperCase().equals("+4C")) {
 			switch (keypad) {
 			case "1":
-				keypads.addAll(findKeypads(KeypadFinder.LT, killbox, new String[] { "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.UPLT, killbox, new String[] { "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.UP, killbox, new String[] { "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "1" }));
+				keypads.addAll(findKeypads(DIR.LT, killbox, new String[] { "3" }));
+				keypads.addAll(findKeypads(DIR.UPLT, killbox, new String[] { "9" }));
+				keypads.addAll(findKeypads(DIR.UP, killbox, new String[] { "7" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "1" }));
 				break;
 			case "3":
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.UP, killbox, new String[] { "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.UPRT, killbox, new String[] { "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.RT, killbox, new String[] { "1" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "3" }));
+				keypads.addAll(findKeypads(DIR.UP, killbox, new String[] { "9" }));
+				keypads.addAll(findKeypads(DIR.UPRT, killbox, new String[] { "7" }));
+				keypads.addAll(findKeypads(DIR.RT, killbox, new String[] { "1" }));
 				break;
 			case "7":
-				keypads.addAll(findKeypads(KeypadFinder.LT, killbox, new String[] { "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWNLT, killbox, new String[] { "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWN, killbox, new String[] { "1" }));
+				keypads.addAll(findKeypads(DIR.LT, killbox, new String[] { "9" }));
+				keypads.addAll(findKeypads(DIR.DOWNLT, killbox, new String[] { "3" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "7" }));
+				keypads.addAll(findKeypads(DIR.DOWN, killbox, new String[] { "1" }));
 				break;
 			case "9":
-				keypads.addAll(findKeypads(KeypadFinder.DOWN, killbox, new String[] { "3" }));
-				keypads.addAll(findKeypads(KeypadFinder.SELF, killbox, new String[] { "9" }));
-				keypads.addAll(findKeypads(KeypadFinder.RT, killbox, new String[] { "7" }));
-				keypads.addAll(findKeypads(KeypadFinder.DOWNRT, killbox, new String[] { "1" }));
+				keypads.addAll(findKeypads(DIR.DOWN, killbox, new String[] { "3" }));
+				keypads.addAll(findKeypads(DIR.SELF, killbox, new String[] { "9" }));
+				keypads.addAll(findKeypads(DIR.RT, killbox, new String[] { "7" }));
+				keypads.addAll(findKeypads(DIR.DOWNRT, killbox, new String[] { "1" }));
 				break;
 			default:
 				break;

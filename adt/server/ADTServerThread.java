@@ -14,7 +14,7 @@ import messages.ADTLockedCellsMessage;
 import messages.ADTUpdateMessage;
 import rundown.model.RundownTableModel;
 import structures.LockedCells;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
@@ -117,9 +117,9 @@ public class ADTServerThread extends Thread {
 	 * locked cells to the newly joined client.
 	 */
 	public void sendLocks() {
-		for (Integer key : LockedCells.getLockedCells().keySet()) {
-			int r = LockedCells.getLockedCells().get(key)[0];
-			int c = LockedCells.getLockedCells().get(key)[1];
+		for (Integer key : LockedCells.getInstance().keySet()) {
+			int r = LockedCells.getInstance().get(key)[0];
+			int c = LockedCells.getInstance().get(key)[1];
 			sendMessage(new ADTLockedCellsMessage(key, r, c));
 		}
 	}
@@ -128,7 +128,7 @@ public class ADTServerThread extends Thread {
 	 * Done on initial client connect, this sends the rundown to the client.
 	 */
 	public void sendRundown() {
-		RundownTableModel model = (RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class);
+		RundownTableModel model = (RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class);
 		for (int r = 0; r < model.getRowCount(); r++) {
 			for (int c = 0; c < model.getColumnCount(); c++) {
 				sendMessage(new ADTUpdateMessage(r, c, model.getValueAt(r, c).toString()));

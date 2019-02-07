@@ -2,6 +2,7 @@ package atoLookup;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import swing.BaseFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ImageLibrary;
 
 /**
@@ -44,11 +45,11 @@ public class ATOLookupFrame extends BaseFrame {
 		scrollPane.setBorder(border);// new EmptyBorder(20, 20, 20, 20));
 
 		// Add the scroll pane and button panel to the content.
-		contentPane.add(GUI.PANELS.getInstanceOf(ATOSearchPanel.class), BorderLayout.NORTH);
+		contentPane.add((Component) SingletonHolder.getInstanceOf(ATOSearchPanel.class), BorderLayout.NORTH);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		// Add the "Add to Rundown" button and associated functionality
-		contentPane.add(GUI.PANELS.getInstanceOf(ATOLookupAddPanel.class), BorderLayout.SOUTH);
+		contentPane.add((Component) SingletonHolder.getInstanceOf(ATOLookupAddPanel.class), BorderLayout.SOUTH);
 
 		this.add(contentPane);
 	}

@@ -1,20 +1,23 @@
 package structures;
 
-import java.util.ArrayList;
+import java.awt.Component;
 
 import rundown.gui.RundownFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
  * A list of assets that are in the rundown.
  */
-public class RundownAssets extends ArrayList<Asset> {
+public class RundownAssets extends ListOf<Asset> {
 
 	private static final long serialVersionUID = 1480309653414453245L;
 	private static RundownAssets instance = new RundownAssets();
 	private static int forcedRow = -1;
 
+	/**
+	 * Start a new instance with one blank asset
+	 */
 	private RundownAssets() {
 		this.add(new Asset());
 	}
@@ -55,7 +58,7 @@ public class RundownAssets extends ArrayList<Asset> {
 		}
 		if (!blankRow) {
 			addNew();
-			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
 	}
 
@@ -83,5 +86,11 @@ public class RundownAssets extends ArrayList<Asset> {
 	public static void setForcedRow(int i) {
 		DebugUtility.debug(RundownAssets.class, "Setting forced row - " + i);
 		RundownAssets.forcedRow = i;
+	}
+
+	@Override
+	public void create() {
+		// TODO Auto-generated method stub
+
 	}
 }

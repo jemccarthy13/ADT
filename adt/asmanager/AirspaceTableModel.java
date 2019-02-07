@@ -4,6 +4,7 @@ import javax.swing.table.AbstractTableModel;
 
 import structures.Airspace;
 import structures.AirspaceList;
+import swing.SingletonHolder;
 
 /**
  * A table model for the airspace manager's airspaces
@@ -27,27 +28,28 @@ public class AirspaceTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		while (AirspaceList.getInstance().size() <= rowIndex) {
-			AirspaceList.getInstance().add(new Airspace());
+		AirspaceList list = (AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class);
+		while (list.size() <= rowIndex) {
+			list.add(new Airspace());
 		}
-		if (AirspaceList.getInstance().size() <= rowIndex) {
-			AirspaceList.getInstance().add(new Airspace());
+		if (list.size() <= rowIndex) {
+			list.add(new Airspace());
 		}
 		switch (columnIndex) {
 		case 0:
-			AirspaceList.getInstance().get(rowIndex).setAddToRundown((Boolean) aValue);
+			list.get(rowIndex).setAddToRundown((Boolean) aValue);
 			break;
 		case 1:
-			AirspaceList.getInstance().get(rowIndex).setName(aValue.toString());
+			list.get(rowIndex).setName(aValue.toString());
 			break;
 		case 2:
-			AirspaceList.getInstance().get(rowIndex).setAirspace(aValue.toString());
+			list.get(rowIndex).setAirspace(aValue.toString());
 			break;
 		case 3:
-			AirspaceList.getInstance().get(rowIndex).setLowerAlt(aValue.toString());
+			list.get(rowIndex).getAlt().setLower(aValue.toString());
 			break;
 		case 4:
-			AirspaceList.getInstance().get(rowIndex).setUpperAlt(aValue.toString());
+			list.get(rowIndex).getAlt().setUpper(aValue.toString());
 			break;
 		default:
 			break;
@@ -65,7 +67,7 @@ public class AirspaceTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return AirspaceList.getInstance().size();
+		return ((AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class)).size();
 	}
 
 	@Override
@@ -80,19 +82,20 @@ public class AirspaceTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		AirspaceList list = ((AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class));
 		switch (columnIndex) {
 		case 0:
-			return AirspaceList.getInstance().get(rowIndex).isAddToRundown();
+			return list.get(rowIndex).isAddToRundown();
 		case 1:
-			return AirspaceList.getInstance().get(rowIndex).getName();
+			return list.get(rowIndex).getName();
 		case 2:
-			return AirspaceList.getInstance().get(rowIndex).getName();
+			return list.get(rowIndex).getName();
 		case 3:
-			return AirspaceList.getInstance().get(rowIndex).getAirspace();
+			return list.get(rowIndex).getAirspace();
 		case 4:
-			return AirspaceList.getInstance().get(rowIndex).getLowerAlt();
+			return list.get(rowIndex).getAlt().getLower();
 		case 5:
-			return AirspaceList.getInstance().get(rowIndex).getUpperAlt();
+			return list.get(rowIndex).getAlt().getUpper();
 		default:
 		}
 		return null;

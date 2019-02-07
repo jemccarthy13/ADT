@@ -1,5 +1,6 @@
 package atoLookup;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,8 @@ import structures.RundownAssets;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
+import utilities.ADTTableModel;
 import utilities.DebugUtility;
 import utilities.Output;
 
@@ -34,11 +36,12 @@ public class ATOLookupAddPanel extends BasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			DebugUtility.trace(this.getClass(), "Add to rundown button pressed");
-			for (int x = 0; x < ATOAssets.staticInstance().size(); x++) {
-				Asset atoAsset = ATOAssets.staticInstance().get(x);
+			for (int x = 0; x < ATOAssets.getInstance().size(); x++) {
+				Asset atoAsset = ATOAssets.getInstance().get(x);
 				if (atoAsset.isAddToRundown()) {
 					DebugUtility.debug(ATOLookupAddPanel.class, atoAsset.getVCS() + " being added from ATO Lookup");
-					GUI.MODELS.getInstanceOf(ATOLookupModel.class).setValueAt(Boolean.FALSE, x, 0);
+					((ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class)).setValueAt(Boolean.FALSE,
+							x, 0);
 
 					if (RundownAssets.getInstance().contains(atoAsset)) {
 						Output.forceInfoMessage("Duplicate", "Duplicate asset " + atoAsset.getFullCallsign() + " ("
@@ -53,7 +56,7 @@ public class ATOLookupAddPanel extends BasePanel {
 				}
 			}
 			RundownMenuBar.getInstance().refresh.doClick();
-			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
+			((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
 		}
 	}
 

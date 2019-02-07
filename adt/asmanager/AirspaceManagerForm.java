@@ -2,6 +2,7 @@ package asmanager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -10,7 +11,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import swing.GUI;
+import swing.SingletonHolder;
 
 /**
  * The main content panel for the airspace manager
@@ -50,10 +51,10 @@ public class AirspaceManagerForm extends JPanel {
 		scrollPane.setBorder(border);
 
 		// Add the scroll pane and button panel to the content.
-		this.add(GUI.PANELS.getInstanceOf(AirspaceManagerPanel.class), BorderLayout.NORTH);
+		this.add((Component) SingletonHolder.getInstanceOf(AirspaceManagerPanel.class), BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		// Add the "Add to Rundown" button and associated functionality
-		this.add(GUI.PANELS.getInstanceOf(AirspaceManagerActivePanel.class), BorderLayout.SOUTH);
+		this.add((Component) SingletonHolder.getInstanceOf(AirspaceManagerActivePanel.class), BorderLayout.SOUTH);
 	}
 }

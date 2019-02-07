@@ -1,7 +1,9 @@
 package main;
 
+import java.awt.Window;
+
 import rundown.gui.RundownFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 import utilities.ShutdownThread;
 
@@ -21,7 +23,7 @@ public class ADTApp {
 		public void run() {
 			while (true) {
 				// do the refresh
-				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+				RundownFrame.refresh();
 
 				// delay, then go again
 				try {
@@ -46,8 +48,13 @@ public class ADTApp {
 	 * @param args - command line arguments
 	 */
 	public static void main(String[] args) {
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(true);
+		((Window) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(true);
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
-		refreshThread.start();
+		refreshThread.interrupt();
+		try {
+			refreshThread.start();
+		} catch (IllegalThreadStateException e) {
+			// keep running
+		}
 	}
 }

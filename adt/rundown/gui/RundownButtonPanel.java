@@ -1,6 +1,7 @@
 
 package rundown.gui;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,7 @@ import stacksmanager.StacksFrame;
 import swing.ActionButton;
 import swing.BaseFrame;
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.Configuration;
 
 /**
@@ -52,19 +53,18 @@ public class RundownButtonPanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			Class<?> c = null;
 			if (e.getSource().equals(RundownButtonPanel.this.atoLookupBtn)) {
-				BaseFrame atoLookup = GUI.FRAMES.getInstanceOf(ATOLookupFrame.class);
-				atoLookup.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
-				atoLookup.setVisible(true);
+				c = ATOLookupFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
-				ASManagerFrame mgrForm = (ASManagerFrame) GUI.FRAMES.getInstanceOf(ASManagerFrame.class);
-				mgrForm.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
-				mgrForm.setVisible(true);
+				c = ASManagerFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.stacksBtn)) {
-				GUI.FRAMES.getInstanceOf(StacksFrame.class).setVisible(true);
-				GUI.FRAMES.getInstanceOf(StacksFrame.class)
-						.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
+				c = StacksFrame.class;
 			}
+
+			BaseFrame frame = (BaseFrame) SingletonHolder.getInstanceOf(c);
+			frame.setLocationRelativeTo((Component) SingletonHolder.getInstanceOf(RundownFrame.class));
+			frame.setVisible(true);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class RundownButtonPanel extends BasePanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Configuration.switchCompact();
-				((RundownFrame) GUI.FRAMES.getInstanceOf(RundownFrame.class)).handleCompact();
+				((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).handleCompact();
 			}
 		});
 

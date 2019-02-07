@@ -1,13 +1,14 @@
 package rundown.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import rundown.model.RundownTable;
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
 
 /**
  * The main panel for rundown table and information
@@ -28,6 +29,6 @@ public class RundownPanel extends BasePanel {
 
 		// Add the scroll pane and button panel to the content.
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(GUI.PANELS.getInstanceOf(RundownButtonPanel.class), BorderLayout.NORTH);
+		this.add((Component) SingletonHolder.getInstanceOf(RundownButtonPanel.class), BorderLayout.NORTH);
 	}
 }

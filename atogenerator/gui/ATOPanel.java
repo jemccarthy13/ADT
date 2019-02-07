@@ -1,12 +1,13 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
 import table.ATOTable;
 
 /**
@@ -28,6 +29,6 @@ public class ATOPanel extends BasePanel {
 
 		// Add the scroll pane and button panel to the content.
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(GUI.PANELS.getInstanceOf(ATOButtonPanel.class), BorderLayout.NORTH);
+		this.add((Component) SingletonHolder.getInstanceOf(ATOButtonPanel.class), BorderLayout.NORTH);
 	}
 }

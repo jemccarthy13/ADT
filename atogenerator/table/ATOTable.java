@@ -9,8 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.Fonts;
 
 /**
@@ -71,7 +72,7 @@ public class ATOTable extends JTable {
 	private ATOTable() {
 
 		// set the data
-		this.setModel(GUI.MODELS.getInstanceOf(ATOTableModel.class));
+		this.setModel((TableModel) SingletonHolder.getInstanceOf(ATOTableModel.class));
 		this.setDefaultRenderer(JButton.class, new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 1L;

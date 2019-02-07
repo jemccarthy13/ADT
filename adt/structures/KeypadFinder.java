@@ -1,41 +1,15 @@
 package structures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
  * Defines a interface of how to find keypads in a particular reference system
  */
-@SuppressWarnings("javadoc")
-public interface KeypadFinder {
+public abstract class KeypadFinder {
 
-	public class DIR {
-
-		private int rOff, cOff;
-
-		public DIR(int rowOffset, int columnOffset) {
-			this.rOff = rowOffset;
-			this.cOff = columnOffset;
-		}
-
-		public int getColumnOffset() {
-			return this.cOff;
-		}
-
-		public int getRowOffset() {
-			return this.rOff;
-		}
-	}
-
-	public static final DIR SELF = new DIR(0, 0);
-	public static final DIR LT = new DIR(0, -1);
-	public static final DIR RT = new DIR(0, 1);
-	public static final DIR UP = new DIR(1, 0);
-	public static final DIR DOWN = new DIR(-1, 0);
-	public static final DIR UPLT = new DIR(1, -1);
-	public static final DIR UPRT = new DIR(1, 1);
-	public static final DIR DOWNLT = new DIR(-1, -1);
-	public static final DIR DOWNRT = new DIR(-1, 1);
+	private HashMap<String, HashSet<String>> killboxDict = new HashMap<String, HashSet<String>>();
 
 	/**
 	 * Find keypads in a given direction from a starting point killbox, direction,
@@ -49,15 +23,44 @@ public interface KeypadFinder {
 	 * @param keypads - an array of keypads in the adjacent killbox
 	 * @return - a list of Strings representing keypads
 	 */
-	public HashSet<String> findKeypads(DIR direct, String killbox, String[] keypads);
+	public abstract HashSet<String> findKeypads(DIR direct, String killbox, String[] keypads);
 
 	/**
 	 * Get the keypads from a given representation
 	 * 
-	 * @param representation
+	 * @param rep - the representation of approval
 	 * @return - the individual keypads of that representation
 	 */
-	public HashSet<String> getKeypads(String representation);
+	public HashSet<String> getKeypads(String rep) {
+		HashSet<String> keypads = new HashSet<String>();
+		if (this.killboxDict.containsKey(rep)) {
+			keypads = this.killboxDict.get(rep);
+		} else {
+			if (rep.contains(" ")) {
+				String app = rep.substring(rep.lastIndexOf(" "));
+
+				String subRep = rep.substring(0, rep.lastIndexOf(" ")).trim();
+
+				keypads.addAll(keypadsFromKillbox(app));
+				keypads.addAll(getKeypads(subRep));
+
+				this.killboxDict.put(rep, keypads);
+			} else {
+				keypads.addAll(keypadsFromKillbox(rep));
+				this.killboxDict.put(rep, keypads);
+			}
+		}
+
+		return keypads;
+	}
+
+	/**
+	 * Get keypads from a given singular killbox, i.e. "88AM1+"
+	 * 
+	 * @param killbox - the representation (row, column, keypad/modifier)
+	 * @return - keypads from the killbox
+	 */
+	public abstract HashSet<String> keypadsFromKillbox(String killbox);
 
 	/**
 	 * well darn
@@ -68,6 +71,6 @@ public interface KeypadFinder {
 	 * @param origin
 	 * @return - list of keypads that reside within a circle
 	 */
-	public ArrayList<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, long radius,
+	public abstract ArrayList<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, long radius,
 			String origin);
 }

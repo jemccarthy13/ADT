@@ -3,7 +3,7 @@ package adttest;
 import org.junit.Test;
 
 import rundown.gui.RundownButtonPanel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.BaseTest;
 
 /**
@@ -16,7 +16,7 @@ public class ATOLookupTest extends BaseTest {
 	 */
 	@Test
 	public void testATOLookup() {
-		RundownButtonPanel panel = (RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class);
+		RundownButtonPanel panel = (RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class);
 		panel.atoLookupBtn.doClick();
 	}
 

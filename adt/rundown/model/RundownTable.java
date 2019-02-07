@@ -14,12 +14,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
-import swing.GUI;
 import swing.MyTableCellEditor;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.Fonts;
@@ -81,7 +82,7 @@ public class RundownTable extends JTable {
 	private RundownTable() {
 
 		// set the data
-		this.setModel(GUI.MODELS.getInstanceOf(RundownTableModel.class));
+		this.setModel((TableModel) SingletonHolder.getInstanceOf(RundownTableModel.class));
 		this.renderer = new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 8107150085372915277L;
@@ -158,7 +159,7 @@ public class RundownTable extends JTable {
 		// size the columns
 		/** TODO - reduce the amount of code? */
 		TableColumnModel cModel = this.getColumnModel();
-		int columnCount = GUI.MODELS.getInstanceOf(RundownTableModel.class).getColumnCount();
+		int columnCount = ((TableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount();
 		DebugUtility.trace(RundownTable.class, "Columns: " + columnCount);
 		for (int x = 0; x < columnCount; x++) {
 			cModel.getColumn(x).setMinWidth(minWidths[x]);

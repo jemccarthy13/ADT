@@ -1,7 +1,9 @@
 package main;
 
+import javax.swing.JFrame;
+
 import gui.ATOGeneratorFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -20,7 +22,7 @@ public final class ATOGenerator {
 	 */
 	public static void main(String[] args) {
 		Configuration.setLookAndFeel(ATOGenerator.class);
-		GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).setVisible(true);
+		((JFrame) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).setVisible(true);
 		DebugUtility.debug(ATOGenerator.class, "Startup successful.");
 	}
 }

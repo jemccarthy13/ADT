@@ -15,8 +15,8 @@ public class ADTForceUnlockMessage extends ADTBaseMessage {
 	@Override
 	public void process() {
 		RundownTable.getInstance().editCellAt(-1, -1);
-		LockedCells.getLockedCells().clear();
-		for (Integer user : LockedCells.getLockedCells().keySet()) {
+		LockedCells.getInstance().clear();
+		for (Integer user : LockedCells.getInstance().keySet()) {
 			RundownFrame.getClient().sendMessage(new ADTUnlockUserMessage(RundownFrame.getClient().getSessionID()));
 			LockedCells.unlockUser(user);
 		}

@@ -9,7 +9,8 @@ import org.junit.Test;
 import structures.Airspace;
 import structures.AirspaceList;
 import structures.Asset;
-import structures.KeypadFinder;
+import structures.DIR;
+import swing.SingletonHolder;
 import utilities.CGRSKeypadFinder;
 
 /**
@@ -113,10 +114,11 @@ public class CGRSKeypadFinderTest {
 		result = this.finder.getKeypads(representation);
 		Assert.assertTrue(result.size() == 0);
 
-		AirspaceList.getInstance().add(new Airspace("TEST", "99AL", "100", "100"));
-		AirspaceList.getInstance().add(new Airspace("TEST", "88AL", "100", "100"));
-		AirspaceList.getInstance().add(new Airspace("TEST", "67AL", "100", "100"));
-		AirspaceList.getInstance().add(new Airspace("TEST", "77AL", "100", "100"));
+		AirspaceList list = (AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class);
+		list.add(new Airspace("TEST", "99AL", "100", "100"));
+		list.add(new Airspace("TEST", "88AL", "100", "100"));
+		list.add(new Airspace("TEST", "67AL", "100", "100"));
+		list.add(new Airspace("TEST", "77AL", "100", "100"));
 		// Assert.assertTrue(AirspaceList.getInstance().size() == 1);
 		representation = "TEST";
 		result = this.finder.getKeypads(representation);
@@ -129,7 +131,7 @@ public class CGRSKeypadFinderTest {
 	@Test
 	public void testCGRSKeypadFinder() {
 		String[] keypads = { "1", "2", "3" };
-		HashSet<String> result = this.finder.findKeypads(KeypadFinder.SELF, "88AM", keypads);
+		HashSet<String> result = this.finder.findKeypads(DIR.SELF, "88AM", keypads);
 		Assert.assertTrue(result.toString().equals("[88AM3, 88AM2, 88AM1]"));
 	}
 

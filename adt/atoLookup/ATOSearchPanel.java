@@ -13,7 +13,7 @@ import javax.swing.table.TableRowSorter;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
 /**
@@ -38,7 +38,7 @@ public class ATOSearchPanel extends BasePanel {
 		setLayout(new GridLayout(4, 4, 5, 5));
 
 		final TableRowSorter<ADTTableModel<?>> sorter = new TableRowSorter<ADTTableModel<?>>(
-				GUI.MODELS.getInstanceOf(ATOLookupModel.class));
+				(ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class));
 		ATOLookupTable.getInstance().setRowSorter(sorter);
 
 		callsignBox = new JTextField();

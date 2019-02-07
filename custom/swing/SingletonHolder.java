@@ -5,23 +5,22 @@ import java.util.HashMap;
 import utilities.DebugUtility;
 
 /**
- * One central location where all JFrames can be retrieved from
- * 
- * @param <T> the type of swing component this map will hold
+ * One central location where all Singletons
  */
-public class SwingContainer<T> extends HashMap<Integer, T> {
+public class SingletonHolder extends HashMap<Integer, Object> implements Singleton {
 
 	/** */
 	private static final long serialVersionUID = -7521308897521447933L;
+
+	private static SingletonHolder instance = new SingletonHolder();
 
 	/**
 	 * @param c type of panel to get instance of
 	 * @return base panel
 	 */
-	@SuppressWarnings("unchecked")
-	public synchronized T getInstanceOf(Class<?> c) {
+	public static synchronized Object getInstanceOf(Class<?> c) {
 
-		if (!this.containsKey(c.hashCode())) {
+		if (!instance.containsKey(c.hashCode())) {
 			Object y = null;
 			try {
 				y = c.newInstance();
@@ -36,10 +35,15 @@ public class SwingContainer<T> extends HashMap<Integer, T> {
 			} else {
 				obj = y.hashCode() + "";
 			}
-			DebugUtility.trace(SwingContainer.class, "On the fly created " + c.getSimpleName() + obj);
+			DebugUtility.trace(SingletonHolder.class, "On the fly created " + c.getSimpleName() + obj);
 
-			this.put(c.hashCode(), (T) y);
+			instance.put(c.hashCode(), y);
 		}
-		return this.get(c.hashCode());
+		return instance.get(c.hashCode());
+	}
+
+	@Override
+	public void create() {
+		instance = new SingletonHolder();
 	}
 }

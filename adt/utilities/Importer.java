@@ -1,4 +1,4 @@
-package structures;
+package utilities;
 
 import java.io.File;
 

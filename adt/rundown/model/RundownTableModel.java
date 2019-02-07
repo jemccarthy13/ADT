@@ -45,9 +45,9 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		case 2:
 			return RundownAssets.getInstance().get(rowIndex).getAirspace();
 		case 3:
-			return RundownAssets.getInstance().get(rowIndex).getLowerAlt();
+			return RundownAssets.getInstance().get(rowIndex).getAlt().getLower();
 		case 4:
-			return RundownAssets.getInstance().get(rowIndex).getUpperAlt();
+			return RundownAssets.getInstance().get(rowIndex).getAlt().getUpper();
 		case 5:
 			return RundownAssets.getInstance().get(rowIndex).getStatus();
 		case 6:
@@ -88,24 +88,24 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 			this.items.get(rowIndex).setVCS(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
-				ATOAssets.staticInstance().lookup(rowIndex, 0, val);
+				ATOAssets.getInstance().lookup(rowIndex, 0, val);
 			}
 			break;
 		case 1:
 			this.items.get(rowIndex).setMode2(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
-				ATOAssets.staticInstance().lookup(rowIndex, 1, val);
+				ATOAssets.getInstance().lookup(rowIndex, 1, val);
 			}
 			break;
 		case 2:
 			this.items.get(rowIndex).setAirspace(val);
 			break;
 		case 3:
-			this.items.get(rowIndex).setLowerAlt(val);
+			this.items.get(rowIndex).getAlt().setLower(val);
 			break;
 		case 4:
-			this.items.get(rowIndex).setUpperAlt(val);
+			this.items.get(rowIndex).getAlt().setUpper(val);
 			break;
 		case 5:
 			this.items.get(rowIndex).setStatus(val);

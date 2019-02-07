@@ -9,7 +9,8 @@ import main.ADTApp;
 import rundown.gui.RundownFrame;
 import rundown.gui.RundownMenuBar;
 import structures.ATOAssets;
-import swing.GUI;
+import swing.BaseFrame;
+import swing.SingletonHolder;
 import utilities.BaseTest;
 import utilities.Configuration;
 
@@ -30,8 +31,8 @@ public class ADTMenuBarTest extends BaseTest {
 	 */
 	@AfterClass
 	public static void dispose() {
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(false);
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).dispose();
+		((BaseFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(false);
+		((BaseFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).dispose();
 	}
 
 	/**
@@ -42,7 +43,7 @@ public class ADTMenuBarTest extends BaseTest {
 		Configuration.getInstance().setATOLoadLoc("./TESTATO.txt");
 		RundownMenuBar.getInstance().doImport.doClick();
 
-		Assert.assertTrue(ATOAssets.staticInstance().size() == 1000);
+		Assert.assertTrue(ATOAssets.getInstance().size() == 1001);
 
 		// random sample one to make sure it's the right guy
 	}

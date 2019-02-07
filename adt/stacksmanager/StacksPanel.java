@@ -101,7 +101,8 @@ public class StacksPanel extends BasePanel {
 				airspace = ast.getAirspace() + uScores;
 			}
 
-			retVal += ast.getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAltRangeStr() + ast.getTxAlt() + "\n";
+			retVal += ast.getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString() + ast.getTxAlt()
+					+ "\n";
 		}
 
 		retVal += "****** END STACK ******";

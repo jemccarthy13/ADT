@@ -1,5 +1,6 @@
 package asmanager;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,7 @@ import structures.AirspaceList;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
@@ -28,7 +29,8 @@ public class AirspaceManagerActivePanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Iterator<Airspace> it = AirspaceList.getInstance().iterator();
+			Iterator<Airspace> it = ((AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))).iterator();
+
 			while (it.hasNext()) {
 				Airspace aspace = it.next();
 				if (aspace.isAddToRundown()) {
@@ -37,8 +39,8 @@ public class AirspaceManagerActivePanel extends BasePanel {
 				}
 			}
 
-			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
-			GUI.FRAMES.getInstanceOf(ASManagerFrame.class).repaint();
+			((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
+			((Component) SingletonHolder.getInstanceOf(ASManagerFrame.class)).repaint();
 		}
 	};
 

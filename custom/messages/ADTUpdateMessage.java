@@ -2,7 +2,7 @@ package messages;
 
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTableModel;
-import swing.GUI;
+import swing.SingletonHolder;
 
 /**
  * A message containing an update to the rundown
@@ -31,9 +31,9 @@ public class ADTUpdateMessage extends ADTBaseMessage {
 
 	@Override
 	public void process() {
-		((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).setValueAt(this.value, this.row,
+		((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).setValueAt(this.value, this.row,
 				this.column, false, false);
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+		RundownFrame.refresh();
 	}
 
 	@Override

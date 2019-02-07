@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import datastructures.TestStruct;
-import swing.SwingContainer;
+import swing.SingletonHolder;
 import utilities.BaseTest;
 
 /**
@@ -29,9 +29,10 @@ public class CustomSwing extends BaseTest {
 	 */
 	@Test
 	public void instanceOfInstantiateException() {
-		SwingContainer<AbstractTableModel> sc = new SwingContainer<AbstractTableModel>();
+		// SingletonHolder<AbstractTableModel> sc = new
+		// SingletonHolder<AbstractTableModel>();
 
-		AbstractTableModel l = sc.getInstanceOf(AbstractTableModel.class);
+		AbstractTableModel l = (AbstractTableModel) SingletonHolder.getInstanceOf(AbstractTableModel.class);
 		Assert.assertNull(l);
 	}
 
@@ -40,7 +41,7 @@ public class CustomSwing extends BaseTest {
 	 */
 	@Test
 	public void instanceOfAccessException() {
-		SwingContainer<TestStruct> hc = new SwingContainer<TestStruct>();
-		Assert.assertNull(hc.getInstanceOf(TestStruct.class));
+		// SingletonHolder<TestStruct> hc = new SingletonHolder<TestStruct>();
+		Assert.assertNull(SingletonHolder.getInstanceOf(TestStruct.class));
 	}
 }

@@ -2,6 +2,8 @@ package adttest;
 
 import java.awt.AWTException;
 
+import javax.swing.JFrame;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -14,7 +16,7 @@ import rundown.gui.RundownButtonPanel;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ADTRobot;
 import utilities.BaseTest;
 import utilities.DebugUtility;
@@ -37,8 +39,8 @@ public class ADTTest extends BaseTest {
 	 */
 	@AfterClass
 	public static void dispose() {
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(false);
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).dispose();
+		((JFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(false);
+		((JFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).dispose();
 	}
 
 	/**
@@ -46,13 +48,14 @@ public class ADTTest extends BaseTest {
 	 */
 	@Test
 	public void columnResize() {
-		((RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
+		((RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
 		ADTRobot.sleep(500);
-		Assert.assertTrue(9 == GUI.MODELS.getInstanceOf(RundownTableModel.class).getColumnCount());
-		((RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
+		Assert.assertTrue(
+				10 == ((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount());
+		((RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
 		ADTRobot.sleep(1000);
 		DebugUtility.debug(ADTTest.class,
-				((RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class)).getColumnCount() + "");
+				((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount() + "");
 		Assert.assertTrue(RundownTable.getInstance().getColumnModel().getColumn(6).getWidth() == 5);
 	}
 
@@ -61,8 +64,9 @@ public class ADTTest extends BaseTest {
 	 */
 	@Test
 	public void rundownModelCoverage() {
-		GUI.MODELS.getInstanceOf(RundownTableModel.class).setValueAt("Invalid", 5, 5);
-		Assert.assertTrue(6 == GUI.MODELS.getInstanceOf(RundownTableModel.class).getRowCount());
+		((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).setValueAt("Invalid", 5, 5);
+		Assert.assertTrue(
+				6 == ((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getRowCount());
 	}
 
 	/**
@@ -70,7 +74,7 @@ public class ADTTest extends BaseTest {
 	 */
 	@Test
 	public void test() {
-		RundownButtonPanel panel = ((RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class));
+		RundownButtonPanel panel = ((RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class));
 		panel.atoLookupBtn.doClick();
 	}
 
@@ -86,7 +90,7 @@ public class ADTTest extends BaseTest {
 
 		ADTRobot.sleep(3000);
 		Assert.assertFalse(RundownTable.getInstance().isCellEditable(0, 4));
-		client.interrupt();
+		client.sendMessage(new ADTLockedMessage(0, 4, false));
 		ADTRobot.sleep(4000);
 		Assert.assertTrue(RundownTable.getInstance().isCellEditable(0, 4));
 		client.interrupt();

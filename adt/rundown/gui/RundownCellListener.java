@@ -1,5 +1,6 @@
 package rundown.gui;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -11,7 +12,7 @@ import rundown.model.RundownTable;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 import utilities.Output;
 
@@ -188,7 +189,7 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				cnt1++;
 			}
 
-			GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
 	}
 }

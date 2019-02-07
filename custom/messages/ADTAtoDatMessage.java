@@ -34,12 +34,10 @@ public class ADTAtoDatMessage extends ADTBaseMessage {
 			DebugUtility.debug(ADTAtoDatMessage.class, "Loading: " + this.atoLoc);
 			File f = new File(this.atoLoc);
 			try {
-				System.out.println(ATOAssets.staticInstance().size());
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 				ATOAssets.resetInstance((ATOAssets) (ois.readObject()));
 				ois.close();
 				DebugUtility.debug(ADTAtoDatMessage.class, "Updated ATO Lookup");
-				System.out.println(ATOAssets.staticInstance().size());
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {

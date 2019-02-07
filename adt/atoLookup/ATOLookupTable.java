@@ -3,7 +3,7 @@ package atoLookup;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ADTTableModel;
 import utilities.Fonts;
 
@@ -32,7 +32,7 @@ public class ATOLookupTable extends JTable {
 
 	private ATOLookupTable() {
 
-		this.model = GUI.MODELS.getInstanceOf(ATOLookupModel.class);
+		this.model = (ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class);
 		this.setFont(Fonts.serif);
 
 		// set the data

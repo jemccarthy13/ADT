@@ -1,5 +1,6 @@
 package datastructures;
 
+import java.awt.Component;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 
 import gui.ATOGeneratorFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
@@ -58,7 +59,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 		}
 		if (!blankRow) {
 			addNew();
-			GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
+			((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 		}
 	}
 

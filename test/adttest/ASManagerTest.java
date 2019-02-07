@@ -3,7 +3,8 @@ package adttest;
 import org.junit.Test;
 
 import rundown.gui.RundownButtonPanel;
-import swing.GUI;
+import swing.SingletonHolder;
+import utilities.ADTRobot;
 import utilities.BaseTest;
 
 /**
@@ -16,8 +17,9 @@ public class ASManagerTest extends BaseTest {
 	 */
 	@Test
 	public void testOpenASManager() {
-		RundownButtonPanel panel = (RundownButtonPanel) GUI.PANELS.getInstanceOf(RundownButtonPanel.class);
+		RundownButtonPanel panel = (RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class);
 		panel.asMgrBtn.doClick();
+		ADTRobot.sleep(4000);
 	}
 
 	/**

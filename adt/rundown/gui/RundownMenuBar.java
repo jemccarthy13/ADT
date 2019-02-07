@@ -1,6 +1,7 @@
 package rundown.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,16 +21,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import atoLookup.ATOImporter;
 import atoLookup.ATOLookupFrame;
 import messages.ADTAtoDatMessage;
 import messages.ADTForceUnlockMessage;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import structures.ATOAssets;
-import structures.ATOImporter;
 import structures.LockedCells;
 import structures.RundownAssets;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.CGRSKeypadFinder;
 import utilities.Configuration;
 import utilities.DebugUtility;
@@ -125,11 +126,11 @@ public class RundownMenuBar extends JMenuBar {
 				RundownFrame.getClient().sendMessage(new ADTForceUnlockMessage());
 				// RundownFrame.getClient().sendMessage("forced");
 				RundownTable.getInstance().editCellAt(-1, -1);
-				LockedCells.getLockedCells().clear();
-				for (Integer user : LockedCells.getLockedCells().keySet()) {
+				LockedCells.getInstance().clear();
+				for (Integer user : LockedCells.getInstance().keySet()) {
 					LockedCells.unlockUser(user);
 				}
-				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+				((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.doImport)) {
 				FileChooser.selectAndLoadFile("Select an ATO", new FileNameExtensionFilter("ATO", "txt"),
 						Configuration.getInstance().getATOLoadLoc(), new ATOImporter());
@@ -170,17 +171,18 @@ public class RundownMenuBar extends JMenuBar {
 					RundownAssets.zeroize();
 					RundownAssets.checkAddNew();
 				}
-				GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
-				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+				((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
+				((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 			} else if (e.getSource().equals(RundownMenuBar.this.refresh)) {
 				DebugUtility.trace(RundownMenuBar.class, "Refresh option pressed.");
 
 				List<? extends SortKey> keys = RundownTable.getInstance().getRowSorter().getSortKeys();
 				RundownTable.getInstance().setRowSorter(null);
-				GUI.FRAMES.getInstanceOf(RundownFrame.class).repaint();
+				((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 
 				TableRowSorter<TableModel> sorter;
-				sorter = new TableRowSorter<TableModel>(GUI.MODELS.getInstanceOf(RundownTableModel.class));
+				sorter = new TableRowSorter<TableModel>(
+						(TableModel) SingletonHolder.getInstanceOf(RundownTableModel.class));
 				sorter.setSortKeys(keys);
 				sorter.setRowFilter(null);
 				RundownTable.getInstance().setRowSorter(sorter);

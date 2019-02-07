@@ -1,7 +1,8 @@
 package messages;
 
 import rundown.gui.RundownFrame;
-import swing.GUI;
+import swing.BaseFrame;
+import swing.SingletonHolder;
 
 /**
  * Message containing client/server ID
@@ -22,7 +23,8 @@ public class ADTIdMessage extends ADTBaseMessage {
 
 	@Override
 	public void process() {
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).established(Integer.parseInt(getCommand().split(",")[1]));
+		((BaseFrame) SingletonHolder.getInstanceOf(RundownFrame.class))
+				.established(Integer.parseInt(getCommand().split(",")[1]));
 	}
 
 	@Override

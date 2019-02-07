@@ -37,7 +37,7 @@ public class ATOLookupModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Category");
 		this.fullColumnNames.add("On Station");
 		this.fullColumnNames.add("Off Station");
-		this.items = ATOAssets.staticInstance();
+		this.items = ATOAssets.getInstance();
 	}
 
 	@Override

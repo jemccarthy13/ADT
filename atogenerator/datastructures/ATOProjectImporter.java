@@ -1,15 +1,17 @@
 package datastructures;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import gui.ATOGeneratorFrame;
-import structures.Importer;
-import swing.GUI;
+import swing.SingletonHolder;
 import table.ATOTableModel;
+import utilities.ADTTableModel;
 import utilities.DebugUtility;
+import utilities.Importer;
 
 /**
  * An Importer for ATO .PROJ files
@@ -23,10 +25,10 @@ public class ATOProjectImporter implements Importer {
 				FileInputStream is = new FileInputStream(f.getAbsolutePath());
 				ObjectInputStream ois = new ObjectInputStream(is);
 				ATOData.setInstance((ATOData) ois.readObject());
-				GUI.MODELS.getInstanceOf(ATOTableModel.class).setItems(ATOData.getInstance());
+				((ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOTableModel.class)).setItems(ATOData.getInstance());
 
-				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).repaint();
-				GUI.FRAMES.getInstanceOf(ATOGeneratorFrame.class).validate();
+				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
+				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).validate();
 				ois.close();
 				is.close();
 

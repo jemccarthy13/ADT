@@ -1,10 +1,11 @@
 package asmanager;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import rundown.gui.RundownFrame;
 import swing.BaseFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ImageLibrary;
 
 /**
@@ -26,7 +27,7 @@ public class ASManagerFrame extends BaseFrame {
 
 		this.setIconImage(ImageLibrary.getImage("searchIcon"));
 		this.setTitle("Airspace Manager");
-		this.setLocationRelativeTo(GUI.FRAMES.getInstanceOf(RundownFrame.class));
+		this.setLocationRelativeTo((JFrame) (SingletonHolder.getInstanceOf(RundownFrame.class)));
 		this.setAirspacePanel();
 		this.add(this.content);
 	}

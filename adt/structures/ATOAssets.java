@@ -1,5 +1,6 @@
 package structures;
 
+import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -7,13 +8,13 @@ import javax.swing.JFileChooser;
 import atoLookup.ATOLookupFrame;
 import atoLookup.ATOSearchPanel;
 import rundown.model.RundownTableModel;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
  * An ArrayList of Assets for the ATO Lookup form
  */
-public class ATOAssets extends ArrayList<Asset> implements HasInstance {
+public class ATOAssets extends ArrayList<Asset> {
 
 	/**
 	 * Expose the FileChooser to tests
@@ -27,19 +28,9 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 	}
 
 	/**
-	 * Singleton implementation.
-	 * 
 	 * @return single instance
 	 */
-	@Override
-	public ATOAssets getInstance() {
-		return instance;
-	}
-
-	/**
-	 * @return single instance
-	 */
-	public static ATOAssets staticInstance() {
+	public static ATOAssets getInstance() {
 		return instance;
 	}
 
@@ -55,7 +46,7 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 		for (Asset ast : newInstance) {
 			instance.add(ast);
 		}
-		GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).repaint();
+		((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
 	}
 
 	/**
@@ -96,11 +87,11 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 		if (foundCount > 1) {
 			DebugUtility.trace(this.getClass(), "Found more than one: " + val);
 
-			GUI.MODELS.getInstanceOf(RundownTableModel.class).setValueAt("", row, column);
+			((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).setValueAt("", row, column);
 			// Open the ATO Lookup frame
 			// Enter the search terms in the correct UI
 			// Press search button and wait for user to choose correct asset
-			GUI.FRAMES.getInstanceOf(ATOLookupFrame.class).setVisible(true);
+			((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).setVisible(true);
 			switch (column) {
 			case 0:
 				ATOSearchPanel.vcsBox.setText(val + "$");
@@ -114,7 +105,7 @@ public class ATOAssets extends ArrayList<Asset> implements HasInstance {
 
 			ATOSearchPanel.searchBtn.doClick();
 		} else if (foundCount == 1) {
-			RundownTableModel m = (RundownTableModel) GUI.MODELS.getInstanceOf(RundownTableModel.class);
+			RundownTableModel m = (RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class);
 			m.setValueAt(foundAsset.getVCS(), row, 0, true, false);
 			m.setValueAt(foundAsset.getMode2(), row, 1, true, false);
 			m.setValueAt(foundAsset.getSpecType(), row, 6, true, false);

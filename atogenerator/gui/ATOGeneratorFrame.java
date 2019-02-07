@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.Component;
+
 import swing.BaseFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.DebugUtility;
 import utilities.ImageLibrary;
 
@@ -24,7 +26,7 @@ public class ATOGeneratorFrame extends BaseFrame {
 		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));
 		DebugUtility.trace(ATOGeneratorFrame.class, "IconImage loaded/set");
 
-		this.add(GUI.PANELS.getInstanceOf(ATOPanel.class));
+		this.add((Component) SingletonHolder.getInstanceOf(ATOPanel.class));
 		DebugUtility.trace(ATOGeneratorFrame.class, "MainPanel added");
 	}
 }

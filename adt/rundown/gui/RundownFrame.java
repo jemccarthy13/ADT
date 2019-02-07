@@ -1,12 +1,13 @@
 package rundown.gui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import main.ADTClient;
 import rundown.model.RundownTable;
 import swing.BaseFrame;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.ImageLibrary;
@@ -23,6 +24,13 @@ public class RundownFrame extends BaseFrame {
 	private static final long serialVersionUID = -5736125343545871775L;
 	// private static ADTClient client;
 	private static ADTClient client;
+
+	/**
+	 * Wrapper to repaint the rundown
+	 */
+	public static void refresh() {
+		((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
+	}
 
 	/**
 	 * Create the frame.
@@ -46,7 +54,7 @@ public class RundownFrame extends BaseFrame {
 		this.setJMenuBar(RundownMenuBar.getInstance());
 
 		// add the rundown (buttons, table)
-		this.add(GUI.PANELS.getInstanceOf(RundownPanel.class));
+		this.add((Component) SingletonHolder.getInstanceOf(RundownPanel.class));
 
 		// handle the original sizing
 		this.handleCompact();

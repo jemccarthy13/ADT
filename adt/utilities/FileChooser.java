@@ -5,8 +5,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import structures.Importer;
-
 /**
  * Utility to choose and import a file.
  * 

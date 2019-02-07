@@ -1,8 +1,10 @@
 package adttest;
 
+import java.awt.Window;
+
 import rundown.gui.RundownFrame;
 import server.ADTServer;
-import swing.GUI;
+import swing.SingletonHolder;
 import utilities.ADTRobot;
 import utilities.BaseTest;
 import utilities.DebugUtility;
@@ -51,7 +53,7 @@ public class ServerTest {
 		/** TODO - assert a successful connection to ADTServer */
 		// BaseTest.fail("Need to implement verification of the correct server");
 
-		GUI.FRAMES.getInstanceOf(RundownFrame.class).setVisible(true);
+		((Window) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(true);
 		ts.stopCondition = true;
 
 		// while (!BaseTest.outContent.toString().contains("(TestServer")) {

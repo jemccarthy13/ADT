@@ -15,7 +15,7 @@ public class LockedCells extends HashMap<Integer, Integer[]> {
 	/**
 	 * @return the current list of locked cells
 	 */
-	public static LockedCells getLockedCells() {
+	public static LockedCells getInstance() {
 		return instance;
 	}
 
