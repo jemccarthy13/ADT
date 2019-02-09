@@ -40,6 +40,15 @@ public class RundownTable extends JTable {
 	 */
 	public HashSet<String> listOfConflicts = new HashSet<String>();
 
+	private RundownCellListener listener = new RundownCellListener();
+
+	/**
+	 * @return the rundown cell listener (which runs conflict checks)
+	 */
+	public RundownCellListener getCellListener() {
+		return this.listener;
+	}
+
 	/**
 	 * Singleton implementation
 	 * 
@@ -96,6 +105,11 @@ public class RundownTable extends JTable {
 					c.setBackground(Color.RED);
 				} else if (LockedCells.isLocked(row, column)) {
 					c.setBackground(Color.gray.darker());
+				} else if (column == 2) {
+					Color colr = (Color) (RundownTable.getInstance().getValueAt(row, 10));
+					if (colr != Color.WHITE) {
+						c.setBackground(colr);
+					}
 				} else if (!isSelected) {
 					c.setBackground(RundownTable.getInstance().getBackground());
 				}
@@ -126,11 +140,7 @@ public class RundownTable extends JTable {
 
 		Configuration.setCompact(3);
 
-		for (
-
-				int x = 0; x <
-
-				getModel().getColumnCount(); x++) {
+		for (int x = 0; x < getModel().getColumnCount(); x++) {
 			getColumnModel().getColumn(x).setCellEditor(new MyTableCellEditor() {
 
 				/**
@@ -144,7 +154,7 @@ public class RundownTable extends JTable {
 				}
 			});
 		}
-		this.addPropertyChangeListener(new RundownCellListener());
+		this.addPropertyChangeListener(this.listener);
 	}
 
 	/**
@@ -152,9 +162,9 @@ public class RundownTable extends JTable {
 	 */
 	public void resizeColumns() {
 		DebugUtility.trace(RundownTable.class, "Resizing...");
-		int[] minWidths = { 60, 60, 140, 60, 60, 90, 60, 60, 60, 0 };
-		int[] widths = { 60, 60, 140, 60, 60, 60, 100, 100, 100, 0 };
-		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100, 0 };
+		int[] minWidths = { 60, 60, 140, 60, 60, 90, 60, 60, 60, 0, 0 };
+		int[] widths = { 60, 60, 140, 60, 60, 60, 100, 100, 100, 0, 0 };
+		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100, 0, 0 };
 
 		// size the columns
 		/** TODO - reduce the amount of code? */

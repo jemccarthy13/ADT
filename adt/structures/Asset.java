@@ -1,5 +1,6 @@
 package structures;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -8,7 +9,7 @@ import utilities.Configuration;
 /**
  * Representation of an asset under control.
  */
-public class Asset extends ArrayList<Object> {
+public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	private static final long serialVersionUID = 8634221915912471387L;
 	private String vcs = "";
@@ -29,6 +30,7 @@ public class Asset extends ArrayList<Object> {
 	 * A flag whether this asst is in conflict with another, or not
 	 */
 	public boolean inConflict = false;
+	private Color highlightColor = Color.WHITE;
 
 	@Override
 	public Object set(int columnIndex, Object aValue) {
@@ -345,5 +347,34 @@ public class Asset extends ArrayList<Object> {
 				&& this.location.equals("") && this.altBlock.isBlank() && this.getStatus().equals("")
 				&& this.getSpecType().equals("") && this.getTypeCat().equals("") && this.getOnStation().equals("")
 				&& this.getOffStation().equals("") && this.arData.equals("") && this.getAirspace().equals("");
+	}
+
+	@Override
+	public int compareTo(Asset o) {
+		if (this.altBlock.getUpper().equals("")) {
+			return -1;
+		}
+		if (o.altBlock.getUpper().equals("")) {
+			return 1;
+		}
+		return Integer.parseInt(o.altBlock.getUpper()) - Integer.parseInt(this.altBlock.getUpper());
+	}
+
+	/**
+	 * Setter for airspace highlight color
+	 * 
+	 * @param color - the color to use
+	 */
+	public void setAirspaceHighlightColor(Color color) {
+		this.highlightColor = color;
+	}
+
+	/**
+	 * getter for highlight color
+	 * 
+	 * @return highlighting color for this asset
+	 */
+	public Color getHighlightColor() {
+		return this.highlightColor;
 	}
 }

@@ -1,6 +1,7 @@
 package utilities;
 
 import java.awt.Image;
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -38,10 +39,16 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 */
 	public static Image getImage(String name) {
 		Image img = null;
-		ImageIcon icon = new ImageIcon(ImageLibrary.class.getResource(name));
-		icon.setDescription(name);
-		DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
-		img = icon.getImage();
+		ImageIcon icon = null;
+		URL location = ImageLibrary.class.getResource(name);
+
+		if (location != null)
+			icon = new ImageIcon(ImageLibrary.class.getResource(name));
+		if (icon != null) {
+			icon.setDescription(name);
+			DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
+			img = icon.getImage();
+		}
 		return img;
 	}
 }

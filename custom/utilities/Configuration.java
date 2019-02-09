@@ -24,7 +24,7 @@ public class Configuration {
 	// private String ATOLoadLoc = "./TESTATO.txt";
 	private String ATOLoadLoc = "";
 
-	private KeypadFinder finder = new GARSKeypadFinder();
+	private KeypadFinder finder = new CGRSKeypadFinder();
 
 	private static Configuration instance = new Configuration();
 

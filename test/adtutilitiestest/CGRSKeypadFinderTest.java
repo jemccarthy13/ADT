@@ -1,5 +1,6 @@
 package adtutilitiestest;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -115,10 +116,10 @@ public class CGRSKeypadFinderTest {
 		Assert.assertTrue(result.size() == 0);
 
 		AirspaceList list = (AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class);
-		list.add(new Airspace("TEST", "99AL", "100", "100"));
-		list.add(new Airspace("TEST", "88AL", "100", "100"));
-		list.add(new Airspace("TEST", "67AL", "100", "100"));
-		list.add(new Airspace("TEST", "77AL", "100", "100"));
+		list.add(new Airspace("TEST", "99AL", "100", "100", Color.RED));
+		list.add(new Airspace("TEST", "88AL", "100", "100", Color.BLUE));
+		list.add(new Airspace("TEST", "67AL", "100", "100", Color.GREEN));
+		list.add(new Airspace("TEST", "77AL", "100", "100", Color.GREEN));
 		// Assert.assertTrue(AirspaceList.getInstance().size() == 1);
 		representation = "TEST";
 		result = this.finder.getKeypads(representation);

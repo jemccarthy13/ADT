@@ -15,7 +15,7 @@ public class AirspaceTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 6374738048245958214L;
 	private static AirspaceTableModel instance = new AirspaceTableModel();
 
-	private String[] columnNames = { "Add", "Color", "Name", "Location", "Alt L", "Alt U" };
+	private String[] columnNames = { "Activate", "Color", "Name", "Location", "Alt L", "Alt U" };
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -87,7 +87,7 @@ public class AirspaceTableModel extends AbstractTableModel {
 		case 0:
 			return list.get(rowIndex).isAddToRundown();
 		case 1:
-			return list.get(rowIndex).getName();
+			return list.get(rowIndex).getColor();
 		case 2:
 			return list.get(rowIndex).getName();
 		case 3:

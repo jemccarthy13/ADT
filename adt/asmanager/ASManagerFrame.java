@@ -1,11 +1,11 @@
 package asmanager;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import rundown.gui.RundownFrame;
 import swing.BaseFrame;
 import swing.SingletonHolder;
+import utilities.DebugUtility;
 import utilities.ImageLibrary;
 
 /**
@@ -18,8 +18,6 @@ public class ASManagerFrame extends BaseFrame {
 
 	private static final long serialVersionUID = 311927586878557417L;
 
-	private JPanel content;
-
 	@Override
 	public void create() {
 		setSize(800, 900);
@@ -28,14 +26,14 @@ public class ASManagerFrame extends BaseFrame {
 		this.setIconImage(ImageLibrary.getImage("searchIcon"));
 		this.setTitle("Airspace Manager");
 		this.setLocationRelativeTo((JFrame) (SingletonHolder.getInstanceOf(RundownFrame.class)));
-		this.setAirspacePanel();
-		this.add(this.content);
+
+		this.add(AirspaceManagerForm.getInstance());
 	}
 
 	/**
-	 * Set the content panel to be the airspace manager.
+	 * Set the content panel to nothing and shorten the user action chain
 	 */
-	public void setAirspacePanel() {
-		this.content = AirspaceManagerForm.getInstance();
+	public void setMildeon() {
+		DebugUtility.error(ASManagerFrame.class, "SETUP AS MANAGER FRAME FOR MILDECON");
 	}
 }

@@ -26,6 +26,7 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Category");
 		this.fullColumnNames.add("Full Callsign");
 		this.fullColumnNames.add("In Conflict");
+		this.fullColumnNames.add("Color");
 
 		this.items = RundownAssets.getInstance();
 	}
@@ -56,6 +57,8 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 			return RundownAssets.getInstance().get(rowIndex).getSpecType();
 		case 9:
 			return RundownAssets.getInstance().get(rowIndex).inConflict;
+		case 10:
+			return RundownAssets.getInstance().get(rowIndex).getHighlightColor();
 		default:
 			return RundownAssets.getInstance().get(rowIndex).getFullCallsign();
 		}

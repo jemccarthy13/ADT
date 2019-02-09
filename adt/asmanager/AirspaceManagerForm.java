@@ -15,9 +15,6 @@ import swing.SingletonHolder;
 
 /**
  * The main content panel for the airspace manager
- * 
- * @author John McCarthy
- *
  */
 public class AirspaceManagerForm extends JPanel {
 
@@ -39,6 +36,8 @@ public class AirspaceManagerForm extends JPanel {
 		this.setBorder(new EmptyBorder(40, 40, 40, 40));
 
 		AirspaceTable table = AirspaceTable.getInstance();
+
+		table.addPropertyChangeListener(new AirspaceManagerCellListener());
 
 		Border border = new LineBorder(Color.black);
 		table.setBorder(border);

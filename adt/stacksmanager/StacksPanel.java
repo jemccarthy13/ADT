@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -19,7 +21,6 @@ import structures.Asset;
 import structures.RundownAssets;
 import swing.ActionButton;
 import swing.BasePanel;
-import utilities.DebugUtility;
 import utilities.Fonts;
 
 /**
@@ -30,12 +31,22 @@ public class StacksPanel extends BasePanel {
 	/**
 	 * Stack output area
 	 */
-	JTextArea outArea = new JTextArea();
+	private JTextArea outArea;
+
+	/**
+	 * Viewing area for the output area
+	 */
+	private JScrollPane pane;
 
 	/**
 	 * Check box for whether or not output should be in FTM format
 	 */
-	JCheckBox ftmFormat = new JCheckBox();
+	private JCheckBox ftmFormat;
+
+	/**
+	 * Button to generate stack output
+	 */
+	private ActionButton generateBtn;
 
 	/**
 	 * Generated Serialization
@@ -50,10 +61,8 @@ public class StacksPanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			DebugUtility.error(StacksButtonListener.class, "Unimplemented - TODO - generate stack");
-			DebugUtility.trace(StacksButtonListener.class, formatRundown(-1));
+			formatRundown(-1);
 		}
-
 	}
 
 	private int getAirspaceLen() {
@@ -77,40 +86,49 @@ public class StacksPanel extends BasePanel {
 	 * @return a String formatted with the rundown
 	 */
 	String formatRundown(int lenAirspace) {
-		RundownAssets.getInstance();
 
 		// find the max airspace length, or use the parameter
 		int asLen = lenAirspace == -1 ? getAirspaceLen() : lenAirspace;
 
-		String retVal = "***** START STACK *****\n";
+		String retVal = "> ***** START STACK *****\r\n";
 
-		for (Asset ast : RundownAssets.getInstance()) {
-			String m2 = ast.getMode2().equals("") ? "____" : ast.getMode2();
+		ArrayList<Asset> sortedRundown = new ArrayList<Asset>();
+		sortedRundown.addAll(RundownAssets.getInstance());
 
-			int numScores = asLen - ast.getAirspace().length();
-			StringBuffer outputBuffer = new StringBuffer(numScores);
-			for (int i = 0; i < numScores; i++) {
-				outputBuffer.append("_");
+		Collections.sort(sortedRundown);
+
+		for (Asset ast : sortedRundown) {
+			if (!ast.isBlank()) {
+				String m2 = ast.getMode2().equals("") ? "____" : ast.getMode2();
+
+				int numScores = asLen - ast.getAirspace().length();
+				StringBuffer outputBuffer = new StringBuffer(numScores);
+				for (int i = 0; i < numScores; i++) {
+					outputBuffer.append("_");
+				}
+				String uScores = outputBuffer.toString();
+
+				String airspace = "";
+				if (ast.getAirspace().length() > asLen) {
+					airspace = ast.getAirspace().substring(1, 9) + "...";
+				} else {
+					airspace = ast.getAirspace() + uScores;
+				}
+
+				retVal += "> " + ast.getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString()
+						+ ast.getTxAlt() + "\r\n";
 			}
-			String uScores = outputBuffer.toString();
-
-			String airspace = "";
-			if (ast.getAirspace().length() > asLen) {
-				airspace = ast.getAirspace().substring(1, 9) + "...";
-			} else {
-				airspace = ast.getAirspace() + uScores;
-			}
-
-			retVal += ast.getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString() + ast.getTxAlt()
-					+ "\n";
 		}
 
-		retVal += "****** END STACK ******";
+		retVal += "> ****** END STACK ******";
 		if (this.ftmFormat.isSelected()) {
 			retVal = retVal.replaceAll("_", "");
 			retVal = retVal.replaceAll("\n", "//\n");
 			retVal += "//";
 		}
+
+		this.outArea.setText(retVal);
+		this.repaint();
 		return retVal;
 	}
 
@@ -131,6 +149,7 @@ public class StacksPanel extends BasePanel {
 		JTextArea inGrids = new JTextArea();
 
 		gridSubPanel1.add(bma);
+		bma.setSelected(true);
 		gridSubPanel1.add(this.ftmFormat);
 		gridSubPanel1.add(byAirspace);
 		gridSubPanel1.add(new JLabel(""));
@@ -158,7 +177,8 @@ public class StacksPanel extends BasePanel {
 		JPanel gridSubSubPanel = new JPanel();
 		gridSubSubPanel.setLayout(new GridLayout(3, 1, 20, 10));
 		gridSubSubPanel.add(new JLabel(""));
-		gridSubSubPanel.add(new ActionButton("Generate", new StacksButtonListener()));
+		this.generateBtn = new ActionButton("Generate", new StacksButtonListener());
+		gridSubSubPanel.add(this.generateBtn);
 		gridSubSubPanel.add(new JLabel(""));
 
 		gridSubPanel2.add(gridSubSubPanel);
@@ -171,12 +191,13 @@ public class StacksPanel extends BasePanel {
 		this.add(subPanel1, BorderLayout.NORTH);
 
 		this.outArea = new JTextArea();
-		JScrollPane pane = new JScrollPane();
-		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		pane.setViewportView(this.outArea);
+		this.outArea.setLineWrap(true);
+		this.pane = new JScrollPane();
+		this.pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		this.pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.pane.setViewportView(this.outArea);
 		this.outArea.setFont(Fonts.serif);
-		this.add(pane, BorderLayout.CENTER);
+		this.add(this.pane, BorderLayout.CENTER);
 	}
 
 }

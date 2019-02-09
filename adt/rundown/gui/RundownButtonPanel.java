@@ -33,7 +33,8 @@ public class RundownButtonPanel extends BasePanel {
 	/** publicize compact mode for unit test */
 	public JCheckBox compactCheck;
 
-	private ActionButton mildeconBtn;
+	/** Button to open the MILDECON assist (modified AS Manager frame) */
+	ActionButton mildeconBtn;
 
 	private ActionListener rdBtnListener;
 
@@ -60,6 +61,10 @@ public class RundownButtonPanel extends BasePanel {
 				c = ASManagerFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.stacksBtn)) {
 				c = StacksFrame.class;
+			} else if (e.getSource().equals(RundownButtonPanel.this.mildeconBtn)) {
+				c = ASManagerFrame.class;
+				ASManagerFrame asFrame = (ASManagerFrame) SingletonHolder.getInstanceOf(c);
+				asFrame.setMildeon();
 			}
 
 			BaseFrame frame = (BaseFrame) SingletonHolder.getInstanceOf(c);

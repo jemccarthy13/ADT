@@ -14,8 +14,6 @@ import utilities.AltCellListener;
 
 /**
  * The buttons / fields at the top of the airspace manager
- * 
- * @author John McCarthy
  */
 public class AirspaceManagerPanel extends BasePanel {
 

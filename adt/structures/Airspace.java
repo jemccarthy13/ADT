@@ -25,15 +25,17 @@ public class Airspace extends Asset {
 	/**
 	 * Constructor
 	 * 
-	 * @param name
-	 * @param location
-	 * @param lowAlt
-	 * @param upAlt
+	 * @param name     name of the airspace
+	 * @param location keypads of the airspace
+	 * @param lowAlt   lower block of the airspace
+	 * @param upAlt    upper block of the airspace
+	 * @param color    highlight color
 	 */
-	public Airspace(String name, String location, String lowAlt, String upAlt) {
+	public Airspace(String name, String location, String lowAlt, String upAlt, Color color) {
 		this.setName(name);
 		this.setAirspace(location);
 		this.setAltBlock(lowAlt, upAlt);
+		this.setColor(color);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package structures;
 
+import java.awt.Color;
 import java.util.Iterator;
 
 import utilities.DebugUtility;
@@ -36,6 +37,6 @@ public class AirspaceList extends ListOf<Airspace> {
 
 	@Override
 	public void create() {
-		this.add(new Airspace("TEST", "98AL", "000", "120"));
+		this.add(new Airspace("TEST", "98AL", "000", "120", Color.GREEN));
 	}
 }

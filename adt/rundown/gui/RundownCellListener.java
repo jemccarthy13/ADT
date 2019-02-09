@@ -1,5 +1,6 @@
 package rundown.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,6 +10,8 @@ import javax.swing.SwingUtilities;
 import messages.ADTLockedMessage;
 import messages.ADTUpdateMessage;
 import rundown.model.RundownTable;
+import structures.Airspace;
+import structures.AirspaceList;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
@@ -94,10 +97,11 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		return result;
 	}
 
-	/*
-	 * Update the Cell history when necessary
+	/**
+	 * Editing is done, so we check the appropriate things (i.e. conflicts /
+	 * highlighting)
 	 */
-	private void processEditingStopped() {
+	public void processEditingStopped() {
 
 		String errMsg = "";
 
@@ -189,7 +193,23 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				cnt1++;
 			}
 
-			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
+			// now loop through every asset that has a conflict
+			for (Airspace as : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+				hasConflict = false;
+				DebugUtility.trace(this.getClass(), "Checking AS: " + as.getName());
+				for (Asset other : RundownAssets.getInstance()) {
+					if (!as.isAddToRundown() && hasConflict == false) {
+						other.setAirspaceHighlightColor(Color.WHITE);
+					} else if (as.conflictsWith(other).size() > 0) {
+						DebugUtility.trace(this.getClass(),
+								"Conflict between " + as.getName() + " and " + other.getAirspace());
+						hasConflict = true;
+						other.setAirspaceHighlightColor(as.getColor());
+					}
+				}
+			}
 		}
+
+		((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 	}
 }

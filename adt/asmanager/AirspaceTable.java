@@ -6,9 +6,6 @@ import utilities.Fonts;
 
 /**
  * An ATO Lookup JTable.
- * 
- * @author John McCarthy
- *
  */
 public class AirspaceTable extends JTable {
 
