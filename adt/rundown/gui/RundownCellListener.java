@@ -172,7 +172,6 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			for (Asset fst : RundownAssets.getInstance()) {
 				if (fst.inConflict == true) {
 					hasConflict = false;
-					DebugUtility.trace(this.getClass(), "Checking " + fst.getAirspace());
 					count = 0;
 					for (Asset other : RundownAssets.getInstance()) {
 						if (cnt1 != count) {
@@ -193,23 +192,30 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				cnt1++;
 			}
 
-			// now loop through every asset that has a conflict
-			for (Airspace as : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
-				hasConflict = false;
-				DebugUtility.trace(this.getClass(), "Checking AS: " + as.getName());
-				for (Asset other : RundownAssets.getInstance()) {
-					if (!as.isAddToRundown() && hasConflict == false) {
-						other.setAirspaceHighlightColor(Color.WHITE);
-					} else if (as.conflictsWith(other).size() > 0) {
-						DebugUtility.trace(this.getClass(),
-								"Conflict between " + as.getName() + " and " + other.getAirspace());
-						hasConflict = true;
-						other.setAirspaceHighlightColor(as.getColor());
-					}
-				}
-			}
+			checkAirspaceHighlights();
 		}
 
 		((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
+	}
+
+	/**
+	 * Check the rundown for airspace highlighting
+	 */
+	public void checkAirspaceHighlights() {
+		// now loop through every asset that has a conflict
+		for (Asset other : RundownAssets.getInstance()) {
+
+			boolean hasConflict = false;
+			for (Airspace as : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+				if (as.isAddToRundown() && as.conflictsWith(other).size() > 0) {
+					hasConflict = true;
+					DebugUtility.trace(this.getClass(), as.getColor().toString());
+					other.setAirspaceHighlightColor(as.getColor());
+				}
+			}
+			if (!hasConflict) {
+				other.setAirspaceHighlightColor(Color.WHITE);
+			}
+		}
 	}
 }

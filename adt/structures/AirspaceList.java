@@ -3,6 +3,7 @@ package structures;
 import java.awt.Color;
 import java.util.Iterator;
 
+import asmanager.gui.ASManagerPanel;
 import utilities.DebugUtility;
 
 /**
@@ -13,6 +14,31 @@ import utilities.DebugUtility;
 public class AirspaceList extends ListOf<Airspace> {
 
 	private static final long serialVersionUID = 2248757932153418225L;
+
+	/**
+	 * Check the rundown for an entirely blank row. If one doesn't exist, add one
+	 * (to create the feel of a continuous form)
+	 */
+	public void checkAddNew() {
+		boolean blankRow = false;
+		for (int x = 0; x < this.size(); x++) {
+			if (this.get(x).isBlank()) {
+				blankRow = true;
+			}
+		}
+		if (!blankRow) {
+			addNew();
+			ASManagerPanel.getInstance().repaint();
+			// ((Component) SingletonHolder.getInstanceOf(ASManagerPanel.class)).repaint();
+		}
+	}
+
+	/**
+	 * Add a new blank asset to the rundown
+	 */
+	public void addNew() {
+		this.add(new Airspace());
+	}
 
 	/**
 	 * Expand an airspace into component killboxes
@@ -38,5 +64,7 @@ public class AirspaceList extends ListOf<Airspace> {
 	@Override
 	public void create() {
 		this.add(new Airspace("TEST", "98AL", "000", "120", Color.GREEN));
+		this.add(new Airspace("CHARLIE", "98AL", "000", "120", Color.RED));
+		this.add(new Airspace("BILLY", "98AL", "000", "120", Color.BLUE));
 	}
 }

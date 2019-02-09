@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
 
-import asmanager.ASManagerFrame;
+import asmanager.gui.ManagerFrame;
 import atoLookup.ATOLookupFrame;
 import stacksmanager.StacksFrame;
 import swing.ActionButton;
@@ -58,12 +58,12 @@ public class RundownButtonPanel extends BasePanel {
 			if (e.getSource().equals(RundownButtonPanel.this.atoLookupBtn)) {
 				c = ATOLookupFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
-				c = ASManagerFrame.class;
+				c = ManagerFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.stacksBtn)) {
 				c = StacksFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.mildeconBtn)) {
-				c = ASManagerFrame.class;
-				ASManagerFrame asFrame = (ASManagerFrame) SingletonHolder.getInstanceOf(c);
+				c = ManagerFrame.class;
+				ManagerFrame asFrame = (ManagerFrame) SingletonHolder.getInstanceOf(c);
 				asFrame.setMildeon();
 			}
 

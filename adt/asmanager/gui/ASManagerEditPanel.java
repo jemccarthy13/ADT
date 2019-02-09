@@ -1,4 +1,4 @@
-package asmanager;
+package asmanager.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +15,7 @@ import utilities.AltCellListener;
 /**
  * The buttons / fields at the top of the airspace manager
  */
-public class AirspaceManagerPanel extends BasePanel {
+public class ASManagerEditPanel extends BasePanel {
 
 	private static final long serialVersionUID = -7767311380915462474L;
 

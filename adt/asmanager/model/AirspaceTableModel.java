@@ -1,4 +1,6 @@
-package asmanager;
+package asmanager.model;
+
+import java.awt.Color;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -22,6 +24,8 @@ public class AirspaceTableModel extends AbstractTableModel {
 		Class<?> retClass = String.class;
 		if (columnIndex == 0) {
 			retClass = Boolean.class;
+		} else if (columnIndex == 1) {
+			retClass = Color.class;
 		}
 		return retClass;
 	}
@@ -40,20 +44,25 @@ public class AirspaceTableModel extends AbstractTableModel {
 			list.get(rowIndex).setAddToRundown((Boolean) aValue);
 			break;
 		case 1:
-			list.get(rowIndex).setName(aValue.toString());
+			list.get(rowIndex).setColor((Color) aValue);
 			break;
 		case 2:
-			list.get(rowIndex).setAirspace(aValue.toString());
+			list.get(rowIndex).setName(aValue.toString().toUpperCase());
 			break;
 		case 3:
-			list.get(rowIndex).getAlt().setLower(aValue.toString());
+			list.get(rowIndex).setAirspace(aValue.toString().toUpperCase());
 			break;
 		case 4:
-			list.get(rowIndex).getAlt().setUpper(aValue.toString());
+			list.get(rowIndex).getAlt().setLower(aValue.toString().toUpperCase());
+			break;
+		case 5:
+			list.get(rowIndex).getAlt().setUpper(aValue.toString().toUpperCase());
 			break;
 		default:
 			break;
 		}
+
+		((AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))).checkAddNew();
 	}
 
 	/**

@@ -1,17 +1,14 @@
 package atoLookup;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import swing.BaseFrame;
+import swing.Borders;
 import swing.SingletonHolder;
 import utilities.ImageLibrary;
 
@@ -34,15 +31,10 @@ public class ATOLookupFrame extends BaseFrame {
 
 		ATOLookupTable table = ATOLookupTable.getInstance();
 
-		Border border = new LineBorder(Color.black);
-		table.setBorder(border);
-		table.setRowHeight(20 + 10);
-		table.setPreferredScrollableViewportSize(new Dimension(523, 233));
-
 		// Create the scroll pane and add the table to it.
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(12, 205, 523, 226);
-		scrollPane.setBorder(border);// new EmptyBorder(20, 20, 20, 20));
+		scrollPane.setBorder(Borders.BLACK);// new EmptyBorder(20, 20, 20, 20));
 
 		// Add the scroll pane and button panel to the content.
 		contentPane.add((Component) SingletonHolder.getInstanceOf(ATOSearchPanel.class), BorderLayout.NORTH);

@@ -1,16 +1,15 @@
 package table;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
+import swing.Borders;
 import swing.SingletonHolder;
 import utilities.Fonts;
 
@@ -103,7 +102,7 @@ public class ATOTable extends JTable {
 
 		// font
 		this.getTableHeader().setFont(Fonts.serifBold);
-		this.getTableHeader().setBorder(new LineBorder(Color.BLACK));
+		this.getTableHeader().setBorder(Borders.BLACK);
 
 		// sizing
 		this.setFillsViewportHeight(true);

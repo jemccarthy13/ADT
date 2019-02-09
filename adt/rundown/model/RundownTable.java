@@ -10,7 +10,6 @@ import java.util.HashSet;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -19,6 +18,7 @@ import javax.swing.text.JTextComponent;
 
 import rundown.gui.RundownCellListener;
 import structures.LockedCells;
+import swing.Borders;
 import swing.MyTableCellEditor;
 import swing.SingletonHolder;
 import utilities.Configuration;
@@ -120,7 +120,7 @@ public class RundownTable extends JTable {
 
 		// font
 		this.getTableHeader().setFont(Fonts.serifBold);
-		this.getTableHeader().setBorder(new LineBorder(Color.BLACK));
+		this.getTableHeader().setBorder(Borders.BLACK);
 
 		// sizing
 		this.setFillsViewportHeight(true);

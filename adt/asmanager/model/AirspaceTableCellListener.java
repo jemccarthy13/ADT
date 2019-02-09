@@ -1,6 +1,5 @@
-package asmanager;
+package asmanager.model;
 
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -11,7 +10,7 @@ import swing.SingletonHolder;
 /**
  * When the active checkbox is checked, "activate" that airspace
  */
-public class AirspaceManagerCellListener implements PropertyChangeListener, Runnable {
+public class AirspaceTableCellListener implements PropertyChangeListener, Runnable {
 
 	private int column;
 
@@ -23,8 +22,8 @@ public class AirspaceManagerCellListener implements PropertyChangeListener, Runn
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (this.column == 0) {
-			RundownTable.getInstance().getCellListener().processEditingStopped();
-			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
+			RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
+			((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
 	}
 }

@@ -1,8 +1,11 @@
 package atoLookup;
 
+import java.awt.Dimension;
+
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
+import swing.Borders;
 import swing.SingletonHolder;
 import utilities.ADTTableModel;
 import utilities.Fonts;
@@ -31,15 +34,18 @@ public class ATOLookupTable extends JTable {
 	}
 
 	private ATOLookupTable() {
+		this.setFont(Fonts.serif);
 
 		this.model = (ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class);
-		this.setFont(Fonts.serif);
 
 		// set the data
 		this.setModel(this.model);
 
 		// font
 		this.getTableHeader().setFont(Fonts.serifBold);
+		this.setBorder(Borders.BLACK);
+		this.setRowHeight(20 + 10);
+		this.setPreferredScrollableViewportSize(new Dimension(523, 233));
 
 		// sizing
 		this.setFillsViewportHeight(true);
