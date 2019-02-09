@@ -23,7 +23,7 @@ public class ATOGeneratorFrame extends BaseFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		DebugUtility.trace(ATOGeneratorFrame.class, "Frame loaded");
 
-		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));
+		this.setIconImage(ImageLibrary.getImage("./AF-Roundel"));
 		DebugUtility.trace(ATOGeneratorFrame.class, "IconImage loaded/set");
 
 		this.add((Component) SingletonHolder.getInstanceOf(ATOPanel.class));

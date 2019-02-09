@@ -47,7 +47,7 @@ public class RundownFrame extends BaseFrame {
 		Configuration.setLookAndFeel(RundownFrame.class);
 
 		// set some frame settings
-		this.setIconImage(ImageLibrary.getImage("AF-Roundel"));
+		this.setIconImage(ImageLibrary.getImage("/graphics/AF-Roundel.jpg"));
 		this.setTitle("Airspace Deconfliction Tool");
 
 		// add the menu bar at top

@@ -1,8 +1,6 @@
 package utilities;
 
 import java.awt.Image;
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -13,11 +11,6 @@ import javax.swing.ImageIcon;
 public class ImageLibrary extends HashMap<String, ImageIcon> {
 
 	private static final long serialVersionUID = 8298201257452310707L;
-
-	/**
-	 * The location of the graphics library
-	 */
-	private String libPath = "resources/";
 
 	private static ImageLibrary m_instance = new ImageLibrary();
 
@@ -45,89 +38,10 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 */
 	public static Image getImage(String name) {
 		Image img = null;
-		ImageIcon icon = getInstance().getImageIcon(name);
-		if (icon == null) {
-			DebugUtility.debug(ImageLibrary.class, "Unable to resolve " + name);
-		} else {
-			icon.setDescription(name);
-			DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
-			img = icon.getImage();
-		}
+		ImageIcon icon = new ImageIcon(ImageLibrary.class.getResource(name));
+		icon.setDescription(name);
+		DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
+		img = icon.getImage();
 		return img;
-	}
-
-	/**
-	 * Returns an image from the instance of the library if the image exists. If the
-	 * image does not exist, try some of the graphics library paths in order to load
-	 * the graphic flyweight
-	 * 
-	 * @param name - the image to look for
-	 * @return an ImageIcon, if it can be created
-	 */
-	public ImageIcon getImageIcon(String name) {
-		String fullName = name + ".jpg";
-		ImageIcon retVal = null;
-		// if the image exists, get it and return it
-		if (containsKey(fullName)) {
-			retVal = get(fullName);
-		} else {
-			if (!tryPath("./", fullName)) {
-				DebugUtility.error(ImageLibrary.class, "Unable to load: '" + fullName + "'");
-			}
-
-			if (containsKey(fullName)) {
-				retVal = get(fullName);
-			}
-		}
-		return retVal;
-	}
-
-	/**
-	 * Try to find the image resource in a given relative path
-	 * 
-	 * @param path - the relative path to look in
-	 * @param name - the name of the image to find
-	 * @return whether or not the path had the image
-	 */
-	public boolean tryPath(String path, String name) {
-		boolean success = false;
-		File folder = new File(this.libPath + path + "/");
-		File[] listOfFiles = folder.listFiles();
-		if (listOfFiles != null) {
-			for (File file : listOfFiles) {
-				if (file.isFile() && name.toUpperCase().equals(file.getName().toUpperCase())) {
-					put(name, createImage(file.getPath().replaceAll("\\\\", "/")));
-					success = true;
-					continue;
-				}
-			}
-		}
-
-		return success;
-
-	}
-
-	/**
-	 * Loads an image from a given path
-	 * 
-	 * @param path
-	 * @return an ImageIcon if it was loaded, otherwise an error
-	 */
-	public static ImageIcon createImage(String path) {
-		File f = new File(path);
-		ImageIcon thisIcon = null;
-		if (!f.exists()) {
-			DebugUtility.error(ImageLibrary.class, "Image path does not exist: " + path);
-		}
-		String fullPath = "/" + path.replace("resources/", "").replace("resources\\", "");
-		URL iconURL = System.class.getResource(fullPath);
-		// this is the path within the jar file
-
-		if (iconURL == null) {
-			DebugUtility.error(ImageLibrary.class, "Cannot find resource" + fullPath);
-		} else {
-			thisIcon = new ImageIcon(System.class.getResource(fullPath));
-		}
-		return thisIcon;
 	}
 }
