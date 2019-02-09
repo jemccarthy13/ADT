@@ -63,8 +63,8 @@ public class AirspaceList extends ListOf<Airspace> {
 
 	@Override
 	public void create() {
-		this.add(new Airspace("TEST", "98AL", "000", "120", Color.GREEN));
-		this.add(new Airspace("CHARLIE", "98AL", "000", "120", Color.RED));
-		this.add(new Airspace("BILLY", "98AL", "000", "120", Color.BLUE));
+		this.add(new Airspace("TEST", "98AL", "000", "200", Color.GREEN));
+		this.add(new Airspace("CHARLIE", "98AL", "000", "200", Color.RED));
+		this.add(new Airspace("BILLY", "100AL", "000", "120", Color.BLUE));
 	}
 }

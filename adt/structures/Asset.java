@@ -351,13 +351,19 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	@Override
 	public int compareTo(Asset o) {
-		if (this.altBlock.getUpper().equals("")) {
-			return -1;
-		}
-		if (o.altBlock.getUpper().equals("")) {
-			return 1;
-		}
-		return Integer.parseInt(o.altBlock.getUpper()) - Integer.parseInt(this.altBlock.getUpper());
+		String thisUpper = this.altBlock.getUpper();
+		String thisLower = this.altBlock.getLower();
+		String othUpper = o.altBlock.getUpper();
+		String othLower = o.altBlock.getLower();
+
+		thisUpper = (thisUpper.equals("")) ? thisLower : thisUpper;
+		othUpper = (othUpper.equals("")) ? othLower : othUpper;
+
+		if (thisUpper.equals(""))
+			thisUpper = "000";
+		if (othUpper.equals(""))
+			othUpper = "000";
+		return Integer.parseInt(othUpper) - Integer.parseInt(thisUpper);
 	}
 
 	/**
