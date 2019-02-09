@@ -5,14 +5,19 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JTable;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import rundown.model.RundownTable;
 import swing.Borders;
@@ -49,9 +54,14 @@ public class AirspaceTable extends JTable {
 				AirspaceTable.this.setValueAt(c, this.savedRow, this.savedColumn);
 				RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
 			}
+			List<SortKey> keys = new ArrayList<SortKey>();
+			keys.addAll(AirspaceTable.this.getRowSorter().getSortKeys());
+			RundownTable.getInstance().setRowSorter(null);
+
 			AirspaceTableModel m = ((AirspaceTableModel) (AirspaceTable.this.getModel()));
 			m.fireTableStructureChanged();
-			AirspaceTable.this.setup();
+
+			AirspaceTable.this.setup(keys);
 
 		}
 
@@ -146,10 +156,21 @@ public class AirspaceTable extends JTable {
 
 	/**
 	 * After table structure change, reaccomplish table setup
+	 * 
+	 * @param keys
 	 */
-	public void setup() {
+	public void setup(List<? extends SortKey> keys) {
+
 		this.model = AirspaceTableModel.getInstance();
 		this.addPropertyChangeListener(new AirspaceTableCellListener());
+
+		TableRowSorter<TableModel> sorter;
+		sorter = new TableRowSorter<TableModel>(this.getModel());
+		sorter.setSortKeys(keys);
+		sorter.setRowFilter(null);
+		this.setRowSorter(sorter);
+
+		this.repaint();
 
 		// this.setCellSelectionEnabled(false);
 		this.setDefaultRenderer(Color.class, new AirspaceCellRenderer());
@@ -184,7 +205,13 @@ public class AirspaceTable extends JTable {
 		this.setFillsViewportHeight(true);
 		this.setBounds(10, 200, 500, 250);
 
-		setup();
+		this.getModel();
+		this.setAutoCreateRowSorter(true);
+
+		List<? extends SortKey> keys = this.getRowSorter().getSortKeys();
+		this.setRowSorter(null);
+
+		setup(keys);
 	}
 
 	/**

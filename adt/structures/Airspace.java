@@ -11,8 +11,8 @@ public class Airspace extends Asset {
 	private static final long serialVersionUID = -534783494176132498L;
 
 	/** The name of this airspace */
-	private String name;
-	private Color color;
+	private String name = "";
+	private Color color = Color.WHITE;
 
 	/**
 	 * Override hashcode for comparisons to only allow unique airspace names
@@ -20,6 +20,11 @@ public class Airspace extends Asset {
 	@Override
 	public int hashCode() {
 		return this.name.hashCode();
+	}
+
+	@Override
+	public boolean isBlank() {
+		return super.isBlank() && this.name.equals("") && this.color == Color.WHITE;
 	}
 
 	/**
