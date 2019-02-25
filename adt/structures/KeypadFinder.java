@@ -77,6 +77,15 @@ public abstract class KeypadFinder {
 	 * @param origin
 	 * @return - list of keypads that reside within a circle
 	 */
-	public abstract ArrayList<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, long radius,
+	public abstract HashSet<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, Double radius,
 			String origin);
+
+	/**
+	 * damn
+	 * 
+	 * @param centerPt
+	 * @param radius
+	 * @return - list of keypads in circle
+	 */
+	public abstract HashSet<String> getKillboxFromCircle(String centerPt, Double radius);
 }

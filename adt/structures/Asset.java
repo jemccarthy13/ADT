@@ -14,7 +14,7 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	private static final long serialVersionUID = 8634221915912471387L;
 	private String vcs = "";
 	private String mode2 = "";
-	private String location = "";
+	// private String location = "";
 	private Altitude altBlock = new Altitude();
 	private String alttransit = "";
 	private String status = "";
@@ -26,10 +26,11 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	private String offStation = "";
 	private String arData = "";
 	private String airspace = "";
+
 	/**
 	 * A flag whether this asst is in conflict with another, or not
 	 */
-	public boolean inConflict = false;
+	private boolean inConflict = false;
 	private Color highlightColor = Color.WHITE;
 
 	@Override
@@ -104,16 +105,17 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 * @param specType
 	 * @param typ
 	 * @param callsign
-	 * @param location2
+	 * @param location
 	 */
 	public Asset(String tkd, String mode2, String arinfo, String specType, String typ, String callsign,
-			String location2) {
+			String location) {
 		this.vcs = tkd;
 		this.mode2 = mode2;
 		this.arData = arinfo;
 		this.setSpecType(specType);
 		this.setTypeCat(typ);
 		this.setFullCallsign(callsign);
+		this.airspace = location;
 	}
 
 	/**
@@ -141,8 +143,8 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	@Override
 	public String toString() {
-		return this.vcs + "/" + this.mode2 + "/" + this.arData + "/" + this.getSpecType() + "/" + this.getTypeCat()
-				+ "/" + this.getFullCallsign() + "/" + this.location;
+		return this.vcs + "/" + this.mode2 + "/" + this.airspace + "/" + this.getSpecType() + "/" + this.getTypeCat()
+				+ "/" + this.getFullCallsign() + "/" + this.arData;
 	}
 
 	/**
@@ -344,9 +346,9 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	public boolean isBlank() {
 		return this.vcs.equals("") && this.mode2.equals("") && this.getFullCallsign().equals("")
-				&& this.location.equals("") && this.altBlock.isBlank() && this.getStatus().equals("")
+				&& this.airspace.equals("") && this.altBlock.isBlank() && this.getStatus().equals("")
 				&& this.getSpecType().equals("") && this.getTypeCat().equals("") && this.getOnStation().equals("")
-				&& this.getOffStation().equals("") && this.arData.equals("") && this.getAirspace().equals("");
+				&& this.getOffStation().equals("") && this.arData.equals("");
 	}
 
 	@Override
@@ -382,5 +384,29 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	public Color getHighlightColor() {
 		return this.highlightColor;
+	}
+
+	/**
+	 * Get a formatted approval string
+	 * 
+	 * @return formatted approval
+	 */
+	public String getApproval() {
+		return this.vcs + " " + this.mode2 + " /  / " + this.airspace + " / FL " + this.getAlt().getLower() + " to FL "
+				+ this.getAlt().getUpper() + " / " + this.status;
+	}
+
+	/**
+	 * @return the inConflict
+	 */
+	public boolean isInConflict() {
+		return this.inConflict;
+	}
+
+	/**
+	 * @param inConflict the inConflict to set
+	 */
+	public void setInConflict(boolean inConflict) {
+		this.inConflict = inConflict;
 	}
 }

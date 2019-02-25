@@ -66,6 +66,7 @@ public class AltCellListener implements FocusListener {
 
 	@Override
 	public void focusLost(FocusEvent e) {
+		this.field = (JTextField) e.getSource();
 		change();
 	}
 

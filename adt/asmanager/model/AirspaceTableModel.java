@@ -62,7 +62,8 @@ public class AirspaceTableModel extends AbstractTableModel {
 			break;
 		}
 
-		((AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))).checkAddNew();
+		// ((AirspaceList)
+		// (SingletonHolder.getInstanceOf(AirspaceList.class))).checkAddNew();
 	}
 
 	/**

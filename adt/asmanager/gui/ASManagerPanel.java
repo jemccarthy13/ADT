@@ -1,7 +1,6 @@
 package asmanager.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -9,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 
 import asmanager.model.AirspaceTable;
 import swing.Borders;
-import swing.SingletonHolder;
 
 /**
  * The main content panel for the airspace manager
@@ -39,9 +37,6 @@ public class ASManagerPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(12, 205, 523, 226);
 		scrollPane.setBorder(Borders.BLACK);
-
-		// Add the edit panel on top
-		this.add((Component) SingletonHolder.getInstanceOf(ASManagerEditPanel.class), BorderLayout.NORTH);
 
 		// Add the airspace scrollpane list in the center
 		this.add(scrollPane, BorderLayout.CENTER);

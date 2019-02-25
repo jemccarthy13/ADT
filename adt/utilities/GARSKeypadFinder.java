@@ -201,9 +201,16 @@ public class GARSKeypadFinder extends KeypadFinder {
 	}
 
 	@Override
-	public ArrayList<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, long radius,
+	public HashSet<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, Double radius,
 			String origin) {
 		DebugUtility.error(GARSKeypadFinder.class, "Not implemented",
+				new UnsupportedOperationException("not implemented"));
+		return null;
+	}
+
+	@Override
+	public HashSet<String> getKillboxFromCircle(String centerPt, Double radius) {
+		DebugUtility.error(CGRSKeypadFinder.class, "Not implemented",
 				new UnsupportedOperationException("not implemented"));
 		return null;
 	}

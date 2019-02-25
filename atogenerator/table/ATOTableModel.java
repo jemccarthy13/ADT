@@ -1,5 +1,8 @@
 package table;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 
 import datastructures.ATOAsset;
@@ -11,6 +14,35 @@ import utilities.ADTTableModel;
  */
 public class ATOTableModel extends ADTTableModel<ATOAsset> {
 	private static final long serialVersionUID = -9017185692217463087L;
+
+	private MouseListener listener = new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("AR BUTTON PRESSED");
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// nothing
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// nothing
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// nothing
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// nothing
+		}
+
+	};
 
 	@Override
 	public void create() {
@@ -48,7 +80,9 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (columnIndex == 17) {
-			return new JButton("Press");
+			JButton button = new JButton("PRESS");
+			button.addMouseListener(this.listener);
+			return button;
 		}
 		return super.getValueAt(rowIndex, columnIndex);
 	}

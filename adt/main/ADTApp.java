@@ -3,6 +3,9 @@ package main;
 import java.awt.Window;
 
 import rundown.gui.RundownFrame;
+import structures.ATOAssets;
+import structures.Asset;
+import structures.RundownAssets;
 import swing.SingletonHolder;
 import utilities.DebugUtility;
 import utilities.ShutdownThread;
@@ -48,6 +51,24 @@ public class ADTApp {
 	 * @param args - command line arguments
 	 */
 	public static void main(String[] args) {
+		Asset dude01 = new Asset("DE01", "2201", "", "F15C", "FTR", "DUDE01", "88AG");
+		Asset dude02 = new Asset("DE02", "2202", "", "F15C", "FTR", "DUDE02", "88AG");
+		Asset dude03 = new Asset("DE03", "2203", "", "F15C", "FTR", "DUDE03", "88AG");
+
+		dude01.setAltBlock("120", "120");
+		dude02.setAltBlock("200", "200");
+		dude03.setAltBlock("300", "400");
+		ATOAssets.getInstance().add(dude01);
+		RundownAssets.getInstance().add(dude01);
+
+		ATOAssets.getInstance().add(dude02);
+		RundownAssets.getInstance().add(dude02);
+
+		ATOAssets.getInstance().add(dude03);
+		RundownAssets.getInstance().add(dude03);
+
+		((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
+
 		((Window) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(true);
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
 		refreshThread.interrupt();
@@ -56,5 +77,6 @@ public class ADTApp {
 		} catch (IllegalThreadStateException e) {
 			// keep running
 		}
+
 	}
 }

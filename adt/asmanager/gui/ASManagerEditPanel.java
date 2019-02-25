@@ -6,21 +6,27 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
+import rundown.model.RundownTable;
 import structures.Airspace;
 import structures.AirspaceList;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
+import swing.MouseClickListener;
 import swing.SingletonHolder;
 import utilities.AltCellListener;
-import utilities.DebugUtility;
+import utilities.Configuration;
+import utilities.Output;
 
 /**
  * The buttons / fields at the top of the airspace manager
@@ -39,6 +45,34 @@ public class ASManagerEditPanel extends BasePanel {
 	 */
 	JTextField nameField;
 
+	private class GBC extends GridBagConstraints {
+
+		/**
+		 * Serialization
+		 */
+		private static final long serialVersionUID = 7560384801380535809L;
+
+		public void create() {
+			this.fill = GridBagConstraints.HORIZONTAL;
+			this.insets = new Insets(0, 0, 5, 5);
+		}
+
+		public GBC(int x, int y) {
+			this.setup(1, x, y);
+		}
+
+		public GBC(int width, int x, int y) {
+			this.setup(width, x, y);
+		}
+
+		public void setup(int width, int x, int y) {
+			this.gridwidth = width;
+			this.gridy = y;
+			this.gridx = x;
+			create();
+		}
+	}
+
 	private class AddListener implements ActionListener {
 
 		public AddListener() {
@@ -47,22 +81,15 @@ public class ASManagerEditPanel extends BasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.err.println("Action performed");
 			if (e.getSource().equals(ASManagerEditPanel.this.addBtn)) {
-				// do the add
-				Airspace a = new Airspace();
-				a.setName(ASManagerEditPanel.this.nameField.getText());
-				a.setAirspace(ASManagerEditPanel.this.gridsField.getText());
-				String lower = ASManagerEditPanel.this.lowAltField.getText();
-				String upper = ASManagerEditPanel.this.upAltField.getText();
-				a.setAltBlock(lower, upper);
-				a.setColor(ASManagerEditPanel.this.colorField.getBackground());
-				AirspaceList list = (AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class);
-				list.add(a);
-				list.checkAddNew();
-				System.out.println("adding: " + a.getName());
-				DebugUtility.error(ASManagerEditPanel.class, "Added airspace: " + a.getName());
-				ASManagerPanel.getInstance().repaint();
+				if (ASManagerEditPanel.this.selector.getSelectedItem().toString().equals("Grids")) {
+					ASManagerEditPanel.this.addAirspace();
+				} else {
+					Output.forceInfoMessage("Unimplemented", "Need to implement MGRS->Keypad conversion");
+					Configuration.getInstance().getKeypadFinder().getKillboxFromCircle(
+							ASManagerEditPanel.this.gridsField.getText(),
+							Double.parseDouble(ASManagerEditPanel.this.radiusField.getText()));
+				}
 			}
 		}
 	}
@@ -87,9 +114,61 @@ public class ASManagerEditPanel extends BasePanel {
 	 */
 	JTextField colorField;
 
+	/**
+	 * Field to store an airspace radius
+	 */
+	JTextField radiusField;
+
+	/**
+	 * Access to the radius lbl (for set visible)
+	 */
+	ADTLabel radiusLbl;
+
+	/**
+	 * Access to change the grid label text
+	 */
+	ADTLabel gridsLbl;
+
+	/**
+	 * Combobox whether this airspace is defined in terms of Grid reference or
+	 * centerpoint/radius
+	 */
+	JComboBox selector;
+
+	/**
+	 * Set the edit panel to show/hide centerpoint/radius fields
+	 * 
+	 * @param show true to show centerpoint/radius, false to show grids
+	 */
+	public void setEdit(boolean show) {
+		ASManagerEditPanel.this.radiusField.setVisible(show);
+		ASManagerEditPanel.this.radiusLbl.setVisible(show);
+		ASManagerEditPanel.this.gridsLbl.setText(show ? "Center Point:" : "Grids:");
+	}
+
+	/**
+	 * Add the new airspace to the AirspaceList
+	 */
+	public void addAirspace() {
+		Airspace a = new Airspace();
+		a.setName(this.nameField.getText());
+		a.setAirspace(this.gridsField.getText());
+		a.setAltBlock(this.lowAltField.getText(), this.upAltField.getText());
+		a.setColor(this.colorField.getBackground());
+		a.setAddToRundown(true);
+
+		AirspaceList list = (AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class);
+		list.add(a);
+
+		ASManagerPanel.getInstance().repaint();
+
+		RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
+		((ManagerFrame) (SingletonHolder.getInstanceOf(ManagerFrame.class))).dispose();
+	}
+
 	@Override
 	public void create() {
-
+		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 75, 75, 75, 200, 75 };
 		gridBagLayout.rowHeights = new int[] { 30, 30, 30, 30, 30, 30 };
@@ -97,139 +176,99 @@ public class ASManagerEditPanel extends BasePanel {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
+		ADTLabel selectorLbl = new ADTLabel("Defined by:");
+		selectorLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		GBC gbc_selectorLbl = new GBC(0, 0);
+		this.add(selectorLbl, gbc_selectorLbl);
+
+		this.selector = new JComboBox();
+		this.selector.addItem("Grids");
+		this.selector.addItem("Center Point/Radius");
+		GBC gbc_selector = new GBC(1, 0);
+		this.add(this.selector, gbc_selector);
+
+		this.selector.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					Object item = event.getItem();
+					boolean show = item.toString().equals("Grids") ? false : true;
+					ASManagerEditPanel.this.setEdit(show);
+				}
+			}
+		});
+
 		ADTLabel nameLbl = new ADTLabel("Name:");
 		nameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_nameLbl = new GridBagConstraints();
-		gbc_nameLbl.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nameLbl.insets = new Insets(0, 0, 5, 5);
-		gbc_nameLbl.gridx = 0;
-		gbc_nameLbl.gridy = 0;
+		GBC gbc_nameLbl = new GBC(0, 1);
 		this.add(nameLbl, gbc_nameLbl);
 
 		this.nameField = new JTextField();
-		GridBagConstraints gbc_nameField = new GridBagConstraints();
-		gbc_nameField.gridwidth = 3;
-		gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nameField.insets = new Insets(0, 0, 5, 5);
-		gbc_nameField.gridx = 1;
-		gbc_nameField.gridy = 0;
+		GBC gbc_nameField = new GBC(2, 1, 1);
 		this.add(this.nameField, gbc_nameField);
 
-		ADTLabel gridsLbl = new ADTLabel("Grids:");
-		gridsLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_1 = new GridBagConstraints();
-		gbc_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_1.insets = new Insets(0, 0, 5, 5);
-		gbc_1.gridx = 0;
-		gbc_1.gridy = 1;
-		this.add(gridsLbl, gbc_1);
+		this.gridsLbl = new ADTLabel("Grids:");
+		this.gridsLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		GBC gbc_1 = new GBC(0, 2);
+		this.add(this.gridsLbl, gbc_1);
 
 		this.gridsField = new JTextField();
 		this.gridsField.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_gridsField = new GridBagConstraints();
-		gbc_gridsField.gridwidth = 3;
-		gbc_gridsField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_gridsField.insets = new Insets(0, 0, 5, 5);
-		gbc_gridsField.gridx = 1;
-		gbc_gridsField.gridy = 1;
+		GBC gbc_gridsField = new GBC(3, 1, 2);
 		this.add(this.gridsField, gbc_gridsField);
+
+		this.radiusLbl = new ADTLabel("Radius:");
+		this.radiusLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		GBC gbc_radiusLbl = new GBC(0, 3);
+		this.add(this.radiusLbl, gbc_radiusLbl);
+
+		this.radiusField = new JTextField();
+		GBC gbc_radius = new GBC(1, 1, 3);
+		this.add(this.radiusField, gbc_radius);
 
 		ADTLabel altLowLbl = new ADTLabel("Alt (Lower):");
 		altLowLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_3 = new GridBagConstraints();
-		gbc_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_3.insets = new Insets(0, 0, 5, 5);
-		gbc_3.gridx = 0;
-		gbc_3.gridy = 2;
+		GBC gbc_3 = new GBC(0, 4);
 		this.add(altLowLbl, gbc_3);
 
 		this.lowAltField = new JTextField();
 		this.lowAltField.addFocusListener(new AltCellListener(this.lowAltField));
-		GridBagConstraints gbc_lowAltField = new GridBagConstraints();
-		gbc_lowAltField.gridwidth = 1;
-		gbc_lowAltField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lowAltField.insets = new Insets(0, 0, 5, 5);
-		gbc_lowAltField.gridx = 1;
-		gbc_lowAltField.gridy = 2;
+		GBC gbc_lowAltField = new GBC(1, 1, 4);
 		this.add(this.lowAltField, gbc_lowAltField);
 
 		ADTLabel altUpLbl = new ADTLabel("Alt (Upper):");
 		altUpLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_4 = new GridBagConstraints();
-		gbc_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_4.insets = new Insets(0, 0, 0, 5);
-		gbc_4.gridx = 0;
-		gbc_4.gridy = 3;
+		GBC gbc_4 = new GBC(0, 5);
 		this.add(altUpLbl, gbc_4);
 
 		this.upAltField = new JTextField();
 		this.upAltField.addFocusListener(new AltCellListener(this.upAltField));
-		GridBagConstraints gbc_upAltField = new GridBagConstraints();
-		gbc_upAltField.gridwidth = 1;
-		gbc_upAltField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_upAltField.insets = new Insets(0, 0, 5, 5);
-		gbc_upAltField.gridx = 1;
-		gbc_upAltField.gridy = 3;
+		GBC gbc_upAltField = new GBC(1, 1, 5);
 		this.add(this.upAltField, gbc_upAltField);
 
 		this.addBtn = new ActionButton("Add New", new AddListener());
-		GridBagConstraints gbc_addNew = new GridBagConstraints();
-		gbc_addNew.gridwidth = 1;
-		gbc_addNew.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addNew.insets = new Insets(0, 50, 5, 5);
-		gbc_addNew.gridx = 4;
-		gbc_addNew.gridy = 1;
+		GBC gbc_addNew = new GBC(1, 4, 1);
 		this.add(this.addBtn, gbc_addNew);
 
 		ADTLabel clrLbl = new ADTLabel("Color:");
 		altUpLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		GridBagConstraints gbc_5 = new GridBagConstraints();
-		gbc_5.fill = GridBagConstraints.HORIZONTAL;
-		gbc_5.insets = new Insets(0, 0, 0, 5);
-		gbc_5.gridx = 3;
-		gbc_5.gridy = 3;
+		GBC gbc_5 = new GBC(3, 5);
 		this.add(clrLbl, gbc_5);
 
 		this.colorField = new JTextField();
 		this.colorField.setBackground(Color.WHITE);
 		this.colorField.setEditable(false);
-		this.colorField.addMouseListener(new MouseListener() {
-
+		this.colorField.addMouseListener(new MouseClickListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Color c = JColorChooser.showDialog(ASManagerEditPanel.this.colorField, "Color Chooser",
 						ASManagerEditPanel.this.colorField.getBackground());
 				ASManagerEditPanel.this.colorField.setBackground(c);
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// do nothing
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// do nothing
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// do nothing
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// do nothing
-			}
-
 		});
-		GridBagConstraints gbc_color = new GridBagConstraints();
-		gbc_color.gridwidth = 1;
-		gbc_color.fill = GridBagConstraints.HORIZONTAL;
-		gbc_color.insets = new Insets(0, 50, 5, 5);
-		gbc_color.gridx = 3;
-		gbc_color.gridy = 3;
+		GridBagConstraints gbc_color = new GBC(1, 4, 5);
 		this.add(this.colorField, gbc_color);
 
+		this.setEdit(false);
 	}
 }

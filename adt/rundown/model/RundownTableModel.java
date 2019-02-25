@@ -1,7 +1,5 @@
 package rundown.model;
 
-import javax.swing.DefaultRowSorter;
-
 import structures.ATOAssets;
 import structures.Asset;
 import structures.LockedCells;
@@ -56,7 +54,7 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		case 7:
 			return RundownAssets.getInstance().get(rowIndex).getSpecType();
 		case 9:
-			return RundownAssets.getInstance().get(rowIndex).inConflict;
+			return RundownAssets.getInstance().get(rowIndex).isInConflict();
 		case 10:
 			return RundownAssets.getInstance().get(rowIndex).getHighlightColor();
 		default:
@@ -79,7 +77,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 	 * @param sendMessage - true to send a message to clients
 	 * @param doLookup    - true to copy over data if found
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex, boolean sendMessage, boolean doLookup) {
 		while (this.items.size() <= rowIndex) {
 			this.items.add(new Asset());
@@ -127,8 +124,6 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		}
 
 		RundownAssets.checkAddNew();
-
-		((DefaultRowSorter) RundownTable.getInstance().getRowSorter()).setRowFilter(null);
 	}
 
 	@Override

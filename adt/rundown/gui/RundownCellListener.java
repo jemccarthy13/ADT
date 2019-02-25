@@ -127,6 +127,10 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			DebugUtility.error(this.getClass(), errMsg);
 			Output.forceInfoMessage("", errMsg);
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
+			RundownTable.getInstance().getModel().setValueAt("", this.row, this.column);
+			RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, false));
+			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
+			return;
 		}
 		RundownFrame.getClient().sendMessage(new ADTUpdateMessage(this.row, this.column, newValue));
 		RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, false));
@@ -137,8 +141,8 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 		boolean hasConflict = false;
 
-		// we've changed airspace or altitude
-		if (this.column == 2 || this.column == 3 || this.column == 4) {
+		// we've changed airspace or altitude or aircraft type
+		if (this.column == 2 || this.column == 3 || this.column == 4 || this.column == 6) {
 
 			// so get the 'current' - changed asset
 			Asset first = RundownAssets.getInstance().get(this.row);
@@ -154,23 +158,23 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 								"New conflict between " + first.getAirspace() + " and " + other.getAirspace());
 						// flag it
 						hasConflict = true;
-						other.inConflict = true;
+						other.setInConflict(true);
 					}
 				}
 				// next
 				count++;
 			}
 			if (hasConflict) {
-				first.inConflict = true;
+				first.setInConflict(true);
 			} else {
-				first.inConflict = false;
+				first.setInConflict(false);
 			}
 
 			int cnt1 = 0;
 
 			// now loop through every asset that has a conflict
 			for (Asset fst : RundownAssets.getInstance()) {
-				if (fst.inConflict == true) {
+				if (fst.isInConflict() == true) {
 					hasConflict = false;
 					count = 0;
 					for (Asset other : RundownAssets.getInstance()) {
@@ -184,9 +188,9 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 						count++;
 					}
 					if (hasConflict) {
-						fst.inConflict = true;
+						fst.setInConflict(true);
 					} else {
-						fst.inConflict = false;
+						fst.setInConflict(false);
 					}
 				}
 				cnt1++;

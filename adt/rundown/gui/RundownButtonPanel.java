@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import asmanager.gui.ManagerFrame;
 import atoLookup.ATOLookupFrame;
+import outputframe.OutputFrame;
 import stacksmanager.StacksFrame;
 import swing.ActionButton;
 import swing.BaseFrame;
@@ -41,7 +42,8 @@ public class RundownButtonPanel extends BasePanel {
 	/** generate stacks on stacks on stacks */
 	public ActionButton stacksBtn;
 
-	private ActionButton metricsBtn;
+	/** generate end of mission metrics */
+	ActionButton metricsBtn;
 
 	private ActionButton lowdownMgrBtn;
 
@@ -59,17 +61,25 @@ public class RundownButtonPanel extends BasePanel {
 				c = ATOLookupFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.asMgrBtn)) {
 				c = ManagerFrame.class;
+				ManagerFrame asFrame = (ManagerFrame) SingletonHolder.getInstanceOf(c);
+				asFrame.setASManager();
 			} else if (e.getSource().equals(RundownButtonPanel.this.stacksBtn)) {
 				c = StacksFrame.class;
 			} else if (e.getSource().equals(RundownButtonPanel.this.mildeconBtn)) {
 				c = ManagerFrame.class;
 				ManagerFrame asFrame = (ManagerFrame) SingletonHolder.getInstanceOf(c);
 				asFrame.setMildeon();
+			} else {
+				c = OutputFrame.class;
 			}
 
 			BaseFrame frame = (BaseFrame) SingletonHolder.getInstanceOf(c);
 			frame.setLocationRelativeTo((Component) SingletonHolder.getInstanceOf(RundownFrame.class));
 			frame.setVisible(true);
+
+			if (e.getSource().equals(RundownButtonPanel.this.metricsBtn)) {
+				frame.setTitle("Metrics");
+			}
 		}
 	}
 
@@ -85,7 +95,7 @@ public class RundownButtonPanel extends BasePanel {
 
 		this.atoLookupBtn = new ActionButton("ATO Lookup", this.rdBtnListener);
 		this.asMgrBtn = new ActionButton("AS Manager", this.rdBtnListener);
-		this.mildeconBtn = new ActionButton("MILDECON", this.rdBtnListener);
+		this.mildeconBtn = new ActionButton("MILDECON Assist", this.rdBtnListener);
 		this.stacksBtn = new ActionButton("Stacks", this.rdBtnListener);
 		this.metricsBtn = new ActionButton("Metrics", this.rdBtnListener);
 		this.lowdownMgrBtn = new ActionButton("Lowdown Manager", this.rdBtnListener);

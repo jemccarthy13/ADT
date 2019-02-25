@@ -75,7 +75,9 @@ public class RundownMenuBar extends JMenuBar {
 	/** developer menu */
 	private JMenu develop = new JMenu("Developer");
 	/** private dialog for testing */
-	public JMenuItem testKeypadFinder = new JMenuItem("Keypad Finder");
+	public JMenuItem testKeypadFinder = new JMenuItem("Test Keypad Finder");
+	/** private dialog for testing */
+	public JMenuItem testCircleKeypadFinder = new JMenuItem("Test circle keypads");
 	/** force everyone out of edits */
 	public JMenuItem forceUnlock = new JMenuItem("Force Unlock");
 
@@ -101,6 +103,8 @@ public class RundownMenuBar extends JMenuBar {
 			this.develop.add(this.forceUnlock);
 			this.testKeypadFinder.addActionListener(this.listener);
 			this.forceUnlock.addActionListener(this.listener);
+			this.testCircleKeypadFinder.addActionListener(this.listener);
+			this.develop.add(this.testCircleKeypadFinder);
 		}
 
 		this.refresh.addActionListener(this.listener);
@@ -157,6 +161,32 @@ public class RundownMenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent arg0) {
 						outputbox.setLineWrap(true);
 						HashSet<String> result = finder.getKeypads(keypadbox.getText());
+						outputbox.setText(result.toString() + "\r\n" + result.size());
+					}
+
+				});
+				dialog.add(submit, BorderLayout.SOUTH);
+				dialog.add(panel);
+				dialog.setVisible(true);
+			} else if (e.getSource().equals(RundownMenuBar.this.testCircleKeypadFinder)) {
+				JDialog dialog = new JDialog();
+				dialog.setSize(600, 600);
+				JPanel panel = new JPanel();
+				dialog.setLayout(new GridLayout(3, 1, 200, 50));
+				panel.setLayout(new BorderLayout(200, 50));
+				final JTextArea keypadbox = new JTextArea();
+				panel.add(keypadbox, BorderLayout.NORTH);
+				final JTextArea outputbox = new JTextArea();
+				panel.add(outputbox, BorderLayout.CENTER);
+				outputbox.setWrapStyleWord(true);
+				JButton submit = new JButton("Submit");
+				final KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
+				submit.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						outputbox.setLineWrap(true);
+						HashSet<String> result = finder.getKillboxFromCircle(keypadbox.getText(), Double.valueOf(1.0));
 						outputbox.setText(result.toString() + "\r\n" + result.size());
 					}
 
