@@ -1,6 +1,7 @@
 package messages;
 
 import rundown.gui.RundownFrame;
+import rundown.model.RundownTable;
 import structures.LockedCells;
 
 /**
@@ -31,7 +32,8 @@ public class ADTLockedMessage extends ADTBaseMessage {
 
 	@Override
 	public void process() {
-		LockedCells.setLocked(getSender(), this.row, this.column, this.locked);
+		int viewRow = RundownTable.getInstance().convertRowIndexToView(this.row);
+		LockedCells.setLocked(getSender(), viewRow, this.column, this.locked);
 	}
 
 	@Override

@@ -131,7 +131,6 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			DebugUtility.error(this.getClass(), errMsg);
 			Output.forceInfoMessage("", errMsg);
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
-			RundownTable.getInstance().getModel().setValueAt("", this.row, this.column);
 			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
 
 			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
