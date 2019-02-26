@@ -3,6 +3,7 @@ package asmanager.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,16 +12,24 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import asmanager.gui.ManagerFrame;
 import rundown.model.RundownTable;
+import structures.AirspaceList;
 import swing.Borders;
+import swing.SingletonHolder;
 import utilities.Fonts;
 
 /**
@@ -212,6 +221,59 @@ public class AirspaceTable extends JTable {
 		this.setRowSorter(null);
 
 		setup(keys);
+
+		final JMenuItem deleteItem = new JMenuItem("Delete Airspace");
+
+		ActionListener menuListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AirspaceTable.this.getSelectedRow();
+				int row = AirspaceTable.this.convertRowIndexToModel(AirspaceTable.this.getSelectedRow());
+
+				if (e.getSource().equals(deleteItem)) {
+					((AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class)).remove(row);
+					((ManagerFrame) SingletonHolder.getInstanceOf(ManagerFrame.class)).repaint();
+				}
+			}
+
+		};
+
+		final JPopupMenu popupMenu = new JPopupMenu();
+
+		deleteItem.addActionListener(menuListener);
+		popupMenu.add(deleteItem);
+
+		this.setComponentPopupMenu(popupMenu);
+
+		popupMenu.addPopupMenuListener(new PopupMenuListener() {
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						int rowAtPoint = AirspaceTable.this.rowAtPoint(
+								SwingUtilities.convertPoint(popupMenu, new Point(0, 0), AirspaceTable.this));
+						if (rowAtPoint > -1) {
+							AirspaceTable.this.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+						}
+					}
+				});
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	/**
