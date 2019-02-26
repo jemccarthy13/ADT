@@ -38,9 +38,9 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return RundownAssets.getInstance().get(rowIndex).getVCS();
+			return RundownAssets.getInstance().get(rowIndex).getID().getVCS();
 		case 1:
-			return RundownAssets.getInstance().get(rowIndex).getMode2();
+			return RundownAssets.getInstance().get(rowIndex).getID().getMode2();
 		case 2:
 			return RundownAssets.getInstance().get(rowIndex).getAirspace();
 		case 3:
@@ -50,15 +50,15 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		case 5:
 			return RundownAssets.getInstance().get(rowIndex).getStatus();
 		case 6:
-			return RundownAssets.getInstance().get(rowIndex).getTypeCat();
+			return RundownAssets.getInstance().get(rowIndex).getID().getTypeCat();
 		case 7:
-			return RundownAssets.getInstance().get(rowIndex).getSpecType();
+			return RundownAssets.getInstance().get(rowIndex).getID().getSpecType();
 		case 9:
 			return RundownAssets.getInstance().get(rowIndex).isInConflict();
 		case 10:
 			return RundownAssets.getInstance().get(rowIndex).getHighlightColor();
 		default:
-			return RundownAssets.getInstance().get(rowIndex).getFullCallsign();
+			return RundownAssets.getInstance().get(rowIndex).getID().getFullCallsign();
 		}
 	}
 
@@ -85,14 +85,14 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 
 		switch (columnIndex) {
 		case 0:
-			this.items.get(rowIndex).setVCS(val);
+			this.items.get(rowIndex).getID().setVCS(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
 				ATOAssets.getInstance().lookup(rowIndex, 0, val);
 			}
 			break;
 		case 1:
-			this.items.get(rowIndex).setMode2(val);
+			this.items.get(rowIndex).getID().setMode2(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
 				ATOAssets.getInstance().lookup(rowIndex, 1, val);
@@ -111,13 +111,13 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 			this.items.get(rowIndex).setStatus(val);
 			break;
 		case 6:
-			this.items.get(rowIndex).setTypeCat(val);
+			this.items.get(rowIndex).getID().setTypeCat(val);
 			break;
 		case 7:
-			this.items.get(rowIndex).setSpecType(val);
+			this.items.get(rowIndex).getID().setSpecType(val);
 			break;
 		case 8:
-			this.items.get(rowIndex).setFullCallsign(val);
+			this.items.get(rowIndex).getID().setFullCallsign(val);
 			break;
 		default:
 			break;

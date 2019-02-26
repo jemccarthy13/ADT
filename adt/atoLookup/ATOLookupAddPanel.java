@@ -39,13 +39,14 @@ public class ATOLookupAddPanel extends BasePanel {
 			for (int x = 0; x < ATOAssets.getInstance().size(); x++) {
 				Asset atoAsset = ATOAssets.getInstance().get(x);
 				if (atoAsset.isAddToRundown()) {
-					DebugUtility.debug(ATOLookupAddPanel.class, atoAsset.getVCS() + " being added from ATO Lookup");
+					DebugUtility.debug(ATOLookupAddPanel.class,
+							atoAsset.getID().getVCS() + " being added from ATO Lookup");
 					((ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class)).setValueAt(Boolean.FALSE,
 							x, 0);
 
 					if (RundownAssets.getInstance().contains(atoAsset)) {
-						Output.forceInfoMessage("Duplicate", "Duplicate asset " + atoAsset.getFullCallsign() + " ("
-								+ atoAsset.getMode2() + ") will not be added.");
+						Output.forceInfoMessage("Duplicate", "Duplicate asset " + atoAsset.getID().getFullCallsign()
+								+ " (" + atoAsset.getID().getMode2() + ") will not be added.");
 					} else if (RundownAssets.getInstance().forceAdd()) {
 						DebugUtility.debug(this.getClass(), "Should be overwritten.");
 						RundownAssets.force(atoAsset);

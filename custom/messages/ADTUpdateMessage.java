@@ -3,6 +3,7 @@ package messages;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTableModel;
 import swing.SingletonHolder;
+import utilities.ConflictComparer;
 
 /**
  * A message containing an update to the rundown
@@ -33,6 +34,7 @@ public class ADTUpdateMessage extends ADTBaseMessage {
 	public void process() {
 		((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).setValueAt(this.value, this.row,
 				this.column, false, false);
+		ConflictComparer.checkConflicts(this.row);
 		RundownFrame.refresh();
 	}
 

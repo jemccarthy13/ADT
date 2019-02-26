@@ -72,11 +72,11 @@ public class ATOAssets extends ArrayList<Asset> {
 			Asset ass = this.get(x);
 			String compVal = "";
 			if (column == 0) {
-				compVal = ass.getVCS();
+				compVal = ass.getID().getVCS();
 			} else if (column == 1) {
-				compVal = ass.getMode2();
+				compVal = ass.getID().getMode2();
 			} else {
-				compVal = ass.getFullCallsign();
+				compVal = ass.getID().getFullCallsign();
 			}
 			if (val.equals(compVal)) {
 				foundCount++;
@@ -106,11 +106,11 @@ public class ATOAssets extends ArrayList<Asset> {
 			ATOSearchPanel.searchBtn.doClick();
 		} else if (foundCount == 1) {
 			RundownTableModel m = (RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class);
-			m.setValueAt(foundAsset.getVCS(), row, 0, true, false);
-			m.setValueAt(foundAsset.getMode2(), row, 1, true, false);
-			m.setValueAt(foundAsset.getSpecType(), row, 6, true, false);
-			m.setValueAt(foundAsset.getTypeCat(), row, 7, true, false);
-			m.setValueAt(foundAsset.getFullCallsign(), row, 8, true, false);
+			m.setValueAt(foundAsset.getID().getVCS(), row, 0, true, false);
+			m.setValueAt(foundAsset.getID().getMode2(), row, 1, true, false);
+			m.setValueAt(foundAsset.getID().getSpecType(), row, 6, true, false);
+			m.setValueAt(foundAsset.getID().getTypeCat(), row, 7, true, false);
+			m.setValueAt(foundAsset.getID().getFullCallsign(), row, 8, true, false);
 		} else if (foundCount == 0) {
 			DebugUtility.trace(this.getClass(), "Tried lookup for: " + val + ". No asset found");
 		}

@@ -16,6 +16,7 @@ import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
 import swing.SingletonHolder;
+import utilities.ConflictComparer;
 import utilities.DebugUtility;
 import utilities.Output;
 
@@ -139,62 +140,10 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 		// HO-REE SHIT. The time has come.
 
-		boolean hasConflict = false;
-
 		// we've changed airspace or altitude or aircraft type
 		if (this.column == 2 || this.column == 3 || this.column == 4 || this.column == 6) {
 
-			// so get the 'current' - changed asset
-			Asset first = RundownAssets.getInstance().get(this.row);
-			int count = 0;
-
-			// loop through all other assets
-			for (Asset other : RundownAssets.getInstance()) {
-				// if not itself
-				if (this.row != count) {
-					// check for new overlaps
-					if (first.conflictsWith(other).size() > 0) {
-						DebugUtility.trace(this.getClass(),
-								"New conflict between " + first.getAirspace() + " and " + other.getAirspace());
-						// flag it
-						hasConflict = true;
-						other.setInConflict(true);
-					}
-				}
-				// next
-				count++;
-			}
-			if (hasConflict) {
-				first.setInConflict(true);
-			} else {
-				first.setInConflict(false);
-			}
-
-			int cnt1 = 0;
-
-			// now loop through every asset that has a conflict
-			for (Asset fst : RundownAssets.getInstance()) {
-				if (fst.isInConflict() == true) {
-					hasConflict = false;
-					count = 0;
-					for (Asset other : RundownAssets.getInstance()) {
-						if (cnt1 != count) {
-							if (fst.conflictsWith(other).size() > 0) {
-								DebugUtility.trace(this.getClass(), "Existing conflict between " + fst.getAirspace()
-										+ " and " + other.getAirspace());
-								hasConflict = true;
-							}
-						}
-						count++;
-					}
-					if (hasConflict) {
-						fst.setInConflict(true);
-					} else {
-						fst.setInConflict(false);
-					}
-				}
-				cnt1++;
-			}
+			ConflictComparer.checkConflicts(this.row);
 
 			checkAirspaceHighlights();
 		}

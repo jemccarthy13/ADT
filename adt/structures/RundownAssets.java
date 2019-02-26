@@ -73,11 +73,11 @@ public class RundownAssets extends ListOf<Asset> {
 	 * @param ass
 	 */
 	public static void force(Asset ass) {
-		instance.get(RundownAssets.forcedRow).setVCS(ass.getVCS());
-		instance.get(RundownAssets.forcedRow).setMode2(ass.getMode2());
-		instance.get(RundownAssets.forcedRow).setSpecType(ass.getSpecType());
-		instance.get(RundownAssets.forcedRow).setTypeCat(ass.getTypeCat());
-		instance.get(RundownAssets.forcedRow).setFullCallsign(ass.getFullCallsign());
+		instance.get(RundownAssets.forcedRow).getID().setVCS(ass.getID().getVCS());
+		instance.get(RundownAssets.forcedRow).getID().setMode2(ass.getID().getMode2());
+		instance.get(RundownAssets.forcedRow).getID().setSpecType(ass.getID().getSpecType());
+		instance.get(RundownAssets.forcedRow).getID().setTypeCat(ass.getID().getTypeCat());
+		instance.get(RundownAssets.forcedRow).getID().setFullCallsign(ass.getID().getFullCallsign());
 	}
 
 	/**

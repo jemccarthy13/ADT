@@ -15,6 +15,22 @@ import utilities.DebugUtility;
 
 /**
  * A server used to communicate between Rundowns.
+ * 
+ * TODO - this class is the point at which a programmer would interface with
+ * external agencies.
+ * 
+ * -- A new socket would be created to link to external source (i.e. datalink
+ * terminal)
+ * 
+ * -- This new socket, and associated input/output streams would listen for
+ * incoming link messages of the correct type
+ * 
+ * -- Having received a message, translate JXX.X to a ADTXXMessage and process
+ * as usual
+ * 
+ * -- The rundown would have to change to have a right click option to "Publish
+ * Approval" which would publish datalink messages of the appropriate type
+ * utilizing this Server function "sendLinkMessage()"
  */
 public class ADTServer extends Thread {
 
@@ -125,6 +141,19 @@ public class ADTServer extends Thread {
 				DebugUtility.trace(ADTServer.class, "Sent " + message + " to " + key);
 			}
 		}
+	}
+
+	/**
+	 * Send a message through datalink to other agencies
+	 * 
+	 * TODO - this function should communicate with Boeing's messaging library to
+	 * send/receive datalink messages
+	 * 
+	 * @param message - the internal rundown message, to translate to a link16
+	 *                J-series message
+	 */
+	public static void sendLinkMessage(ADTBaseMessage message) {
+		DebugUtility.error(ADTServer.class, "Link 16 messaging not implemented.");
 	}
 
 	/**

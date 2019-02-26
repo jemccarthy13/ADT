@@ -12,15 +12,11 @@ import utilities.Configuration;
 public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	private static final long serialVersionUID = 8634221915912471387L;
-	private String vcs = "";
-	private String mode2 = "";
+	private Identity ID = new Identity();
 	// private String location = "";
 	private Altitude altBlock = new Altitude();
 	private String alttransit = "";
 	private String status = "";
-	private String specType = "";
-	private String typeCat = "";
-	private String fullCallsign = "";
 	private boolean addToRundown = false;
 	private String onStation = "";
 	private String offStation = "";
@@ -40,19 +36,19 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 			setAddToRundown((Boolean) aValue);
 			break;
 		case 1:
-			setFullCallsign(aValue.toString());
+			getID().setFullCallsign(aValue.toString());
 			break;
 		case 2:
-			setVCS(aValue.toString());
+			getID().setVCS(aValue.toString());
 			break;
 		case 3:
-			setMode2(aValue.toString());
+			getID().setMode2(aValue.toString());
 			break;
 		case 4:
-			setSpecType(aValue.toString());
+			getID().setSpecType(aValue.toString());
 			break;
 		case 5:
-			setTypeCat(aValue.toString());
+			getID().setTypeCat(aValue.toString());
 			break;
 		case 6:
 			setOnStation(aValue.toString());
@@ -68,8 +64,19 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	@Override
 	public boolean equals(Object other) {
+
 		Asset oth = (Asset) (other);
-		return (this.mode2.equals(oth.mode2) && this.fullCallsign.equals(oth.fullCallsign) && this.vcs.equals(oth.vcs));
+		Identity self = this.getID();
+		Identity othID = oth.getID();
+		return (self.getMode2().equals(othID.getMode2()) && self.getFullCallsign().equals(othID.getFullCallsign())
+				&& self.getVCS().equals(othID.getVCS()));
+	}
+
+	/**
+	 * @return Identity object that holds ID info for this asset
+	 */
+	public Identity getID() {
+		return this.ID;
 	}
 
 	@Override
@@ -78,21 +85,21 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 		case 0:
 			return isAddToRundown();
 		case 1:
-			return getFullCallsign();
+			return getID().getFullCallsign();
 		case 2:
-			return getVCS();
+			return getID().getVCS();
 		case 3:
-			return getMode2();
+			return getID().getMode2();
 		case 4:
-			return getSpecType();
+			return getID().getSpecType();
 		case 5:
-			return getTypeCat();
+			return getID().getTypeCat();
 		case 6:
 			return getOnStation();
 		case 7:
 			return getOffStation();
 		default:
-			return getFullCallsign();
+			return getID().getFullCallsign();
 		}
 	}
 
@@ -109,12 +116,12 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	public Asset(String tkd, String mode2, String arinfo, String specType, String typ, String callsign,
 			String location) {
-		this.vcs = tkd;
-		this.mode2 = mode2;
+		this.getID().setVCS(tkd);
+		this.getID().setMode2(mode2);
 		this.arData = arinfo;
-		this.setSpecType(specType);
-		this.setTypeCat(typ);
-		this.setFullCallsign(callsign);
+		this.getID().setSpecType(specType);
+		this.getID().setTypeCat(typ);
+		this.getID().setFullCallsign(callsign);
 		this.airspace = location;
 	}
 
@@ -143,36 +150,9 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	@Override
 	public String toString() {
-		return this.vcs + "/" + this.mode2 + "/" + this.airspace + "/" + this.getSpecType() + "/" + this.getTypeCat()
-				+ "/" + this.getFullCallsign() + "/" + this.arData;
-	}
-
-	/**
-	 * @return Asset's voice callsign
-	 */
-	public String getVCS() {
-		return this.vcs;
-	}
-
-	/**
-	 * @param string a new vcs for the asset
-	 */
-	public void setVCS(String string) {
-		this.vcs = string;
-	}
-
-	/**
-	 * @return Asset's ATO (or updated) mode2
-	 */
-	public String getMode2() {
-		return this.mode2;
-	}
-
-	/**
-	 * @param string a new Mode 2 for the asset
-	 */
-	public void setMode2(String string) {
-		this.mode2 = string;
+		return this.getID().getVCS() + "/" + this.getID().getMode2() + "/" + this.airspace + "/"
+				+ this.getID().getSpecType() + "/" + this.getID().getTypeCat() + "/" + this.getID().getFullCallsign()
+				+ "/" + this.arData;
 	}
 
 	/**
@@ -215,48 +195,6 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	/**
-	 * @return the specType
-	 */
-	public String getSpecType() {
-		return this.specType;
-	}
-
-	/**
-	 * @param specType the specType to set
-	 */
-	public void setSpecType(String specType) {
-		this.specType = specType;
-	}
-
-	/**
-	 * @return the typeCat
-	 */
-	public String getTypeCat() {
-		return this.typeCat;
-	}
-
-	/**
-	 * @param typeCat the typeCat to set
-	 */
-	public void setTypeCat(String typeCat) {
-		this.typeCat = typeCat;
-	}
-
-	/**
-	 * @return the fullCallsign
-	 */
-	public String getFullCallsign() {
-		return this.fullCallsign;
-	}
-
-	/**
-	 * @param fullCallsign the fullCallsign to set
-	 */
-	public void setFullCallsign(String fullCallsign) {
-		this.fullCallsign = fullCallsign;
 	}
 
 	/**
@@ -303,7 +241,7 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	public int altSep(Asset other) {
 		int altSep = 9;
-		if (this.getTypeCat().equals(other.getTypeCat()) && this.getTypeCat().equals("RPA")) {
+		if (this.getID().getTypeCat().equals(other.getID().getTypeCat()) && this.getID().getTypeCat().equals("RPA")) {
 			altSep = 4;
 		}
 		return altSep;
@@ -345,9 +283,10 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 * @return true iff Asset is entirely blank
 	 */
 	public boolean isBlank() {
-		return this.vcs.equals("") && this.mode2.equals("") && this.getFullCallsign().equals("")
-				&& this.airspace.equals("") && this.altBlock.isBlank() && this.getStatus().equals("")
-				&& this.getSpecType().equals("") && this.getTypeCat().equals("") && this.getOnStation().equals("")
+		return this.getID().getVCS().equals("") && this.getID().getMode2().equals("")
+				&& this.getID().getFullCallsign().equals("") && this.airspace.equals("") && this.altBlock.isBlank()
+				&& this.getStatus().equals("") && this.getID().getSpecType().equals("")
+				&& this.getID().getTypeCat().equals("") && this.getOnStation().equals("")
 				&& this.getOffStation().equals("") && this.arData.equals("");
 	}
 
@@ -392,8 +331,8 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 * @return formatted approval
 	 */
 	public String getApproval() {
-		return this.vcs + " " + this.mode2 + " /  / " + this.airspace + " / FL " + this.getAlt().getLower() + " to FL "
-				+ this.getAlt().getUpper() + " / " + this.status;
+		return this.getID().getVCS() + " " + this.getID().getMode2() + " /  / " + this.airspace + " / FL "
+				+ this.getAlt().getLower() + " to FL " + this.getAlt().getUpper() + " / " + this.status;
 	}
 
 	/**

@@ -193,7 +193,7 @@ public class StacksPanel extends BasePanel {
 	String formatAsset(Asset ast, int lenAirspace) {
 		int asLen = lenAirspace == -1 ? getAirspaceLen() : lenAirspace;
 
-		String m2 = ast.getMode2().equals("") ? "____" : ast.getMode2();
+		String m2 = ast.getID().getMode2().equals("") ? "____" : ast.getID().getMode2();
 
 		int numScores = asLen - ast.getAirspace().length();
 		StringBuffer outputBuffer = new StringBuffer(numScores);
@@ -209,8 +209,8 @@ public class StacksPanel extends BasePanel {
 			airspace = ast.getAirspace() + uScores;
 		}
 
-		return "> " + ast.getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString() + ast.getTxAlt()
-				+ "\r\n";
+		return "> " + ast.getID().getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString()
+				+ ast.getTxAlt() + "\r\n";
 	}
 
 	/**

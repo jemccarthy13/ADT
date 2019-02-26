@@ -223,9 +223,10 @@ public class RundownTable extends JTable {
 								builder += "-------------------------\n";
 
 								if (e.getSource().equals(showConflict)) {
-									builder += selected.getVCS() + " conflicts with " + a.getVCS() + " in:\n";
+									builder += selected.getID().getVCS() + " conflicts with " + a.getID().getVCS()
+											+ " in:\n";
 								} else {
-									builder += selected.getVCS() + " is in " + ((Airspace) a).getName() + "\n";
+									builder += selected.getID().getVCS() + " is in " + ((Airspace) a).getName() + "\n";
 								}
 								for (String conflict : selected.conflictsWith(a)) {
 									builder += conflict + "\n";
