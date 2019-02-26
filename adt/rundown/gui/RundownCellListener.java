@@ -75,7 +75,9 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	public void run() {
 		this.row = RundownTable.getInstance().getEditingRow();
 		this.column = RundownTable.getInstance().getEditingColumn();
-		RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, true));
+		int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
+		RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, true));
+
 		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, true);
 	}
 
@@ -125,16 +127,19 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		}
 
 		if (!errMsg.equals("")) {
+			int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
 			DebugUtility.error(this.getClass(), errMsg);
 			Output.forceInfoMessage("", errMsg);
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
 			RundownTable.getInstance().getModel().setValueAt("", this.row, this.column);
-			RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, false));
+			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
+
 			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
 			return;
 		}
-		RundownFrame.getClient().sendMessage(new ADTUpdateMessage(this.row, this.column, newValue));
-		RundownFrame.getClient().sendMessage(new ADTLockedMessage(this.row, this.column, false));
+		int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
+		RundownFrame.getClient().sendMessage(new ADTUpdateMessage(modelRow, this.column, newValue));
+		RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
 
 		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
 

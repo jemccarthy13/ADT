@@ -100,11 +100,9 @@ public class ADTServer extends Thread {
 				bufferedReader = new ObjectInputStream(clientSocket.getInputStream());
 				DebugUtility.debug(ADTServer.class, "Started server thread: " + connections);
 				ADTServerThread client = new ADTServerThread(connections, bufferedReader, clientSocket);
-				// client.start();
 				new Thread(client).start();
 				clients.put(connections, client);
 				client.sendMessage(new ADTIdMessage(connections));
-				// client.sendMessage(connections + ",id," + connections);
 
 				client.sendRundown();
 				client.sendATOData();
