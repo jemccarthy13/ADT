@@ -436,7 +436,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 	public HashSet<String> getKillboxFromCircle(String centerPt, Double radius) {
 
 		// String origin = Configuration.getOrigin();
-		String origin = "1030S02200E";
+		String origin = "1000S02500E";
 		String startRow = "1";
 		String startCol = "A";
 
