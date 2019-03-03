@@ -110,19 +110,22 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 		String newValue = (String) (RundownTable.getInstance().getValueAt(this.row, this.column));
 
-		if (this.column == 3 || this.column == 4) {
-			if (!newValue.equals("")) {
+		// error check based on column
+		if (!newValue.equals("")) {
+			switch (this.column) {
+			case 3:
+			case 4:
 				if (newValue.length() != 3 || !isInt(newValue)) {
-					errMsg = "Altitude needs to be 3 digit FL (000-999)";
+					errMsg = "Altitude must be 3 digit numeric FL (000-999)";
 				}
-			}
-		}
-
-		if (this.column == 1) {
-			if (!newValue.equals("")) {
-				if (newValue.length() < 4 || !isInt(newValue)) {
+				break;
+			case 1:
+				if (newValue.length() != 4 || !isInt(newValue)) {
 					errMsg = "Mode 2 must be four digits (####)";
 				}
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -134,25 +137,26 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
 
 			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
-			return;
+
+		} else {
+			int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
+			RundownFrame.getClient().sendMessage(new ADTUpdateMessage(modelRow, this.column, newValue));
+			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
+
+			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
+
+			// HO-REE SHIT. The time has come.
+
+			// we've changed airspace or altitude or aircraft type
+			if (this.column == 2 || this.column == 3 || this.column == 4 || this.column == 6) {
+
+				ConflictComparer.checkConflicts(this.row);
+
+				checkAirspaceHighlights();
+			}
+
+			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
-		int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
-		RundownFrame.getClient().sendMessage(new ADTUpdateMessage(modelRow, this.column, newValue));
-		RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
-
-		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
-
-		// HO-REE SHIT. The time has come.
-
-		// we've changed airspace or altitude or aircraft type
-		if (this.column == 2 || this.column == 3 || this.column == 4 || this.column == 6) {
-
-			ConflictComparer.checkConflicts(this.row);
-
-			checkAirspaceHighlights();
-		}
-
-		((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 	}
 
 	/**

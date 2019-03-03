@@ -51,21 +51,21 @@ public class ADTApp {
 	 * @param args - command line arguments
 	 */
 	public static void main(String[] args) {
-		Asset dude01 = new Asset("DE01", "2201", "", "F15C", "FTR", "DUDE01", "88AG");
-		Asset dude02 = new Asset("DE02", "2202", "", "F15C", "FTR", "DUDE02", "88AG");
-		Asset dude03 = new Asset("DE03", "2203", "", "F15C", "FTR", "DUDE03", "88AG");
+		Asset eagle01 = new Asset("EE01", "2201", "", "F15C", "FTR", "EAGLE01", "88AG");
+		Asset eagle02 = new Asset("EE02", "2202", "", "F15C", "FTR", "EAGLE02", "88AG");
+		Asset eagle03 = new Asset("EE03", "2203", "", "F15C", "FTR", "EAGLE03", "88AG");
 
-		dude01.setAltBlock("120", "120");
-		dude02.setAltBlock("200", "200");
-		dude03.setAltBlock("300", "400");
-		ATOAssets.getInstance().add(dude01);
-		RundownAssets.getInstance().add(dude01);
+		eagle01.setAltBlock("120", "120");
+		eagle02.setAltBlock("200", "200");
+		eagle03.setAltBlock("300", "400");
+		ATOAssets.getInstance().add(eagle01);
+		RundownAssets.getInstance().add(eagle01);
 
-		ATOAssets.getInstance().add(dude02);
-		RundownAssets.getInstance().add(dude02);
+		ATOAssets.getInstance().add(eagle02);
+		RundownAssets.getInstance().add(eagle02);
 
-		ATOAssets.getInstance().add(dude03);
-		RundownAssets.getInstance().add(dude03);
+		ATOAssets.getInstance().add(eagle03);
+		RundownAssets.getInstance().add(eagle03);
 
 		((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 
