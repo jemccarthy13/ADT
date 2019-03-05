@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import swing.SingletonHolder;
+import utilities.GridSettings;
 
 /**
  * Representation of an asset under control.

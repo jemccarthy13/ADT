@@ -3,12 +3,12 @@ package asmanager.gui;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
 
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
@@ -19,13 +19,14 @@ import javax.swing.border.EmptyBorder;
 import rundown.model.RundownTable;
 import structures.Airspace;
 import structures.AirspaceList;
-import structures.GridSettings;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
+import swing.GBC;
 import swing.MouseClickListener;
 import swing.SingletonHolder;
 import utilities.AltCellListener;
+import utilities.GridSettings;
 import utilities.Output;
 
 /**
@@ -45,34 +46,6 @@ public class ASManagerEditPanel extends BasePanel {
 	 */
 	JTextField nameField;
 
-	private class GBC extends GridBagConstraints {
-
-		/**
-		 * Serialization
-		 */
-		private static final long serialVersionUID = 7560384801380535809L;
-
-		public void create() {
-			this.fill = GridBagConstraints.HORIZONTAL;
-			this.insets = new Insets(0, 0, 5, 5);
-		}
-
-		public GBC(int x, int y) {
-			this.setup(1, x, y);
-		}
-
-		public GBC(int width, int x, int y) {
-			this.setup(width, x, y);
-		}
-
-		public void setup(int width, int x, int y) {
-			this.gridwidth = width;
-			this.gridy = y;
-			this.gridx = x;
-			create();
-		}
-	}
-
 	private class AddListener implements ActionListener {
 
 		public AddListener() {
@@ -86,9 +59,10 @@ public class ASManagerEditPanel extends BasePanel {
 					ASManagerEditPanel.this.addAirspace();
 				} else {
 					Output.forceInfoMessage("Unimplemented", "Need to implement MGRS->Keypad conversion");
-					((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class)).getKeypadFinder()
-							.getKillboxFromCircle(ASManagerEditPanel.this.gridsField.getText(),
+					HashSet<String> result = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
+							.getKeypadFinder().getKillboxFromCircle(ASManagerEditPanel.this.gridsField.getText(),
 									Double.parseDouble(ASManagerEditPanel.this.radiusField.getText()));
+					System.err.println(result.toString());
 				}
 			}
 		}

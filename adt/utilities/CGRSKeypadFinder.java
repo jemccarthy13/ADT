@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import structures.AirspaceList;
 import structures.DIR;
-import structures.GridSettings;
 import structures.KeypadFinder;
 import swing.SingletonHolder;
 

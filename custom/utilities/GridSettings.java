@@ -1,7 +1,7 @@
-package structures;
+package utilities;
 
+import structures.KeypadFinder;
 import swing.Singleton;
-import utilities.CGRSKeypadFinder;
 
 /**
  * Whether we use CGRS or GARS. If CGRS, hold the origin, and starting row and
@@ -67,5 +67,14 @@ public class GridSettings implements Singleton {
 	 */
 	public String getOrigin() {
 		return this.origin;
+	}
+
+	/**
+	 * Set a new origin
+	 * 
+	 * @param text the new origin to use
+	 */
+	public void setOrigin(String text) {
+		this.origin = text;
 	}
 }

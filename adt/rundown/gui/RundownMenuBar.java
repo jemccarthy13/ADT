@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -28,8 +29,8 @@ import messages.ADTAtoDatMessage;
 import messages.ADTForceUnlockMessage;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
+import settingsmanager.SettingsFrame;
 import structures.ATOAssets;
-import structures.GridSettings;
 import structures.KeypadFinder;
 import structures.LockedCells;
 import structures.RundownAssets;
@@ -37,6 +38,7 @@ import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.FileChooser;
+import utilities.GridSettings;
 import utilities.Output;
 
 /**
@@ -198,7 +200,7 @@ public class RundownMenuBar extends JMenuBar {
 				dialog.add(panel);
 				dialog.setVisible(true);
 			} else if (e.getSource().equals(RundownMenuBar.this.setGrid)) {
-				DebugUtility.error(RundownMenuBar.class, "Setting grid not implemented");
+				((JFrame) SingletonHolder.getInstanceOf(SettingsFrame.class)).setVisible(true);
 			} else if (e.getSource().equals(RundownMenuBar.this.typeManager)) {
 				DebugUtility.error(RundownMenuBar.class, "Type manager not implemented");
 			} else if (e.getSource().equals(RundownMenuBar.this.zeroize)) {
