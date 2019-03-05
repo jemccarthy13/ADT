@@ -3,8 +3,6 @@ package utilities;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import structures.KeypadFinder;
-
 /**
  * Holds program configuration and constants
  */
@@ -23,8 +21,6 @@ public class Configuration {
 	private String ATOProjFileLoc = "";
 	// private String ATOLoadLoc = "./TESTATO.txt";
 	private String ATOLoadLoc = "";
-
-	private KeypadFinder finder = new CGRSKeypadFinder();
 
 	private static Configuration instance = new Configuration();
 
@@ -133,16 +129,6 @@ public class Configuration {
 	 */
 	public String getATOLoadLoc() {
 		return this.ATOLoadLoc;
-	}
-
-	/**
-	 * The current configuration of keypad finder. Interprets how airspaces are
-	 * represented in 2D and determines 2D overlap
-	 * 
-	 * @return the finder currently being used. default is CGRS
-	 */
-	public KeypadFinder getKeypadFinder() {
-		return this.finder;
 	}
 
 	/**

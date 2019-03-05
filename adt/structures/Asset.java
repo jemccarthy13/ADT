@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import utilities.Configuration;
+import swing.SingletonHolder;
 
 /**
  * Representation of an asset under control.
@@ -13,7 +13,6 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	private static final long serialVersionUID = 8634221915912471387L;
 	private Identity ID = new Identity();
-	// private String location = "";
 	private Altitude altBlock = new Altitude();
 	private String alttransit = "";
 	private String status = "";
@@ -274,7 +273,7 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 * @return - a HashSet of any overlapping keypads, if found
 	 */
 	public HashSet<String> sharesAirspaceWith(Asset other) {
-		KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
+		KeypadFinder finder = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class)).getKeypadFinder();
 
 		HashSet<String> thisKeypads = finder.getKeypads(this.airspace);
 		HashSet<String> otherKeypads = finder.getKeypads(other.airspace);

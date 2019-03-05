@@ -19,13 +19,13 @@ import javax.swing.border.EmptyBorder;
 import rundown.model.RundownTable;
 import structures.Airspace;
 import structures.AirspaceList;
+import structures.GridSettings;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
 import swing.MouseClickListener;
 import swing.SingletonHolder;
 import utilities.AltCellListener;
-import utilities.Configuration;
 import utilities.Output;
 
 /**
@@ -86,9 +86,9 @@ public class ASManagerEditPanel extends BasePanel {
 					ASManagerEditPanel.this.addAirspace();
 				} else {
 					Output.forceInfoMessage("Unimplemented", "Need to implement MGRS->Keypad conversion");
-					Configuration.getInstance().getKeypadFinder().getKillboxFromCircle(
-							ASManagerEditPanel.this.gridsField.getText(),
-							Double.parseDouble(ASManagerEditPanel.this.radiusField.getText()));
+					((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class)).getKeypadFinder()
+							.getKillboxFromCircle(ASManagerEditPanel.this.gridsField.getText(),
+									Double.parseDouble(ASManagerEditPanel.this.radiusField.getText()));
 				}
 			}
 		}

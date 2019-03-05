@@ -29,6 +29,7 @@ import messages.ADTForceUnlockMessage;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import structures.ATOAssets;
+import structures.GridSettings;
 import structures.KeypadFinder;
 import structures.LockedCells;
 import structures.RundownAssets;
@@ -154,7 +155,8 @@ public class RundownMenuBar extends JMenuBar {
 				panel.add(outputbox, BorderLayout.CENTER);
 				outputbox.setWrapStyleWord(true);
 				JButton submit = new JButton("Submit");
-				final KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
+				final KeypadFinder finder = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
+						.getKeypadFinder();
 				submit.addActionListener(new ActionListener() {
 
 					@Override
@@ -180,7 +182,8 @@ public class RundownMenuBar extends JMenuBar {
 				panel.add(outputbox, BorderLayout.CENTER);
 				outputbox.setWrapStyleWord(true);
 				JButton submit = new JButton("Submit");
-				final KeypadFinder finder = Configuration.getInstance().getKeypadFinder();
+				final KeypadFinder finder = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
+						.getKeypadFinder();
 				submit.addActionListener(new ActionListener() {
 
 					@Override

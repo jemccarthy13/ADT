@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import structures.AirspaceList;
 import structures.DIR;
+import structures.GridSettings;
 import structures.KeypadFinder;
 import swing.SingletonHolder;
 
@@ -193,8 +194,9 @@ public class CGRSKeypadFinder extends KeypadFinder {
 			String origin) {
 		HashSet<String> retVal = new HashSet<String>();
 
-		String startRow = "1";
-		String startCol = "A";
+		GridSettings settings = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class));
+		String startRow = settings.getStartRow();
+		String startCol = settings.getStartCol();
 
 		String nOrigin = getCoordDigitFormat(origin, 4, 0);
 		String eOrigin = getCoordDigitFormat(origin, 5, 1);
@@ -432,10 +434,10 @@ public class CGRSKeypadFinder extends KeypadFinder {
 	@Override
 	public HashSet<String> getKillboxFromCircle(String centerPt, Double radius) {
 
-		// String origin = Configuration.getOrigin();
-		String origin = "1000S02500E";
-		String startRow = "1";
-		String startCol = "A";
+		GridSettings settings = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class));
+		String origin = settings.getOrigin();
+		String startCol = settings.getStartCol();
+		String startRow = settings.getStartRow();
 
 		String centerPoint = centerPt.replaceAll("\\.", "");
 		DebugUtility.error(getClass(),
