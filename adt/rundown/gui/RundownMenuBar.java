@@ -186,7 +186,7 @@ public class RundownMenuBar extends JMenuBar {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						outputbox.setLineWrap(true);
-						HashSet<String> result = finder.getKillboxFromCircle(keypadbox.getText(), Double.valueOf(1.0));
+						HashSet<String> result = finder.getKillboxFromCircle(keypadbox.getText(), Double.valueOf(10.0));
 						outputbox.setText(result.toString() + "\r\n" + result.size());
 					}
 

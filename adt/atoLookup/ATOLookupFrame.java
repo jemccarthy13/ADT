@@ -23,6 +23,8 @@ public class ATOLookupFrame extends BaseFrame {
 	public void create() {
 		setSize(725, 600);
 
+		this.setAlwaysOnTop(true);
+
 		this.setIconImage(ImageLibrary.getImage("searchIcon"));
 		this.setTitle("ATO Lookup");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

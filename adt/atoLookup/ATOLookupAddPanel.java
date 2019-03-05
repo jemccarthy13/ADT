@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import rundown.gui.RundownMenuBar;
 import structures.ATOAssets;
 import structures.Asset;
+import structures.PreviousAssets;
 import structures.RundownAssets;
 import swing.ADTLabel;
 import swing.ActionButton;
@@ -38,7 +39,13 @@ public class ATOLookupAddPanel extends BasePanel {
 			DebugUtility.trace(this.getClass(), "Add to rundown button pressed");
 			for (int x = 0; x < ATOAssets.getInstance().size(); x++) {
 				Asset atoAsset = ATOAssets.getInstance().get(x);
+
 				if (atoAsset.isAddToRundown()) {
+					for (Asset a : PreviousAssets.getInstance()) {
+						if (a.getID().getMode2().equals(atoAsset.getID().getMode2())) {
+							atoAsset = a;
+						}
+					}
 					DebugUtility.debug(ATOLookupAddPanel.class,
 							atoAsset.getID().getVCS() + " being added from ATO Lookup");
 					((ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class)).setValueAt(Boolean.FALSE,

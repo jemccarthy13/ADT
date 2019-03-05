@@ -66,8 +66,27 @@ public class ATOAssets extends ArrayList<Asset> {
 	 * @param val    - the value of the rundown table at that location
 	 */
 	public void lookup(int row, int column, String val) {
-		int foundCount = 0;
-		Asset foundAsset = null;
+		int prevCount = 0;
+		int atoFoundCount = 0;
+		Asset prevAsset = null;
+		Asset atoAsset = null;
+
+		for (int x = 0; x < PreviousAssets.getInstance().size(); x++) {
+			Asset ass = this.get(x);
+			String compVal = "";
+			if (column == 0) {
+				compVal = ass.getID().getVCS();
+			} else if (column == 1) {
+				compVal = ass.getID().getMode2();
+			} else {
+				compVal = ass.getID().getFullCallsign();
+			}
+			if (val.equals(compVal)) {
+				prevCount++;
+				prevAsset = ass;
+			}
+		}
+
 		for (int x = 0; x < this.size(); x++) {
 			Asset ass = this.get(x);
 			String compVal = "";
@@ -79,12 +98,12 @@ public class ATOAssets extends ArrayList<Asset> {
 				compVal = ass.getID().getFullCallsign();
 			}
 			if (val.equals(compVal)) {
-				foundCount++;
-				foundAsset = ass;
+				atoFoundCount++;
+				atoAsset = ass;
 			}
 		}
 
-		if (foundCount > 1) {
+		if (atoFoundCount > 1) {
 			DebugUtility.trace(this.getClass(), "Found more than one: " + val);
 
 			((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).setValueAt("", row, column);
@@ -102,17 +121,32 @@ public class ATOAssets extends ArrayList<Asset> {
 			default:
 				ATOSearchPanel.callsignBox.setText(val);
 			}
-
 			ATOSearchPanel.searchBtn.doClick();
-		} else if (foundCount == 1) {
-			RundownTableModel m = (RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class);
-			m.setValueAt(foundAsset.getID().getVCS(), row, 0, true, false);
-			m.setValueAt(foundAsset.getID().getMode2(), row, 1, true, false);
-			m.setValueAt(foundAsset.getID().getSpecType(), row, 6, true, false);
-			m.setValueAt(foundAsset.getID().getTypeCat(), row, 7, true, false);
-			m.setValueAt(foundAsset.getID().getFullCallsign(), row, 8, true, false);
-		} else if (foundCount == 0) {
+		} else if (prevCount == 1 && atoFoundCount == 1) {
+			copyAsset(prevAsset, row);
+		} else if (prevCount == 0 && atoFoundCount == 1) {
+			copyAsset(atoAsset, row);
+		} else if (prevCount == 0 && atoFoundCount == 0) {
 			DebugUtility.trace(this.getClass(), "Tried lookup for: " + val + ". No asset found");
 		}
+	}
+
+	/**
+	 * Copy a particular asset into a given row
+	 * 
+	 * @param asst - the asset to copy
+	 * @param row  - the row to copy into
+	 */
+	public void copyAsset(Asset asst, int row) {
+		RundownTableModel m = (RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class);
+		m.setValueAt(asst.getID().getVCS(), row, 0, true, false);
+		m.setValueAt(asst.getID().getMode2(), row, 1, true, false);
+		m.setValueAt(asst.getAirspace(), row, 2, true, false);
+		m.setValueAt(asst.getAlt().getLower(), row, 3, true, false); // lower
+		m.setValueAt(asst.getAlt().getUpper(), row, 4, true, false); // upper
+		m.setValueAt(asst.getStatus(), row, 5, true, false); // status
+		m.setValueAt(asst.getID().getSpecType(), row, 6, true, false);
+		m.setValueAt(asst.getID().getTypeCat(), row, 7, true, false);
+		m.setValueAt(asst.getID().getFullCallsign(), row, 8, true, false);
 	}
 }

@@ -54,7 +54,6 @@ public class CGRSKeypadFinder extends KeypadFinder {
 	@Override
 	public HashSet<String> keypadsFromKillbox(String killbox) {
 
-		DebugUtility.error(GARSKeypadFinder.class, "Using cgrs");
 		HashSet<String> keypads = new HashSet<String>();
 		String row = "";
 		String col = "";
@@ -219,9 +218,6 @@ public class CGRSKeypadFinder extends KeypadFinder {
 			int nKillboxOffset = ((Integer.parseInt(cornerCoord[0]) - Integer.parseInt(startRow)) * 50) + 50;
 			int eKillboxOffset = (Integer.parseInt(cornerCoord[1]) - (startCol.charAt(0) - 64)) * 50;
 
-			System.err.println("Checking " + pad + " " + (Integer.parseInt(nOrigin) + nKillboxOffset) + " "
-					+ (Integer.parseInt(eOrigin) + eKillboxOffset));
-
 			int count = 1;
 
 			for (int x = 1; x <= 4; x++) {
@@ -238,7 +234,6 @@ public class CGRSKeypadFinder extends KeypadFinder {
 					double distance = getDistance(Double.parseDouble(nCenter), nCornerPoint,
 							Double.parseDouble(eCenter), eCornerPoint, longDelta);
 
-					System.err.println(nCornerPoint + " " + eCornerPoint + " " + distance);
 					if (distance < (radius * radius)) {
 
 						int chr1 = Integer.parseInt(padCol) / 26;
@@ -253,6 +248,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 
 						String keypadStr = padRow + col1stChr + col2ndChr + count;
 						System.err.println(keypadStr);
+						System.err.println(nCornerPoint + " " + eCornerPoint + " " + distance);
 
 						HashSet<String> keypadColl = new HashSet<String>();
 
@@ -369,9 +365,10 @@ public class CGRSKeypadFinder extends KeypadFinder {
 	}
 
 	private double getDistance(double x1, double x2, double y1, double y2, Double longDelta) {
-		double xdelt = ((x2 - x1) / 100) * 60;
-		double ydelt = ((y2 - y1) / 100) * (longDelta / 60);
+		double xdelt = ((x2 - x1) / 50) * 60;
+		double ydelt = ((y2 - y1) / 50) * longDelta;
 
+		System.err.println(x1 + " " + x2 + " " + y1 + " " + y2 + " " + longDelta);
 		System.err.println(xdelt + " " + ydelt);
 		return Math.sqrt((xdelt * xdelt) + (ydelt * ydelt));
 	}
@@ -468,14 +465,17 @@ public class CGRSKeypadFinder extends KeypadFinder {
 
 		System.err.println("::: " + smCoordNum + " " + nCoordNum + " " + nOriginNum + " " + smIncr);
 		System.err.println("::: " + wmCoordNum + " " + eCoordNum + " " + eOriginNum + " " + wmIncr);
+		System.err.println("::: " + nmCoordNum + " " + nCoordNum + " " + nOriginNum + " " + nmIncr);
+		System.err.println("::: " + emCoordNum + " " + eCoordNum + " " + eOriginNum + " " + emIncr);
 
 		ArrayList<String> coords = new ArrayList<String>();
 
 		// From the S most to N most row, from the W most to E most column
 
 		for (int rowIdx = smIncr; rowIdx <= nmIncr; rowIdx++) {
-			for (int colIdx = wmIncr; colIdx < emIncr; colIdx++) {
-				System.err.println("coords: " + (colIdx + startCol.charAt(0) - 64));
+			for (int colIdx = wmIncr; colIdx <= emIncr; colIdx++) {
+				System.err.println("Column: " + (colIdx + startCol.charAt(0) - 64));
+				System.err.println((char) (colIdx + startCol.charAt(0)));
 				coords.add(rowIdx + Integer.parseInt(startRow) + " " + (colIdx + startCol.charAt(0) - 64));
 
 				// (colIdx + Asc(startCol) - 64))

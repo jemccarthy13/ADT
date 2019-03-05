@@ -12,6 +12,20 @@ public class Identity {
 	private String typeCat = "";
 
 	/**
+	 * @param other other ID to compare to
+	 * @return true iff Identities are equal
+	 */
+	public boolean equals(Identity other) {
+		return this.mode2.equals(other.getMode2()) && this.fullCallsign.equals(other.getFullCallsign())
+				&& this.vcs.equals(other.getVCS());
+	}
+
+	@Override
+	public int hashCode() {
+		return (this.mode2 + this.fullCallsign + this.vcs).hashCode();
+	}
+
+	/**
 	 * @return the vcs
 	 */
 	public String getVCS() {

@@ -54,10 +54,14 @@ public class ADTApp {
 		Asset eagle01 = new Asset("EE01", "2201", "", "F15C", "FTR", "EAGLE01", "88AG");
 		Asset eagle02 = new Asset("EE02", "2202", "", "F15C", "FTR", "EAGLE02", "88AG");
 		Asset eagle03 = new Asset("EE03", "2203", "", "F15C", "FTR", "EAGLE03", "88AG");
+		Asset engle03 = new Asset("EE03", "2204", "", "F15C", "FTR", "ENGLE03", "88AG");
 
 		eagle01.setAltBlock("120", "120");
 		eagle02.setAltBlock("200", "200");
 		eagle03.setAltBlock("300", "400");
+
+		ATOAssets.getInstance().add(engle03);
+
 		ATOAssets.getInstance().add(eagle01);
 		RundownAssets.getInstance().add(eagle01);
 

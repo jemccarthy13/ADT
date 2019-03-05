@@ -18,6 +18,7 @@ import swing.BaseFrame;
 import swing.BasePanel;
 import swing.SingletonHolder;
 import utilities.Configuration;
+import utilities.Metrics;
 
 /**
  * The panel containing all of the rundown buttons (i.e. a form header of
@@ -79,7 +80,9 @@ public class RundownButtonPanel extends BasePanel {
 
 			if (e.getSource().equals(RundownButtonPanel.this.metricsBtn)) {
 				frame.setTitle("Metrics");
+				Metrics.calculateAndShow();
 			}
+
 		}
 	}
 

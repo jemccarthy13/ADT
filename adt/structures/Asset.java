@@ -23,6 +23,11 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	private String arData = "";
 	private String airspace = "";
 
+	@Override
+	public int hashCode() {
+		return this.ID.hashCode();
+	}
+
 	/**
 	 * A flag whether this asst is in conflict with another, or not
 	 */
