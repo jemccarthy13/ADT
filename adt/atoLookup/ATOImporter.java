@@ -46,7 +46,7 @@ public class ATOImporter implements FileImporter {
 
 			for (File file : rootDir.listFiles()) {
 				if (Patterns.extPattern.matcher(file.getName()).find()) {
-					DebugUtility.error(ATOAssets.class, "Processing: " + file.getName());
+					DebugUtility.trace(ATOAssets.class, "Processing: " + file.getName());
 					try {
 						processFile(f.getPath(), typeMap);
 						numFilesProc++;

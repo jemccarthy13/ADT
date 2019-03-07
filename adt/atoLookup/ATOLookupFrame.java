@@ -35,6 +35,7 @@ public class ATOLookupFrame extends BaseFrame {
 
 		// Create the scroll pane and add the table to it.
 		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(12, 205, 523, 226);
 		scrollPane.setBorder(Borders.BLACK);// new EmptyBorder(20, 20, 20, 20));
 

@@ -12,9 +12,6 @@ import utilities.Fonts;
 
 /**
  * An ATO Lookup JTable.
- * 
- * @author John McCarthy
- *
  */
 public class ATOLookupTable extends JTable {
 
