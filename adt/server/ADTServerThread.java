@@ -58,7 +58,7 @@ public class ADTServerThread extends Thread {
 				msg = (ADTBaseMessage) (this.input.readObject());
 			} catch (IOException e) {
 				/**
-				 * On some disconnects this error loops indefinitely. TODO - find out why
+				 * On some disconnects this error loops indefinitely. @todo - find out why
 				 */
 				DebugUtility.error(ADTServerThread.class, "Unable to readline! User:" + this.id);
 			} catch (ClassNotFoundException e) {

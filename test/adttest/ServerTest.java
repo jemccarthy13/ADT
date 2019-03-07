@@ -41,7 +41,7 @@ public class ServerTest {
 
 		ADTRobot.sleep(5000);
 
-		/** TODO - assert no ADTServer connections were made */
+		/** @todo - assert no ADTServer connections were made */
 		BaseTest.fail("Need to implement verification of the correct server");
 
 		DebugUtility.debug(ServerTest.class, "Restarting test server...");
@@ -50,7 +50,7 @@ public class ServerTest {
 
 		ADTServer.getInstance().start();
 
-		/** TODO - assert a successful connection to ADTServer */
+		/** @todo - assert a successful connection to ADTServer */
 		// BaseTest.fail("Need to implement verification of the correct server");
 
 		((Window) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(true);
@@ -61,11 +61,11 @@ public class ServerTest {
 		// }
 
 		ADTServer.resetInstance();
-		/** TODO - assert connection was lost */
+		/** @todo - assert connection was lost */
 		BaseTest.fail("Need to implement verification of the correct server");
 
 		ADTServer.getInstance().start();
-		/** TODO - assert rundown frame is now the owner */
+		/** @todo - assert rundown frame is now the owner */
 		BaseTest.fail("Need to implement verification of the correct server");
 	}
 }

@@ -281,13 +281,13 @@ public class RundownTable extends JTable {
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
+				// Auto-generated method stub
 
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
+				// Auto-generated method stub
 
 			}
 		});
@@ -305,7 +305,6 @@ public class RundownTable extends JTable {
 		int[] maxWidths = { 60, 60, 400, 60, 60, 60, 100, 100, 100, 0, 0 };
 
 		// size the columns
-		/** TODO - reduce the amount of code? */
 		TableColumnModel cModel = this.getColumnModel();
 		int columnCount = ((TableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount();
 		DebugUtility.trace(RundownTable.class, "Columns: " + columnCount);

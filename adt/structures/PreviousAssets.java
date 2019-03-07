@@ -32,7 +32,7 @@ public class PreviousAssets extends ArrayList<Asset> {
 	 * 
 	 * @param newInstance - replacement instance
 	 * 
-	 *                    TODO - check if this is used anywhere
+	 * @todo - check if this is used anywhere
 	 */
 	public static void resetInstance(PreviousAssets newInstance) {
 		instance.clear();

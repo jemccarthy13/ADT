@@ -39,7 +39,7 @@ public class ATOAssets extends ArrayList<Asset> {
 	 * 
 	 * @param newInstance - replacement instance
 	 * 
-	 *                    TODO - check if this is used anywhere
+	 * @todo - check if this is used anywhere
 	 */
 	public static void resetInstance(ATOAssets newInstance) {
 		instance.clear();
@@ -58,8 +58,6 @@ public class ATOAssets extends ArrayList<Asset> {
 
 	/**
 	 * Do the ATO lookup and set the rundown row's information if a match is found.
-	 * 
-	 * TODO - handle if multiples found
 	 * 
 	 * @param row    - the row of the rundown table that has the data
 	 * @param column - the col of the rundown table that was edited

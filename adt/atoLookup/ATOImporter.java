@@ -28,8 +28,8 @@ public class ATOImporter implements FileImporter {
 	/**
 	 * Perform the import of the ATO
 	 * 
-	 * TODO - need to show settings for import (i.e. msn code checkbox, and
-	 * potentially time filter)
+	 * @todo - need to show settings for import (i.e. msn code checkbox, and
+	 *       potentially time filter)
 	 */
 	@Override
 	public void doImport(File f) {

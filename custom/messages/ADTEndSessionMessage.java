@@ -19,7 +19,7 @@ public class ADTEndSessionMessage extends ADTBaseMessage {
 
 	@Override
 	public void process() {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 	}
 
 	@Override

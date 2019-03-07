@@ -90,7 +90,6 @@ public class RundownAssets extends ListOf<Asset> {
 
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
-
+		// Auto-generated method stub
 	}
 }

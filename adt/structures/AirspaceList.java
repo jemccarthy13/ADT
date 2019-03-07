@@ -11,7 +11,7 @@ import utilities.DebugUtility;
 /**
  * An ArrayList of Airspaces for the Airspace Manager
  * 
- * @TODO - think of a way to store and load airspaces (probably another file)
+ * @todo - think of a way to store and load airspaces (probably another file)
  */
 public class AirspaceList extends ListOf<Airspace> {
 
@@ -41,7 +41,7 @@ public class AirspaceList extends ListOf<Airspace> {
 	/**
 	 * Called on creation. For testing, it'll add some sample airspaces.
 	 * 
-	 * @TODO remove test airspaces in production
+	 * @todo remove test airspaces in production
 	 */
 	@Override
 	public void create() {

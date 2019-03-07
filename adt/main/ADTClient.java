@@ -62,8 +62,8 @@ public class ADTClient extends Thread {
 			this.input = new ObjectInputStream(this.socket.getInputStream());
 
 			/**
-			 * TODO -- this success should check if the establish message receives a
-			 * response or somehow otherwise checks to verify the right server server
+			 * @todo -- this success should check if the establish message receives a
+			 *       response or somehow otherwise checks to verify the right server server
 			 */
 			success = true;
 

@@ -225,7 +225,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 		System.err.println("N Origin in DMS: " + nOrigin);
 		System.err.println("E Origin in DMS: " + eOrigin);
 
-		/** TODO - check to ensure centerpoint is not lower than the origin */
+		/** @todo - check to ensure centerpoint is not lower than the origin */
 		for (String pad : coords) {
 			String[] cornerCoord = pad.split(" ");
 			String[] padSplit = pad.split(" ");

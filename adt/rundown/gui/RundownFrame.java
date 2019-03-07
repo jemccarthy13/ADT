@@ -16,8 +16,8 @@ import utilities.Output;
 /**
  * The main Frame of the ADT
  * 
- * TODO - Add a refresh thread. Store the current column sort selection do the
- * menu bar refresh click, then resort based on user's previous preference
+ * @todo - Add a refresh thread. Store the current column sort selection do the
+ *       menu bar refresh click, then resort based on user's previous preference
  */
 public class RundownFrame extends BaseFrame {
 
@@ -74,7 +74,7 @@ public class RundownFrame extends BaseFrame {
 		if (this.client.isConnected()) {
 			this.setVisible(true);
 		} else {
-			/** TODO - better exit handler */
+			/** @todo - better exit handler */
 			DebugUtility.error(Output.class, "Unable to connect to server.");
 			System.exit(0);
 		}
@@ -86,7 +86,7 @@ public class RundownFrame extends BaseFrame {
 	public void handleCompact() {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		if (Configuration.getCompact() != 0) {
-			/** @TODO change this to not be a hard value */
+			/** @todo change this to not be a hard value */
 			this.setSize(800, (int) (d.height * 0.7));
 		} else {
 			this.setSize(800, (int) (d.height * 0.7));

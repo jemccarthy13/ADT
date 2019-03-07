@@ -27,10 +27,10 @@ public abstract class BaseTest extends TestSuite {
 
 	/**
 	 * Fail the test and cause the message to appear. This is more of a forceful
-	 * "TODO" to implement tests, yet give me the ability to run on jenkins.
+	 * "todo" to implement tests, yet give me the ability to run on jenkins.
 	 * 
-	 * TODO - convert notImplemented to a configuration variable, along with log
-	 * levels and most of the data from the Configuration class.
+	 * @todo - convert notImplemented to a configuration variable, along with log
+	 *       levels and most of the data from the Configuration class.
 	 * 
 	 * @param msg message to print
 	 */

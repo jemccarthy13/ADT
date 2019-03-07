@@ -1,7 +1,7 @@
 
 This file will be replaced with a more in-depth documentation at some point in the future.
 
-For now this will contain a log of updates and large TODOs.
+For now this will contain a log of updates and large todos.
 
 Structure:
 - adt: package for main airspace decon tool
@@ -54,8 +54,8 @@ Features:
 - Settings 
 	- ATO import / load
 	- Grid Settings, set/change grids
-	- Type Manager: TODO, not implemented
-	- Zeroize: buggy, TODO fix
+	- Type Manager: todo, not implemented
+	- Zeroize: buggy, todo fix
 - Developer Menu Bar
 	- Test some features for debugging purposes
 	- Force unlock of all locked cells
@@ -73,7 +73,7 @@ Features:
 - MILDECON Assist
 	- A button to shorten the airspace manager steps 
 	- A ROZ/airspace added via MILDECON will:
-		- 1) convert lat/lon or MGRS coords to killboxes (TODO: buggy, fix)
+		- 1) convert lat/lon or MGRS coords to killboxes (todo: buggy, fix)
 		- 2) add that airspace to the airspace manager
 		- 3) active that airspace
 		- 4) highlight any person in that airspace with the selected color
@@ -84,9 +84,9 @@ Features:
 	- Generate a stack based on given grids (create a temporary airspace for comparison)
 - Metrics:
 	- Report end of mission metrics (# aircraft controlled, airspaces approved)
-	- TODO: airspace approval count
-- Lowdown Manager: TODO
-- Get Lowdown: TODO
+	- todo: airspace approval count
+- Lowdown Manager: todo
+- Get Lowdown: todo
 
 ===================================================================
 Version 1.0.0                                           03 Dec 2018
@@ -99,7 +99,7 @@ Features:
 --- AS Manager partially functional (display only)
 --- ATO generator is partially implemented (for MSNDAT/ACFT)
 
-TODO:
+todo:
 - enhance conflict checking of rundown aircraft
 - don't allow duplicates on the rundown
 - add AR data to the ATO generator

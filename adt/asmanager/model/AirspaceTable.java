@@ -138,7 +138,7 @@ public class AirspaceTable extends JTable {
 		private static final long serialVersionUID = 8107150085372915277L;
 
 		public AirspaceCellRenderer() {
-			// TODO Auto-generated constructor stub
+			// Auto-generated constructor stub
 		}
 
 		@Override
@@ -264,13 +264,13 @@ public class AirspaceTable extends JTable {
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
+				// Auto-generated method stub
 
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) {
-				// TODO Auto-generated method stub
+				// Auto-generated method stub
 
 			}
 		});
