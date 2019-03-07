@@ -69,7 +69,9 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 
 	@Override
 	public boolean equals(Object other) {
-
+		if (other == null) {
+			return false;
+		}
 		Asset oth = (Asset) (other);
 		Identity self = this.getID();
 		Identity othID = oth.getID();

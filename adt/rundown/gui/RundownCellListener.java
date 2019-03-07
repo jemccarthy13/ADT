@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.SwingUtilities;
 
+import main.ADTClient;
 import messages.ADTLockedMessage;
 import messages.ADTUpdateMessage;
 import rundown.model.RundownTable;
@@ -76,9 +77,11 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		this.row = RundownTable.getInstance().getEditingRow();
 		this.column = RundownTable.getInstance().getEditingColumn();
 		int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
-		RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, true));
 
-		LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, true);
+		ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
+
+		client.sendMessage(new ADTLockedMessage(modelRow, this.column, true));
+		LockedCells.setLocked(client.getSessionID(), this.row, this.column, true);
 	}
 
 	/**
@@ -134,16 +137,22 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 			DebugUtility.error(this.getClass(), errMsg);
 			Output.forceInfoMessage("", errMsg);
 			RundownTable.getInstance().setValueAt("", this.row, this.column);
-			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
 
-			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
+			ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
+
+			client.sendMessage(new ADTLockedMessage(modelRow, this.column, false));
+
+			LockedCells.setLocked(client.getSessionID(), this.row, this.column, false);
 
 		} else {
 			int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
-			RundownFrame.getClient().sendMessage(new ADTUpdateMessage(modelRow, this.column, newValue));
-			RundownFrame.getClient().sendMessage(new ADTLockedMessage(modelRow, this.column, false));
 
-			LockedCells.setLocked(RundownFrame.getClient().getSessionID(), this.row, this.column, false);
+			ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
+
+			client.sendMessage(new ADTUpdateMessage(modelRow, this.column, newValue));
+			client.sendMessage(new ADTLockedMessage(modelRow, this.column, false));
+
+			LockedCells.setLocked(client.getSessionID(), this.row, this.column, false);
 
 			// HO-REE SHIT. The time has come.
 

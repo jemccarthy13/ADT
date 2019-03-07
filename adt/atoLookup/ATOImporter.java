@@ -44,15 +44,19 @@ public class ATOImporter implements FileImporter {
 			DebugUtility.trace(ATOImporter.class, rootFolder);
 			File rootDir = new File(rootFolder);
 
-			for (File file : rootDir.listFiles()) {
-				if (Patterns.extPattern.matcher(file.getName()).find()) {
-					DebugUtility.trace(ATOAssets.class, "Processing: " + file.getName());
-					try {
-						processFile(f.getPath(), typeMap);
-						numFilesProc++;
-					} catch (IOException e) {
-						DebugUtility.debug(ATOAssets.class,
-								"Unable to process: " + f.getName() + "\n" + e.getMessage());
+			File[] fileList = rootDir.listFiles();
+
+			if (fileList != null) {
+				for (File file : fileList) {
+					if (Patterns.extPattern.matcher(file.getName()).find()) {
+						DebugUtility.trace(ATOAssets.class, "Processing: " + file.getName());
+						try {
+							processFile(f.getPath(), typeMap);
+							numFilesProc++;
+						} catch (IOException e) {
+							DebugUtility.debug(ATOAssets.class,
+									"Unable to process: " + f.getName() + "\n" + e.getMessage());
+						}
 					}
 				}
 			}

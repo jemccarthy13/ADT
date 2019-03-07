@@ -19,9 +19,14 @@ public class Identity implements Serializable {
 	 * @param other other ID to compare to
 	 * @return true iff Identities are equal
 	 */
-	public boolean equals(Identity other) {
-		return this.mode2.equals(other.getMode2()) && this.fullCallsign.equals(other.getFullCallsign())
-				&& this.vcs.equals(other.getVCS());
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof Identity)) {
+			return false;
+		}
+		Identity oth = (Identity) other;
+		return this.mode2.equals(oth.getMode2()) && this.fullCallsign.equals(oth.getFullCallsign())
+				&& this.vcs.equals(oth.getVCS());
 	}
 
 	@Override

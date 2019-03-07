@@ -31,7 +31,7 @@ public class ADTTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void load() {
-		ADTApp.main(null);
+		ADTApp.main(new String[] {});
 	}
 
 	/**

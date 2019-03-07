@@ -116,7 +116,8 @@ public class ATOData extends ArrayList<ATOAsset> {
 			e.printStackTrace();
 		} finally {
 			try {
-				writer.close();
+				if (writer != null)
+					writer.close();
 			} catch (IOException e) {
 				DebugUtility.error(ATOData.class, "Error writing test ATO.");
 				e.printStackTrace();
@@ -143,8 +144,10 @@ public class ATOData extends ArrayList<ATOAsset> {
 		} catch (IOException e) {
 			e.printStackTrace();
 			try {
-				oos.close();
-				fos.close();
+				if (oos != null)
+					oos.close();
+				if (fos != null)
+					fos.close();
 			} catch (IOException e2) {
 				DebugUtility.error(ATOData.class, "Unable to close resources.");
 			}

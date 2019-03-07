@@ -8,7 +8,7 @@ import utilities.DebugUtility;
 /**
  * One central location where all Singletons
  */
-public class SingletonHolder extends HashMap<Integer, Object> implements Singleton {
+public class SingletonHolder extends HashMap<Integer, Object> {
 
 	/** */
 	private static final long serialVersionUID = -7521308897521447933L;
@@ -49,10 +49,5 @@ public class SingletonHolder extends HashMap<Integer, Object> implements Singlet
 			instance.put(c.hashCode(), y);
 		}
 		return instance.get(c.hashCode());
-	}
-
-	@Override
-	public void create() {
-		instance = new SingletonHolder();
 	}
 }

@@ -12,6 +12,8 @@ public class Airspace extends Asset {
 
 	/** The name of this airspace */
 	private String name = "";
+
+	/** The color highlight this airspace should use for overlapping assets */
 	private Color color = Color.WHITE;
 
 	/**
@@ -22,6 +24,9 @@ public class Airspace extends Asset {
 		return this.name.hashCode();
 	}
 
+	/**
+	 * @return true iff asset has blank values
+	 */
 	@Override
 	public boolean isBlank() {
 		return super.isBlank() && this.name.equals("") && this.color == Color.WHITE;

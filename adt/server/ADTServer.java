@@ -34,17 +34,17 @@ import utilities.DebugUtility;
  */
 public class ADTServer extends Thread {
 
-	private static ServerSocket serverSocket;
-	private static Socket clientSocket;
-	private static ObjectInputStream bufferedReader;
-	private static int connections = 0;
-	private static HashMap<Integer, ADTServerThread> clients;
+	private ServerSocket serverSocket;
+	private Socket clientSocket;
+	private ObjectInputStream bufferedReader;
+	private int connections = 0;
+	private HashMap<Integer, ADTServerThread> clients;
 
 	private static ADTServer instance = new ADTServer();
 	private boolean endCondition;
 
 	private ADTServer() {
-		clients = new HashMap<Integer, ADTServerThread>();
+		this.clients = new HashMap<Integer, ADTServerThread>();
 	}
 
 	/**
@@ -84,31 +84,31 @@ public class ADTServer extends Thread {
 	@Override
 	public void run() {
 		try {
-			serverSocket = new ServerSocket(Configuration.portNum);
+			this.serverSocket = new ServerSocket(Configuration.portNum);
 			DebugUtility.debug(ADTServer.class, "Started the rundown server. You are the host.");
 		} catch (BindException e3) {
 			DebugUtility.error(ADTServer.class, "Port already bound: " + Configuration.portNum);
-			serverSocket = null;
+			this.serverSocket = null;
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
 
-		while (this.endCondition == false && serverSocket != null) {
+		while (this.endCondition == false && this.serverSocket != null) {
 			try {
-				clientSocket = serverSocket.accept();
+				this.clientSocket = this.serverSocket.accept();
 				// Create a reader
-				bufferedReader = new ObjectInputStream(clientSocket.getInputStream());
-				DebugUtility.debug(ADTServer.class, "Started server thread: " + connections);
-				ADTServerThread client = new ADTServerThread(connections, bufferedReader, clientSocket);
+				this.bufferedReader = new ObjectInputStream(this.clientSocket.getInputStream());
+				DebugUtility.debug(ADTServer.class, "Started server thread: " + this.connections);
+				ADTServerThread client = new ADTServerThread(this.connections, this.bufferedReader, this.clientSocket);
 				new Thread(client).start();
-				clients.put(connections, client);
-				client.sendMessage(new ADTIdMessage(connections));
+				this.clients.put(this.connections, client);
+				client.sendMessage(new ADTIdMessage(this.connections));
 
 				client.sendRundown();
 				client.sendATOData();
 				client.sendLocks();
 
-				connections++;
+				this.connections++;
 			} catch (BindException e1) {
 				DebugUtility.error(ADTServer.class, "Port " + Configuration.portNum + " already in use.");
 			} catch (IOException e) {
@@ -116,8 +116,8 @@ public class ADTServer extends Thread {
 			}
 		}
 		try {
-			if (serverSocket != null) {
-				serverSocket.close();
+			if (this.serverSocket != null) {
+				this.serverSocket.close();
 			}
 		} catch (IOException e) {
 			// idk
@@ -133,9 +133,9 @@ public class ADTServer extends Thread {
 	 */
 	public static void sendMessage(ADTBaseMessage message) {
 		DebugUtility.debug(ADTServer.class, "Forwarding " + message.getCommand() + " from " + message.getSender());
-		for (Integer key : clients.keySet()) {
+		for (Integer key : instance.clients.keySet()) {
 			if (key != message.getSender()) {
-				clients.get(key).sendMessage(message);
+				instance.clients.get(key).sendMessage(message);
 				DebugUtility.trace(ADTServer.class, "Sent " + message + " to " + key);
 			}
 		}
@@ -160,7 +160,7 @@ public class ADTServer extends Thread {
 	 * @param id
 	 */
 	public void removeClient(int id) {
-		clients.remove(id);
+		this.clients.remove(id);
 	}
 
 	/**
@@ -168,8 +168,8 @@ public class ADTServer extends Thread {
 	 */
 	public void setStop() {
 		this.endCondition = true;
-		for (int client : clients.keySet()) {
-			clients.get(client).sendMessage(new ADTEndSessionMessage(-1));
+		for (int client : this.clients.keySet()) {
+			this.clients.get(client).sendMessage(new ADTEndSessionMessage(-1));
 		}
 	}
 }

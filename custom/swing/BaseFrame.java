@@ -38,9 +38,11 @@ public abstract class BaseFrame extends JFrame implements Singleton {
 	 * @param id - the ID of the client
 	 */
 	public void established(int id) {
-		RundownFrame.getClient().setSessionID(Integer.valueOf(id));
+		ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
 
-		this.setTitle("Airspace Deconfliction Tool - User " + RundownFrame.getClient().getSessionID()
+		client.setSessionID(Integer.valueOf(id));
+
+		this.setTitle("Airspace Deconfliction Tool - User " + client.getSessionID() + " - "
 				+ System.getProperty("java.version"));
 
 		DebugUtility.debug(ADTClient.class, "Joined as user: " + id);

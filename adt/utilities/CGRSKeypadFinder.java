@@ -247,7 +247,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 					float nCornerPoint = Long.parseLong(nOrigin) + nKillboxOffset + nKeypadOffset;
 					float eCornerPoint = Long.parseLong(eOrigin) + eKillboxOffset + eKeypadOffset;
 
-					Double longDelta = Math.cos(3.141592653 * ((nCornerPoint / 100) / 180)) * 60;
+					Double longDelta = Math.cos(Math.PI * ((nCornerPoint / 100) / 180)) * 60;
 
 					double distance = getDistance(Double.parseDouble(nCenter), nCornerPoint,
 							Double.parseDouble(eCenter), eCornerPoint, longDelta);
@@ -478,7 +478,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 		double nmCoordNum = nCoordNum + ((radius / 60) * 100);
 		double smCoordNum = nCoordNum - ((radius / 60) * 100);
 
-		Double longDelta = Math.cos(3.141592654 * ((nCoordNum / 100) / 180)) * 60;
+		Double longDelta = Math.cos(Math.PI * ((nCoordNum / 100) / 180)) * 60;
 
 		double emCoordNum = eCoordNum + (radius / longDelta) * 100;
 		double wmCoordNum = eCoordNum - (radius / longDelta) * 100;

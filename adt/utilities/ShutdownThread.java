@@ -1,9 +1,11 @@
 package utilities;
 
+import main.ADTClient;
 import messages.ADTEndSessionMessage;
 import messages.ADTUnlockUserMessage;
 import rundown.gui.RundownFrame;
 import server.ADTServer;
+import swing.SingletonHolder;
 
 /**
  * A thread designed to be added to a shutdown hook of the rundown frame.
@@ -23,15 +25,17 @@ public class ShutdownThread extends Thread {
 	 */
 	@Override
 	public void run() {
+		ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
+
 		// unlock all editing holds
-		RundownFrame.getClient().sendMessage(new ADTUnlockUserMessage(RundownFrame.getClient().getSessionID()));
+		client.sendMessage(new ADTUnlockUserMessage(client.getSessionID()));
 
 		// unregister the client
-		RundownFrame.getClient().sendMessage(new ADTEndSessionMessage(RundownFrame.getClient().getSessionID()));
-		RundownFrame.getClient().setStop();
+		client.sendMessage(new ADTEndSessionMessage(client.getSessionID()));
+		client.setStop();
 
 		// interrupt the server thread to neatly end it if we were the host
 		ADTServer.getInstance().interrupt();
-		RundownFrame.getClient().interrupt();
+		client.interrupt();
 	}
 }

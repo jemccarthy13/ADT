@@ -30,10 +30,13 @@ public class CompileHelper {
 		}
 		if (f.isDirectory()) {
 			boolean hasJava = false;
-			for (File subdir : f.listFiles()) {
-				retVal += classPath(subdir, compile);
-				if (subdir.getPath().contains(".java")) {
-					hasJava = true;
+			File[] fileList = f.listFiles();
+			if (fileList != null) {
+				for (File subdir : f.listFiles()) {
+					retVal += classPath(subdir, compile);
+					if (subdir.getPath().contains(".java")) {
+						hasJava = true;
+					}
 				}
 			}
 			if (hasJava || (compile == false)) {
@@ -53,10 +56,13 @@ public class CompileHelper {
 		String retVal = "";
 
 		if (f.isDirectory()) {
-			for (File subdir : f.listFiles()) {
-				String result = process(subdir);
-				if (!result.equals("")) {
-					retVal += result;
+			File[] fileList = f.listFiles();
+			if (fileList != null) {
+				for (File subdir : f.listFiles()) {
+					String result = process(subdir);
+					if (!result.equals("")) {
+						retVal += result;
+					}
 				}
 			}
 		} else {

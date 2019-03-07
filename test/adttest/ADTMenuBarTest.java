@@ -23,7 +23,7 @@ public class ADTMenuBarTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void load() {
-		ADTApp.main(null);
+		ADTApp.main(new String[] {});
 	}
 
 	/**

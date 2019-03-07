@@ -3,6 +3,7 @@ package messages;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import structures.LockedCells;
+import swing.SingletonHolder;
 
 /**
  * A message containing a locked cell
@@ -24,7 +25,7 @@ public class ADTLockedMessage extends ADTBaseMessage {
 	 * @param lock
 	 */
 	public ADTLockedMessage(int row, int column, boolean lock) {
-		this.setSender(RundownFrame.getClient().getSessionID());
+		this.setSender(((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient().getSessionID());
 		this.row = row;
 		this.column = column;
 		this.locked = lock;

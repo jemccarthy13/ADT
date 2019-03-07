@@ -33,7 +33,7 @@ public class ATOGeneratorTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void load() {
-		ATOGenerator.main(null);
+		ATOGenerator.main(new String[] {});
 	}
 
 	/**

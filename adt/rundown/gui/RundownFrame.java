@@ -23,7 +23,7 @@ public class RundownFrame extends BaseFrame {
 
 	private static final long serialVersionUID = -5736125343545871775L;
 	// private static ADTClient client;
-	private static ADTClient client;
+	private ADTClient client;
 
 	/**
 	 * Wrapper to repaint the rundown
@@ -38,8 +38,8 @@ public class RundownFrame extends BaseFrame {
 	@Override
 	public void create() {
 		// start the client - and start the server if one isn't found
-		client = new ADTClient();
-		client.start();
+		this.client = new ADTClient();
+		this.client.start();
 
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -61,7 +61,7 @@ public class RundownFrame extends BaseFrame {
 
 		// don't display until the client/server connection has been established
 		int attempts = 0;
-		while (!client.isConnected() && attempts < 10) {
+		while (!this.client.isConnected() && attempts < 10) {
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
@@ -71,7 +71,7 @@ public class RundownFrame extends BaseFrame {
 		}
 
 		// display
-		if (client.isConnected()) {
+		if (this.client.isConnected()) {
 			this.setVisible(true);
 		} else {
 			/** TODO - better exit handler */
@@ -101,7 +101,7 @@ public class RundownFrame extends BaseFrame {
 	 * 
 	 * @return the client
 	 */
-	public static ADTClient getClient() {
-		return RundownFrame.client;
+	public ADTClient getClient() {
+		return this.client;
 	}
 }

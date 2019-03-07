@@ -159,7 +159,7 @@ public class ADTClient extends Thread {
 
 		this.sessionID = -1;
 		DebugUtility.debug(ADTClient.class, "Disconnected from server.");
-		this.run();
+		this.start();
 	}
 
 	/**
