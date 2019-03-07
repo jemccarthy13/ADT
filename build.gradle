@@ -66,4 +66,4 @@ test {
 execute.dependsOn build
 
 // Define the main class for the application
-mainClassName = 'ADT'
+mainClassName = 'main.ADTApp'
