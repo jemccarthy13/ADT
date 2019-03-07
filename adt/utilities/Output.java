@@ -3,12 +3,12 @@ package utilities;
 import javax.swing.JOptionPane;
 
 /**
- * Handle generating user output.
+ * Handle generating user output message boxes
  */
 public class Output {
 
 	/**
-	 * Fore an information dialog to display
+	 * Force an information dialog to display
 	 * 
 	 * @param title - the title of the window
 	 * @param msg   - the message to display
@@ -18,7 +18,7 @@ public class Output {
 	}
 
 	/**
-	 * Show a confirmation dialog.
+	 * Force a confirmation dialog.
 	 * 
 	 * @param title - the title of the window
 	 * @param msg   - the message to display

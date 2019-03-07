@@ -4,14 +4,14 @@ import structures.Asset;
 import structures.RundownAssets;
 
 /**
- * Compare for conflicts
+ * Helper class that compares for conflicts between assets
  */
 public class ConflictComparer {
 
 	/**
 	 * Check conflicts between this row's asset and another
 	 * 
-	 * @param row - the row of the "current asset"
+	 * @param row - the row of the current asset
 	 */
 	public static void checkConflicts(int row) {
 		boolean hasConflict = false;
@@ -27,7 +27,7 @@ public class ConflictComparer {
 				if (first.conflictsWith(other).size() > 0) {
 					DebugUtility.trace(ConflictComparer.class,
 							"New conflict between " + first.getAirspace() + " and " + other.getAirspace());
-					// flag it
+					// flag it for me and the other guy
 					hasConflict = true;
 					other.setInConflict(true);
 				}
@@ -35,6 +35,8 @@ public class ConflictComparer {
 			// next
 			count++;
 		}
+
+		// if I have a conflict, trigger me
 		if (hasConflict) {
 			first.setInConflict(true);
 		} else {
@@ -43,7 +45,8 @@ public class ConflictComparer {
 
 		int cnt1 = 0;
 
-		// now loop through every asset that has a conflict
+		// now loop through every asset that has a conflict, including the new one
+		// to check to see if any conflicts have been resolved
 		for (Asset fst : RundownAssets.getInstance()) {
 			if (fst.isInConflict() == true) {
 				hasConflict = false;

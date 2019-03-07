@@ -25,7 +25,7 @@ import swing.BasePanel;
 import swing.GBC;
 import swing.MouseClickListener;
 import swing.SingletonHolder;
-import utilities.AltCellListener;
+import utilities.AltFieldListener;
 import utilities.GridSettings;
 import utilities.Output;
 
@@ -206,7 +206,7 @@ public class ASManagerEditPanel extends BasePanel {
 		this.add(altLowLbl, gbc_3);
 
 		this.lowAltField = new JTextField();
-		this.lowAltField.addFocusListener(new AltCellListener(this.lowAltField));
+		this.lowAltField.addFocusListener(new AltFieldListener(this.lowAltField));
 		GBC gbc_lowAltField = new GBC(1, 1, 4);
 		this.add(this.lowAltField, gbc_lowAltField);
 
@@ -216,7 +216,7 @@ public class ASManagerEditPanel extends BasePanel {
 		this.add(altUpLbl, gbc_4);
 
 		this.upAltField = new JTextField();
-		this.upAltField.addFocusListener(new AltCellListener(this.upAltField));
+		this.upAltField.addFocusListener(new AltFieldListener(this.upAltField));
 		GBC gbc_upAltField = new GBC(1, 1, 5);
 		this.add(this.upAltField, gbc_upAltField);
 

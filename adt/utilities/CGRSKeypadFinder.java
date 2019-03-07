@@ -11,12 +11,29 @@ import structures.KeypadFinder;
 import swing.SingletonHolder;
 
 /**
- * A utility class to help get neighboring keypads
+ * A utility class to help get neighboring keypads utilizing CGRS as the
+ * reference system.
+ * 
+ * To get coordinates with a circle this class will:
+ * 
+ * - Convert the coordinate (center) and origin to deg decimal minutes
+ * 
+ * - Multiply that number by 100 (to make math easier)
+ * 
+ * - Find which killboxs are the boundary limits (N,E,S and W)
+ * 
+ * - Go through each of the killboxes from boundary to boundary
+ * 
+ * - Check each keypad intersection coordinate and check if that coordinate is <
+ * radius distance from the center
+ * 
+ * - If so, add surrounding keypads to the list of touching keypads (to have a
+ * little bit of a buffer to avoid false negatives)
  */
 public class CGRSKeypadFinder extends KeypadFinder {
 
 	/**
-	 * From a starting killbox, travel in a direction direct to find keypads
+	 * See KeypadFinder
 	 */
 	@Override
 	public HashSet<String> findKeypads(DIR direct, String killbox, String[] keypads) {
@@ -46,10 +63,7 @@ public class CGRSKeypadFinder extends KeypadFinder {
 	}
 
 	/**
-	 * Get a set of keypads
-	 * 
-	 * @param killbox
-	 * @return keypads from a killbox
+	 * See KeypadFinder
 	 */
 	@Override
 	public HashSet<String> keypadsFromKillbox(String killbox) {
@@ -188,6 +202,9 @@ public class CGRSKeypadFinder extends KeypadFinder {
 		return keypads;
 	}
 
+	/**
+	 * See KeypadFinder
+	 */
 	@Override
 	public HashSet<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, Double radius,
 			String origin) {
@@ -399,6 +416,12 @@ public class CGRSKeypadFinder extends KeypadFinder {
 		return retCoord;
 	}
 
+	/**
+	 * Take a coordinate and convert it to deg decimal minutes.
+	 * 
+	 * @param coord - Input coordinate
+	 * @return New coordinate
+	 */
 	private String convertPartToDecimal(String coord) {
 
 		String convPattern = "([0-9][0-9])([0-9][0-9]).*([NS])";
@@ -430,6 +453,9 @@ public class CGRSKeypadFinder extends KeypadFinder {
 		return conversion;
 	}
 
+	/**
+	 * See KeypadFinder
+	 */
 	@Override
 	public HashSet<String> getKillboxFromCircle(String centerPt, Double radius) {
 

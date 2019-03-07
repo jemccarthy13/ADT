@@ -3,9 +3,10 @@ package utilities;
 import java.io.File;
 
 /**
- * Abstract class with one method (doImport)
+ * Abstract class with one method (doImport) which specifies how to import a
+ * given file
  */
-public interface Importer {
+public interface FileImporter {
 
 	/**
 	 * Import the file

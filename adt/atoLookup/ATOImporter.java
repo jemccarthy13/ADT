@@ -17,14 +17,14 @@ import structures.Asset;
 import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
-import utilities.Importer;
+import utilities.FileImporter;
 import utilities.Output;
 import utilities.Patterns;
 
 /**
  * Import ATO assets from an ATO USMTF file
  */
-public class ATOImporter implements Importer {
+public class ATOImporter implements FileImporter {
 	/**
 	 * Perform the import of the ATO
 	 * 

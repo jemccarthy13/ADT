@@ -8,7 +8,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Utility to choose and import a file.
  * 
- * Also provides a
+ * Also provides a means for automatically loading test files if configured to
+ * do so
  */
 public class FileChooser {
 
@@ -17,6 +18,9 @@ public class FileChooser {
 	 */
 	private static JFileChooser chooser = new JFileChooser();
 
+	/**
+	 * The default location for the chooser is the current working directory
+	 */
 	private static File defaultFile = new File(".");
 
 	/**
@@ -31,7 +35,7 @@ public class FileChooser {
 	 *                    file
 	 */
 	public static void selectAndLoadFile(String dialogTitle, FileNameExtensionFilter filter, String fileLoc,
-			Importer imp) {
+			FileImporter imp) {
 
 		// set chooser settings
 		chooser.setDialogTitle(dialogTitle);

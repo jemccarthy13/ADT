@@ -11,12 +11,12 @@ import swing.SingletonHolder;
 import table.ATOTableModel;
 import utilities.ADTTableModel;
 import utilities.DebugUtility;
-import utilities.Importer;
+import utilities.FileImporter;
 
 /**
  * An Importer for ATO .PROJ files
  */
-public class ATOProjectImporter implements Importer {
+public class ATOProjectImporter implements FileImporter {
 
 	@Override
 	public void doImport(File f) {
