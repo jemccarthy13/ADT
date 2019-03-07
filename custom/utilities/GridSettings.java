@@ -13,7 +13,7 @@ public class GridSettings implements Singleton {
 	private String startCol = "A";
 
 	private String origin = "1000S02500E";
-	private KeypadFinder finder;
+	private KeypadFinder finder = new CGRSKeypadFinder();
 
 	@Override
 	public void create() {

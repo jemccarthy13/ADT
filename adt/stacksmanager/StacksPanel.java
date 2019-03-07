@@ -91,7 +91,7 @@ public class StacksPanel extends BasePanel {
 				outText = formatGrids();
 			}
 			if (StacksPanel.this.ftmFormat.isSelected()) {
-				outText = outText.replaceAll("_", "");
+				outText = outText.replaceAll("/", "");
 				outText = outText.replaceAll("\n", "//\n");
 				outText = outText.replaceAll(">", "");
 				outText += "//";
@@ -146,6 +146,7 @@ public class StacksPanel extends BasePanel {
 			if (space.sharesAirspaceWith(a).size() > 0)
 				retVal += formatAsset(a, asLen);
 		}
+
 		retVal += "**********************";
 		return retVal;
 	}
@@ -193,23 +194,18 @@ public class StacksPanel extends BasePanel {
 	String formatAsset(Asset ast, int lenAirspace) {
 		int asLen = lenAirspace == -1 ? getAirspaceLen() : lenAirspace;
 
-		String m2 = ast.getID().getMode2().equals("") ? "____" : ast.getID().getMode2();
+		String m2 = ast.getID().getMode2().equals("") ? "    " : ast.getID().getMode2();
 
-		int numScores = asLen - ast.getAirspace().length();
-		StringBuffer outputBuffer = new StringBuffer(numScores);
-		for (int i = 0; i < numScores; i++) {
-			outputBuffer.append("_");
-		}
-		String uScores = outputBuffer.toString();
+		m2 = m2 + " ";
 
 		String airspace = "";
 		if (ast.getAirspace().length() > asLen) {
 			airspace = ast.getAirspace().substring(1, 9) + "...";
 		} else {
-			airspace = ast.getAirspace() + uScores;
+			airspace = ast.getAirspace();
 		}
 
-		return "> " + ast.getID().getVCS() + " " + m2 + "___" + airspace + "__ " + ast.getAlt().toString()
+		return "> " + ast.getID().getVCS() + " " + m2 + " / " + airspace + " / " + ast.getAlt().toString()
 				+ ast.getTxAlt() + "\r\n";
 	}
 
