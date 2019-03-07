@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import structures.AddNew;
 import swing.Singleton;
 
 /**
  * @param <T>
  */
-public abstract class ADTTableModel<T> extends AbstractTableModel implements AddNew, Singleton {
+public abstract class ADTTableModel<T> extends AbstractTableModel implements Singleton {
 
 	/** Serialization variable */
 	private static final long serialVersionUID = -2333045189615857224L;
@@ -80,7 +79,9 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Add
 		return true;
 	}
 
-	@Override
+	/**
+	 * Add a new object of type <T> to the ADTTableModel
+	 */
 	public abstract void addNew();
 
 	/**
