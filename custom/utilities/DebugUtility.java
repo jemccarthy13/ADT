@@ -54,9 +54,6 @@ public final class DebugUtility {
 	 * @param string - the message to log
 	 */
 	public synchronized static void debug(Class<?> c, String string) {
-		// if (log4j.isDebugEnabled()) {
-		// log4j.debug(formatClassName(c) + string);
-		// }
 		log4j.fine(formatClassName(c) + string);
 	}
 
@@ -69,19 +66,8 @@ public final class DebugUtility {
 	 * @param e       the exception that was thrown
 	 */
 	public synchronized static void error(Class<?> class1, String message, Exception e) {
-		// log4j.error(formatClassName(class1) + message, e);
 		log4j.severe(formatClassName(class1) + message + "\r\n" + e.getMessage());
 	}
-
-	/**
-	 * Fatal message
-	 * 
-	 * @param message the end of the world message
-	 */
-	// public synchronized static void fatal(String message) {
-	// log4j.fatal(message);
-
-	// }
 
 	/**
 	 * Report an error with the class.

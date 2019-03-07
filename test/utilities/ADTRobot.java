@@ -56,7 +56,7 @@ public class ADTRobot {
 	}
 
 	/**
-	 * @param message
+	 * Tab with a simulated key press
 	 */
 	public static void tab() {
 		simulatePressKey(KeyEvent.VK_TAB);

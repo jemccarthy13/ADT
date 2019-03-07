@@ -39,7 +39,7 @@ public class TestServer extends Thread {
 	/**
 	 * Start the ADT Server.
 	 * 
-	 * @Note should not be called directly
+	 * @note should not be called directly
 	 */
 	@Override
 	public void run() {

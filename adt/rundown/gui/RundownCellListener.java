@@ -35,8 +35,6 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 
 	/**
 	 * Create a TableCellListener.
-	 *
-	 * @param action the Action to invoke when cell data is changed
 	 */
 	public RundownCellListener() {
 	}

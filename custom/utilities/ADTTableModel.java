@@ -80,7 +80,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Sin
 	}
 
 	/**
-	 * Add a new object of type <T> to the ADTTableModel
+	 * Add a new object of type T to the ADTTableModel
 	 */
 	public abstract void addNew();
 

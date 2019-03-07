@@ -79,7 +79,7 @@ public class ADTServer extends Thread {
 	/**
 	 * Start the ADT Server.
 	 * 
-	 * @Note should not be called directly
+	 * @note should not be called directly
 	 */
 	@Override
 	public void run() {
@@ -129,7 +129,6 @@ public class ADTServer extends Thread {
 	 * Send a message to all registered clients.
 	 * 
 	 * @param message - the message to send
-	 * @param origin  - the originator of the message
 	 */
 	public static void sendMessage(ADTBaseMessage message) {
 		DebugUtility.debug(ADTServer.class, "Forwarding " + message.getCommand() + " from " + message.getSender());
