@@ -1,10 +1,14 @@
 package structures;
 
+import java.io.Serializable;
+
 /**
  * A substructure of Asset that holds ID information
  */
-public class Identity {
+public class Identity implements Serializable {
 
+	/** Serialization information */
+	private static final long serialVersionUID = -8341992304012473691L;
 	private String vcs = "";
 	private String fullCallsign = "";
 	private String mode2 = "";

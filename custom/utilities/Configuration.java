@@ -19,8 +19,8 @@ public class Configuration {
 
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
-	// private String ATOLoadLoc = "./TESTATO.txt";
-	private String ATOLoadLoc = "";
+	private String ATOLoadLoc = "./resources/ATOs/Cosmo Shield - USMTF00.txt";
+	// private String ATOLoadLoc = "";
 
 	private static Configuration instance = new Configuration();
 

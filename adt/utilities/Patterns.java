@@ -22,7 +22,7 @@ public class Patterns {
 	/** ATO VCS Pattern */
 	public static Pattern vcsPattern = Pattern.compile("([A-Z])[A-Z]+([A-Z])([0-9]+)");
 	/** ATO Mode2 pattern */
-	public static Pattern atoM2Pattern = Pattern.compile("/[2I]([0-9]+)[A-Z]*/3([0-9]+)[/$\n]");
+	public static Pattern atoM2Pattern = Pattern.compile("/[2I]([0-9]+)[A-Z]*/3?([0-9]+)?[/$\n]?/");
 
 	/** ATO mission timing pattern */
 	public static Pattern msnTimingsPattern = Pattern.compile("AMSNLOC/([0-9A-Z]+)/([0-9A-Z]+)[/$\n]");
