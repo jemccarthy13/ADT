@@ -75,7 +75,10 @@ public class ATOLookupTable extends JTable {
 		for (int x = 0; x < colModel.getColumnCount(); x++) {
 			colModel.getColumn(x).setMinWidth(minSizes[x]);
 			colModel.getColumn(x).setWidth(widths[x]);
-			colModel.getColumn(x).setMaxWidth(maxSizes[x]);
+
+			// let the last two columns (on/off station) resize freely
+			if (x < maxSizes.length - 2)
+				colModel.getColumn(x).setMaxWidth(maxSizes[x]);
 		}
 	}
 }

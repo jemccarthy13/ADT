@@ -8,7 +8,7 @@ import structures.Asset;
 import structures.ListOfAsset;
 import structures.RundownAssets;
 import swing.SingletonHolder;
-import utilities.DebugUtility;
+import utilities.ADTRobot;
 import utilities.ShutdownThread;
 
 /**
@@ -26,15 +26,8 @@ public class ADTApp {
 		@Override
 		public void run() {
 			while (true) {
-				// do the refresh
 				RundownFrame.refresh();
-
-				// delay, then go again
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					DebugUtility.error(RundownFrame.class, "Interrupted", e);
-				}
+				ADTRobot.sleep(1000);
 			}
 		}
 	};
@@ -75,14 +68,10 @@ public class ADTApp {
 
 		((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 
+		//// Here starts the real code -- everything above delete on production
 		((Window) SingletonHolder.getInstanceOf(RundownFrame.class)).setVisible(true);
 		Runtime.getRuntime().addShutdownHook(new ShutdownThread());
-		refreshThread.interrupt();
-		try {
-			refreshThread.start();
-		} catch (IllegalThreadStateException e) {
-			// keep running
-		}
 
+		refreshThread.start();
 	}
 }

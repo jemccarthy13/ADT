@@ -71,7 +71,7 @@ public class ADTClient extends Thread {
 			DebugUtility.error(ADTClient.class, "Bind Exception: " + e.getMessage());
 		} catch (ConnectException e) {
 			// if the connection fails, chances are there's nothing listening
-			DebugUtility.trace(ADTClient.class, "Connection refused.");
+			DebugUtility.trace(ADTClient.class, "Connection refused. " + e.getMessage());
 			DebugUtility.trace(ADTClient.class, "Port " + Configuration.portNum + " may have no response.");
 
 			// so we should try and become the host
