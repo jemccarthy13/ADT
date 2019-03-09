@@ -1,5 +1,7 @@
 package swing;
 
+import java.awt.Component;
+
 import javax.swing.JFrame;
 
 import main.ADTClient;
@@ -16,6 +18,9 @@ public abstract class BaseFrame extends JFrame implements Singleton {
 	/** */
 	final public BaseFrame instance = null;
 
+	/** A field to store the content Panel of the BaseFrame */
+	protected Component content;
+
 	/**
 	 * Constructor
 	 */
@@ -30,7 +35,11 @@ public abstract class BaseFrame extends JFrame implements Singleton {
 	private static final long serialVersionUID = -4628040775101357858L;
 
 	@Override
-	public abstract void create();
+	public void create() {
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo((Component) SingletonHolder.getInstanceOf(RundownFrame.class));
+		this.add(this.content);
+	}
 
 	/**
 	 * Client session has been established

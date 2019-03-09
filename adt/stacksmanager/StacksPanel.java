@@ -28,7 +28,7 @@ import swing.SingletonHolder;
 import utilities.Fonts;
 
 /**
- * The Panel that organizes the stack output
+ * The Panel that formats the stack output
  */
 public class StacksPanel extends BasePanel {
 
@@ -67,6 +67,9 @@ public class StacksPanel extends BasePanel {
 	 */
 	JRadioButton byAirspace;
 
+	/**
+	 * The input of Grids for a "By Grids" stack generation
+	 */
 	private JTextArea inGrids;
 
 	/**
@@ -74,26 +77,31 @@ public class StacksPanel extends BasePanel {
 	 */
 	private static final long serialVersionUID = -495091892968581366L;
 
+	/**
+	 * An ActionListener specifically for the stacks "Generate" button
+	 */
 	private class StacksButtonListener implements ActionListener {
 
 		public StacksButtonListener() {
 			// empty constructor so it's available
 		}
 
+		/**
+		 * When the generate button is pressed, create stack output based on the
+		 * selected option and then display the output in the outArea
+		 */
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			String outText = "";
 			if (StacksPanel.this.bma.isSelected()) {
-				outText = formatRundown(-1);
+				outText = formatRundown();
 			} else if (StacksPanel.this.byAirspace.isSelected()) {
 				outText = formatAirspaces();
 			} else if (StacksPanel.this.byGrids.isSelected()) {
 				outText = formatGrids();
 			}
 			if (StacksPanel.this.ftmFormat.isSelected()) {
-				outText = outText.replaceAll("/", "");
-				outText = outText.replaceAll("\n", "//\n");
-				outText = outText.replaceAll(">", "");
+				outText = outText.replaceAll("[/>]", "").replaceAll("\n", "//\n");
 				outText += "//";
 			}
 			StacksPanel.this.outArea.setText(outText);
@@ -102,7 +110,8 @@ public class StacksPanel extends BasePanel {
 	}
 
 	/**
-	 * Sort the rundown assets
+	 * Sort the rundown assets based on upper altitude. Asset:compareTo does the
+	 * altitude comparison and Collections.sort uses .compareTo
 	 * 
 	 * @return - a sorted list of assets based on upper altitude
 	 */
@@ -113,18 +122,6 @@ public class StacksPanel extends BasePanel {
 		return sorted;
 	}
 
-	private int getAirspaceLen() {
-		int max = 12;
-
-		for (Asset ast : RundownAssets.getInstance()) {
-			if (ast.getAirspace().length() > max) {
-				max = ast.getAirspace().length();
-			}
-		}
-
-		return max;
-	}
-
 	/**
 	 * Based on the user's desired grids (entered in the grids JTextField) calculate
 	 * the overlap with that new airspace and display it
@@ -132,22 +129,23 @@ public class StacksPanel extends BasePanel {
 	 * @return formatted string
 	 */
 	String formatGrids() {
+		// format grids better
 		String grids = this.inGrids.getText().replaceAll(",", "");
-		this.inGrids.setText(this.inGrids.getText().toUpperCase());
+		this.inGrids.setText(grids.toUpperCase());
+
+		// build the temporary airspace for comparison
 		Airspace space = new Airspace();
 		space.setAltBlock("000", "999");
 		space.setAirspace(grids.toUpperCase());
-		space.setName("GRIDS");
+		space.setName("GRIDS-" + grids);
 
-		int asLen = getAirspaceLen();
-		String retVal = "********* GRIDS **********\r\n";
-
+		// do comparison and generate output
+		String retVal = "****** GRIDS " + grids + " ******\r\n";
 		for (Asset a : getSortedAssets()) {
 			if (space.sharesAirspaceWith(a).size() > 0)
-				retVal += formatAsset(a, asLen);
+				retVal += formatAsset(a);
 		}
-
-		retVal += "**********************";
+		retVal += "******** END " + grids + " ******\r\n";
 		return retVal;
 	}
 
@@ -161,6 +159,8 @@ public class StacksPanel extends BasePanel {
 
 		HashMap<String, ArrayList<Asset>> dict = new HashMap<String, ArrayList<Asset>>();
 
+		// go through each of the airspaces, if it conflicts with assets then
+		// add to the dictionary of airspace->asset
 		for (Asset asst : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
 			Airspace as = (Airspace) asst;
 			for (Asset other : RundownAssets.getInstance()) {
@@ -172,13 +172,15 @@ public class StacksPanel extends BasePanel {
 				}
 			}
 		}
+
+		// build the output based on the list of overlaps found
 		retVal += "AIRSPACES: \r\n";
 		for (String name : dict.keySet()) {
 			retVal += "--------- " + name + "--------- \r\n";
 			Collections.sort(dict.get(name));
 			for (Asset a : dict.get(name)) {
 				if (!a.isBlank())
-					retVal += formatAsset(a, 24);
+					retVal += formatAsset(a);
 			}
 			retVal += "--------- ---------\r\n";
 		}
@@ -186,27 +188,16 @@ public class StacksPanel extends BasePanel {
 	}
 
 	/**
-	 * Format an asset for the rundown
+	 * Format an asset for stack output
 	 * 
-	 * @param ast         asset to format
-	 * @param lenAirspace length of longest airspace approval
-	 * @return formatted string
+	 * VCS M2 / / AIRSPACE / FL XXX to FL XXX / TX AT FL YYY
+	 * 
+	 * @param ast asset to format
+	 * @return formatted string IAW asset format
 	 */
-	String formatAsset(Asset ast, int lenAirspace) {
-		int asLen = lenAirspace == -1 ? getAirspaceLen() : lenAirspace;
-
-		String m2 = ast.getID().getMode2().equals("") ? "    " : ast.getID().getMode2();
-
-		m2 = m2 + " ";
-
-		String airspace = "";
-		if (ast.getAirspace().length() > asLen) {
-			airspace = ast.getAirspace().substring(1, 9) + "...";
-		} else {
-			airspace = ast.getAirspace();
-		}
-
-		return "> " + ast.getID().getVCS() + " " + m2 + " / " + airspace + " / " + ast.getAlt().toString()
+	String formatAsset(Asset ast) {
+		String m2 = ast.getID().getMode2().equals("") ? "     " : ast.getID().getMode2() + " ";
+		return "> " + ast.getID().getVCS() + " " + m2 + " / " + ast.getAirspace() + " / " + ast.getAlt().toString()
 				+ ast.getTxAlt() + "\r\n";
 	}
 
@@ -216,13 +207,13 @@ public class StacksPanel extends BasePanel {
 	 * @param lenAirspace - maximum length of airspaces
 	 * @return a String formatted with the rundown
 	 */
-	String formatRundown(int lenAirspace) {
+	String formatRundown() {
 
 		String retVal = "> ***** START STACK *****\r\n";
 
 		for (Asset ast : getSortedAssets()) {
 			if (!ast.isBlank()) {
-				retVal += formatAsset(ast, lenAirspace);
+				retVal += formatAsset(ast);
 			}
 		}
 

@@ -16,8 +16,6 @@ public class OutputFrame extends BaseFrame {
 	 */
 	private static final long serialVersionUID = 613810609244724014L;
 
-	private OutputPanel content;
-
 	@Override
 	public void create() {
 		this.content = (OutputPanel) SingletonHolder.getInstanceOf(OutputPanel.class);
@@ -35,7 +33,7 @@ public class OutputFrame extends BaseFrame {
 	 * @param msg - output message to write to out area
 	 */
 	public void setOutput(String msg) {
-		this.content.setOutput(msg);
+		((OutputPanel) SingletonHolder.getInstanceOf(OutputPanel.class)).setOutput(msg);
 	}
 
 }
