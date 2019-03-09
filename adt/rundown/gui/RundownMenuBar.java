@@ -210,7 +210,7 @@ public class RundownMenuBar extends JMenuBar {
 			} else if (e.getSource().equals(RundownMenuBar.this.zeroize)) {
 				if (Output.showConfirmMessage("Confirm zeroize", "Are you sure?")) {
 					ATOAssets.zeroize();
-					RundownAssets.zeroize();
+					RundownAssets.getInstance().clear();
 					RundownAssets.checkAddNew();
 				}
 				((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();

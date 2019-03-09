@@ -4,10 +4,9 @@ import java.awt.Component;
 
 import rundown.gui.RundownFrame;
 import swing.SingletonHolder;
-import utilities.DebugUtility;
 
 /**
- * A list of assets that are in the rundown.
+ * A list of assets that are in the rundown / currently under control
  */
 public class RundownAssets extends ListOfAsset {
 
@@ -32,20 +31,6 @@ public class RundownAssets extends ListOfAsset {
 	}
 
 	/**
-	 * Remove all assets from the rundown.
-	 */
-	public static void zeroize() {
-		instance.clear();
-	}
-
-	/**
-	 * Add a new blank asset to the rundown
-	 */
-	public static void addNew() {
-		instance.add(new Asset());
-	}
-
-	/**
 	 * Check the rundown for an entirely blank row. If one doesn't exist, add one
 	 * (to create the feel of a continuous form)
 	 */
@@ -57,7 +42,7 @@ public class RundownAssets extends ListOfAsset {
 			}
 		}
 		if (!blankRow) {
-			addNew();
+			instance.add(new Asset());
 			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
 	}
@@ -70,26 +55,28 @@ public class RundownAssets extends ListOfAsset {
 	}
 
 	/**
-	 * @param ass
+	 * Forces an asset be placed into the rundown (i.e. ATOLookup) at the row
+	 * specified by forcedRow
+	 * 
+	 * @param asst - the asset to force into forcedRow
 	 */
-	public static void force(Asset ass) {
-		instance.get(RundownAssets.forcedRow).getID().setVCS(ass.getID().getVCS());
-		instance.get(RundownAssets.forcedRow).getID().setMode2(ass.getID().getMode2());
-		instance.get(RundownAssets.forcedRow).getID().setSpecType(ass.getID().getSpecType());
-		instance.get(RundownAssets.forcedRow).getID().setTypeCat(ass.getID().getTypeCat());
-		instance.get(RundownAssets.forcedRow).getID().setFullCallsign(ass.getID().getFullCallsign());
+	public static void force(Asset asst) {
+		instance.get(RundownAssets.forcedRow).getID().setVCS(asst.getID().getVCS());
+		instance.get(RundownAssets.forcedRow).getID().setMode2(asst.getID().getMode2());
+		instance.get(RundownAssets.forcedRow).getID().setSpecType(asst.getID().getSpecType());
+		instance.get(RundownAssets.forcedRow).getID().setTypeCat(asst.getID().getTypeCat());
+		instance.get(RundownAssets.forcedRow).getID().setFullCallsign(asst.getID().getFullCallsign());
 	}
 
 	/**
-	 * @param i
+	 * @param i - new forced row
 	 */
 	public static void setForcedRow(int i) {
-		DebugUtility.debug(RundownAssets.class, "Setting forced row - " + i);
 		RundownAssets.forcedRow = i;
 	}
 
 	@Override
 	public void create() {
-		// Auto-generated method stub
+		// Nothing is required
 	}
 }

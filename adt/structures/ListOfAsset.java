@@ -26,9 +26,11 @@ public abstract class ListOfAsset extends ArrayList<Asset> implements Singleton 
 	public abstract void create();
 
 	/**
-	 * @param row
-	 * @param col
-	 * @return object at a particular location
+	 * Retrieve an Asset's table value based on a particular location
+	 * 
+	 * @param row - the row of the table
+	 * @param col - the column of the table
+	 * @return Object value at a particular location
 	 */
 	public Object getValueAt(int row, int col) {
 		Asset chosen = this.get(row);
@@ -55,9 +57,11 @@ public abstract class ListOfAsset extends ArrayList<Asset> implements Singleton 
 	}
 
 	/**
-	 * @param aValue
-	 * @param row
-	 * @param col
+	 * Set an Asset's table value in a particular location.
+	 * 
+	 * @param aValue - Object value to set
+	 * @param row    - the row of the table
+	 * @param col    - the column of the table
 	 */
 	public void setValueAt(Object aValue, int row, int col) {
 		Asset chosen = this.get(row);

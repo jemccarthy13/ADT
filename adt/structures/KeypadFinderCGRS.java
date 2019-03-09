@@ -28,6 +28,8 @@ import utilities.Patterns;
  * 
  * - If so, add surrounding keypads to the list of touching keypads (to have a
  * little bit of a buffer to avoid false negatives)
+ * 
+ * @todo code golf
  */
 public class KeypadFinderCGRS extends KeypadFinder {
 
