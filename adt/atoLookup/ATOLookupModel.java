@@ -2,12 +2,14 @@ package atoLookup;
 
 import structures.ATOAssets;
 import structures.Asset;
+import structures.ListOfAsset;
+import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
 /**
  * A model to hold ATO Lookup table data for display to the user
  */
-public class ATOLookupModel extends ADTTableModel<Asset> {
+public class ATOLookupModel extends ADTTableModel {
 
 	private static final long serialVersionUID = -4738119325760523923L;
 
@@ -37,7 +39,7 @@ public class ATOLookupModel extends ADTTableModel<Asset> {
 		this.fullColumnNames.add("Category");
 		this.fullColumnNames.add("On Station");
 		this.fullColumnNames.add("Off Station");
-		this.items = ATOAssets.getInstance();
+		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
 	}
 
 	@Override

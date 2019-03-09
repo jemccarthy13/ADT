@@ -22,7 +22,7 @@ public class Metrics {
 
 		// combine previous assets and rundown assets with no duplicates
 		HashSet<Asset> assets = new HashSet<Asset>();
-		assets.addAll(PreviousAssets.getInstance());
+		assets.addAll(((PreviousAssets) SingletonHolder.getInstanceOf(PreviousAssets.class)));
 		assets.addAll(RundownAssets.getInstance());
 
 		// store the map of type: # controlled

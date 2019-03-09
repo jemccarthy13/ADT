@@ -9,7 +9,7 @@ import utilities.DebugUtility;
 /**
  * A list of assets that are in the rundown.
  */
-public class RundownAssets extends ListOf<Asset> {
+public class RundownAssets extends ListOfAsset {
 
 	private static final long serialVersionUID = 1480309653414453245L;
 	private static RundownAssets instance = new RundownAssets();

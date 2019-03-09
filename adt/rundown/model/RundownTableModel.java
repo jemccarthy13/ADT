@@ -4,12 +4,13 @@ import structures.ATOAssets;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
+import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
 /**
  * Rundown table model stores the data for the rundown
  */
-public class RundownTableModel extends ADTTableModel<Asset> {
+public class RundownTableModel extends ADTTableModel {
 	private static final long serialVersionUID = -9017185692217463087L;
 
 	@Override
@@ -83,19 +84,21 @@ public class RundownTableModel extends ADTTableModel<Asset> {
 		}
 		String val = aValue.toString().toUpperCase();
 
+		ATOAssets atoAssets = (ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class);
+
 		switch (columnIndex) {
 		case 0:
 			this.items.get(rowIndex).getID().setVCS(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
-				ATOAssets.getInstance().lookup(rowIndex, 0, val);
+				atoAssets.lookup(rowIndex, 0, val);
 			}
 			break;
 		case 1:
 			this.items.get(rowIndex).getID().setMode2(val);
 			if (doLookup) {
 				RundownAssets.setForcedRow(rowIndex);
-				ATOAssets.getInstance().lookup(rowIndex, 1, val);
+				atoAssets.lookup(rowIndex, 1, val);
 			}
 			break;
 		case 2:

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import structures.ATOAssets;
 import structures.Asset;
+import structures.ListOfAsset;
 import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
@@ -64,18 +65,21 @@ public class ATOImporter implements FileImporter {
 			if (numFilesProc == 0) {
 				Output.showInfoMessage("Error", "No ATO files (USMTF00.txt) were imported.\n"
 						+ "Please ensure you are selecting a valid USMTF00.txt file.");
-			} else
-				Output.showInfoMessage("Proceesed", "Processed " + numFilesProc + " file(s) and added "
-						+ ATOAssets.getInstance().size() + " asset(s).");
+			} else {
+				ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
+				Output.showInfoMessage("Proceesed",
+						"Processed " + numFilesProc + " file(s) and added " + atoAssets.size() + " asset(s).");
+			}
 		} else {
 			Output.showInfoMessage("No file selected.", "No ATO CHG 0 file selected.");
 		}
 
 		File atoInfoFile = new File("ATOinfo.dat");
 		try {
+			ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
 			atoInfoFile.createNewFile();
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(atoInfoFile));
-			oos.writeObject(ATOAssets.getInstance());
+			oos.writeObject(atoAssets);
 			oos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -249,8 +253,8 @@ public class ATOImporter implements FileImporter {
 		// DebugUtility.debug(ATOAssets.class,
 		// tkd + "/" + mode2 + "/" + arinfo + "/" + specType + "/" + typ + "/" +
 		// callsign + "/" + location);
-
-		ATOAssets.getInstance().add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));
+		ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
+		atoAssets.add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));
 
 		// m2boRS.AddNew
 		// m2boRS!VCS = tkd

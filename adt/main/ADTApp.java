@@ -5,6 +5,7 @@ import java.awt.Window;
 import rundown.gui.RundownFrame;
 import structures.ATOAssets;
 import structures.Asset;
+import structures.ListOfAsset;
 import structures.RundownAssets;
 import swing.SingletonHolder;
 import utilities.DebugUtility;
@@ -60,15 +61,16 @@ public class ADTApp {
 		eagle02.setAltBlock("200", "200");
 		eagle03.setAltBlock("300", "400");
 
-		ATOAssets.getInstance().add(engle03);
+		ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
+		atoAssets.add(engle03);
 
-		ATOAssets.getInstance().add(eagle01);
+		atoAssets.add(eagle01);
 		RundownAssets.getInstance().add(eagle01);
 
-		ATOAssets.getInstance().add(eagle02);
+		atoAssets.add(eagle02);
 		RundownAssets.getInstance().add(eagle02);
 
-		ATOAssets.getInstance().add(eagle03);
+		atoAssets.add(eagle03);
 		RundownAssets.getInstance().add(eagle03);
 
 		((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import gui.ATOGeneratorFrame;
+import structures.ListOfAsset;
 import swing.SingletonHolder;
 import table.ATOTableModel;
 import utilities.ADTTableModel;
@@ -25,7 +26,8 @@ public class ATOProjectImporter implements FileImporter {
 				FileInputStream is = new FileInputStream(f.getAbsolutePath());
 				ObjectInputStream ois = new ObjectInputStream(is);
 				ATOData.setInstance((ATOData) ois.readObject());
-				((ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOTableModel.class)).setItems(ATOData.getInstance());
+				ListOfAsset data = (ListOfAsset) SingletonHolder.getInstanceOf(ATOData.class);
+				((ADTTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class)).setItems(data);
 
 				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).validate();

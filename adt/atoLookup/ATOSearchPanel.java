@@ -37,8 +37,8 @@ public class ATOSearchPanel extends BasePanel {
 	public void create() {
 		setLayout(new GridLayout(4, 4, 5, 5));
 
-		final TableRowSorter<ADTTableModel<?>> sorter = new TableRowSorter<ADTTableModel<?>>(
-				(ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class));
+		final TableRowSorter<ADTTableModel> sorter = new TableRowSorter<ADTTableModel>(
+				(ADTTableModel) SingletonHolder.getInstanceOf(ATOLookupModel.class));
 		ATOLookupTable.getInstance().setRowSorter(sorter);
 
 		callsignBox = new JTextField();

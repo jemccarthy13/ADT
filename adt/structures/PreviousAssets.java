@@ -1,7 +1,6 @@
 package structures;
 
 import java.awt.Component;
-import java.util.ArrayList;
 
 import atoLookup.ATOLookupFrame;
 import swing.SingletonHolder;
@@ -9,23 +8,10 @@ import swing.SingletonHolder;
 /**
  * An container for Assets that were previously controlled
  */
-public class PreviousAssets extends ArrayList<Asset> {
+public class PreviousAssets extends ListOfAsset {
 
-	/**
-	 * Serializiation
-	 */
+	/** Serialization information */
 	private static final long serialVersionUID = 8329278307881688968L;
-	private static PreviousAssets instance = new PreviousAssets();
-
-	private PreviousAssets() {
-	}
-
-	/**
-	 * @return single instance
-	 */
-	public static PreviousAssets getInstance() {
-		return instance;
-	}
 
 	/**
 	 * To handle override / re-import, allow ATOAssets to be overwritten.
@@ -34,10 +20,10 @@ public class PreviousAssets extends ArrayList<Asset> {
 	 * 
 	 * @todo - check if this is used anywhere
 	 */
-	public static void resetInstance(PreviousAssets newInstance) {
-		instance.clear();
+	public void resetInstance(PreviousAssets newInstance) {
+		this.clear();
 		for (Asset ast : newInstance) {
-			instance.add(ast);
+			this.add(ast);
 		}
 		((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
 	}
@@ -45,7 +31,12 @@ public class PreviousAssets extends ArrayList<Asset> {
 	/**
 	 * Clear ATO assets from the ATO Lookup
 	 */
-	public static void zeroize() {
-		instance.clear();
+	public void zeroize() {
+		this.clear();
+	}
+
+	@Override
+	public void create() {
+		// nothing
 	}
 }

@@ -1,18 +1,17 @@
-package utilities;
+package structures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 
-import structures.AirspaceList;
-import structures.DIR;
-import structures.KeypadFinder;
 import swing.SingletonHolder;
+import utilities.DebugUtility;
+import utilities.Patterns;
 
 /**
  * A utility class to help get neighboring keypads
  */
-public class GARSKeypadFinder extends KeypadFinder {
+public class KeypadFinderGARS extends KeypadFinder {
 
 	/**
 	 * From a starting killbox, travel in a direction direct to find keypads
@@ -53,7 +52,7 @@ public class GARSKeypadFinder extends KeypadFinder {
 	 */
 	@Override
 	public HashSet<String> keypadsFromKillbox(String killbox) {
-		DebugUtility.error(GARSKeypadFinder.class, "Using gars");
+		DebugUtility.error(KeypadFinderGARS.class, "Using gars");
 		HashSet<String> keypads = new HashSet<String>();
 		String row = "";
 		String col = "";
@@ -73,7 +72,7 @@ public class GARSKeypadFinder extends KeypadFinder {
 			quad = m.group(3);
 			keypad = m.group(4);
 			modifier = m.group(5);
-			DebugUtility.error(GARSKeypadFinder.class, row + "," + col + "," + quad + "," + keypad + "," + modifier);
+			DebugUtility.error(KeypadFinderGARS.class, row + "," + col + "," + quad + "," + keypad + "," + modifier);
 		}
 
 		String keypadNums;
@@ -101,15 +100,15 @@ public class GARSKeypadFinder extends KeypadFinder {
 				keypadRangeBottom = m3.group(1);
 				keypadRangeTop = m3.group(2);
 				for (int x = Integer.parseInt(keypadRangeBottom); x <= Integer.parseInt(keypadRangeTop); x++) {
-					DebugUtility.error(GARSKeypadFinder.class, "." + row + col + quad + x);
+					DebugUtility.error(KeypadFinderGARS.class, "." + row + col + quad + x);
 					keypads.add(row + col + quad + x);
 				}
 			} else if (m4.find() && !quad.equals("")) {
 				keypadNums = m4.group(1);
 
-				DebugUtility.error(GARSKeypadFinder.class, keypadNums);
+				DebugUtility.error(KeypadFinderGARS.class, keypadNums);
 				for (int x = 0; x <= keypadNums.length() - 1; x++) {
-					DebugUtility.error(GARSKeypadFinder.class,
+					DebugUtility.error(KeypadFinderGARS.class,
 							"..." + row + col + quad + keypadNums.substring(x, x + 1));
 					keypads.add(row + col + quad + keypadNums.substring(x, x + 1));
 				}
@@ -201,18 +200,9 @@ public class GARSKeypadFinder extends KeypadFinder {
 	}
 
 	@Override
-	public HashSet<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, Double radius,
-			String origin) {
-		DebugUtility.error(GARSKeypadFinder.class, "Not implemented",
+	public HashSet<String> getKeypadsInCircle(ArrayList<String> coords, String centerPoint, Double radius) {
+		DebugUtility.error(KeypadFinderGARS.class, "Not implemented",
 				new UnsupportedOperationException("not implemented"));
 		return null;
 	}
-
-	@Override
-	public HashSet<String> getKillboxFromCircle(String centerPt, Double radius) {
-		DebugUtility.error(CGRSKeypadFinder.class, "Not implemented",
-				new UnsupportedOperationException("not implemented"));
-		return null;
-	}
-
 }

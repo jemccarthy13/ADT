@@ -161,7 +161,8 @@ public class StacksPanel extends BasePanel {
 
 		HashMap<String, ArrayList<Asset>> dict = new HashMap<String, ArrayList<Asset>>();
 
-		for (Airspace as : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+		for (Asset asst : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+			Airspace as = (Airspace) asst;
 			for (Asset other : RundownAssets.getInstance()) {
 				if (as.conflictsWith(other).size() > 0) {
 					if (dict.containsKey(as.getName()) == false) {

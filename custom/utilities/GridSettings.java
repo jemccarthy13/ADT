@@ -1,5 +1,6 @@
 package utilities;
 
+import structures.KeypadFinderCGRS;
 import structures.KeypadFinder;
 import swing.Singleton;
 
@@ -13,11 +14,11 @@ public class GridSettings implements Singleton {
 	private String startCol = "A";
 
 	private String origin = "1000S02500E";
-	private KeypadFinder finder = new CGRSKeypadFinder();
+	private KeypadFinder finder = new KeypadFinderCGRS();
 
 	@Override
 	public void create() {
-		this.setKeypadFinder(new CGRSKeypadFinder());
+		this.setKeypadFinder(new KeypadFinderCGRS());
 	}
 
 	/**

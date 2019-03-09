@@ -43,7 +43,7 @@ public class ADTMenuBarTest extends BaseTest {
 		Configuration.getInstance().setATOLoadLoc("./TESTATO.txt");
 		RundownMenuBar.getInstance().doImport.doClick();
 
-		Assert.assertTrue(ATOAssets.getInstance().size() == 1001);
+		Assert.assertTrue(((ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class)).size() == 1001);
 
 		// random sample one to make sure it's the right guy
 	}

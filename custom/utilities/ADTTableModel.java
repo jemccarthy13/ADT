@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import structures.ListOfAsset;
 import swing.Singleton;
 
 /**
- * @param <T>
+ * An ADTTableModel containing Assets
  */
-public abstract class ADTTableModel<T> extends AbstractTableModel implements Singleton {
+public abstract class ADTTableModel extends AbstractTableModel implements Singleton {
 
 	/** Serialization variable */
 	private static final long serialVersionUID = -2333045189615857224L;
@@ -27,7 +28,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Sin
 	/**
 	 * The items being stored in this model
 	 */
-	protected ArrayList<T> items;
+	protected ListOfAsset items;
 
 	/**
 	 * Remove all items from the table
@@ -56,22 +57,20 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Sin
 		return String.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (rowIndex < this.items.size()) {
-			return ((ArrayList<Object>) this.items.get(rowIndex)).get(columnIndex);
+			return this.items.getValueAt(rowIndex, columnIndex);
 		}
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		while (this.items.size() <= rowIndex) {
 			this.addNew();
 		}
-		((ArrayList<Object>) this.items.get(rowIndex)).set(columnIndex, aValue);
+		this.items.setValueAt(aValue, rowIndex, columnIndex);
 	}
 
 	@Override
@@ -87,8 +86,7 @@ public abstract class ADTTableModel<T> extends AbstractTableModel implements Sin
 	/**
 	 * @param instance
 	 */
-	@SuppressWarnings("unchecked")
-	public void setItems(ArrayList<?> instance) {
-		this.items = (ArrayList<T>) instance;
+	public void setItems(ListOfAsset instance) {
+		this.items = instance;
 	}
 }

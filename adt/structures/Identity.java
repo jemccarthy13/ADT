@@ -9,6 +9,7 @@ public class Identity implements Serializable {
 
 	/** Serialization information */
 	private static final long serialVersionUID = -8341992304012473691L;
+
 	private String vcs = "";
 	private String fullCallsign = "";
 	private String mode2 = "";

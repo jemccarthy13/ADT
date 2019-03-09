@@ -174,7 +174,8 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 		for (Asset other : RundownAssets.getInstance()) {
 
 			boolean hasConflict = false;
-			for (Airspace as : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+			for (Asset asst : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+				Airspace as = (Airspace) asst;
 				if (as.isAddToRundown() && as.conflictsWith(other).size() > 0) {
 					hasConflict = true;
 					DebugUtility.trace(this.getClass(), as.getColor().toString());

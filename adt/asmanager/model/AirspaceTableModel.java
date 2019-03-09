@@ -39,31 +39,30 @@ public class AirspaceTableModel extends AbstractTableModel {
 		if (list.size() <= rowIndex) {
 			list.add(new Airspace());
 		}
+		Airspace aspace = (Airspace) list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			list.get(rowIndex).setAddToRundown((Boolean) aValue);
+			aspace.setAddToRundown((Boolean) aValue);
 			break;
 		case 1:
-			list.get(rowIndex).setColor((Color) aValue);
+			aspace.setColor((Color) aValue);
 			break;
 		case 2:
-			list.get(rowIndex).setName(aValue.toString().toUpperCase());
+			aspace.setName(aValue.toString().toUpperCase());
 			break;
 		case 3:
-			list.get(rowIndex).setAirspace(aValue.toString().toUpperCase());
+			aspace.setAirspace(aValue.toString().toUpperCase());
 			break;
 		case 4:
-			list.get(rowIndex).getAlt().setLower(aValue.toString().toUpperCase());
+			aspace.getAlt().setLower(aValue.toString().toUpperCase());
 			break;
 		case 5:
-			list.get(rowIndex).getAlt().setUpper(aValue.toString().toUpperCase());
+			aspace.getAlt().setUpper(aValue.toString().toUpperCase());
 			break;
 		default:
 			break;
 		}
 
-		// ((AirspaceList)
-		// (SingletonHolder.getInstanceOf(AirspaceList.class))).checkAddNew();
 	}
 
 	/**
@@ -93,19 +92,20 @@ public class AirspaceTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		AirspaceList list = ((AirspaceList) SingletonHolder.getInstanceOf(AirspaceList.class));
+		Airspace aspace = (Airspace) list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return list.get(rowIndex).isAddToRundown();
+			return aspace.isAddToRundown();
 		case 1:
-			return list.get(rowIndex).getColor();
+			return aspace.getColor();
 		case 2:
-			return list.get(rowIndex).getName();
+			return aspace.getName();
 		case 3:
-			return list.get(rowIndex).getAirspace();
+			return aspace.getAirspace();
 		case 4:
-			return list.get(rowIndex).getAlt().getLower();
+			return aspace.getAlt().getLower();
 		case 5:
-			return list.get(rowIndex).getAlt().getUpper();
+			return aspace.getAlt().getUpper();
 		default:
 		}
 		return null;

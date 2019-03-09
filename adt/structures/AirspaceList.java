@@ -1,6 +1,3 @@
-/**
- * @file AirspaceList.java Holds the AirspaceList class
- */
 package structures;
 
 import java.awt.Color;
@@ -13,7 +10,7 @@ import utilities.DebugUtility;
  * 
  * @todo - think of a way to store and load airspaces (probably another file)
  */
-public class AirspaceList extends ListOf<Airspace> {
+public class AirspaceList extends ListOfAsset {
 
 	private static final long serialVersionUID = 2248757932153418225L;
 
@@ -26,9 +23,9 @@ public class AirspaceList extends ListOf<Airspace> {
 	public String expand(String representation) {
 		String result = "";
 		DebugUtility.trace(AirspaceList.class, "Trying to find killboxes for " + representation);
-		Iterator<Airspace> it = this.iterator();
+		Iterator<Asset> it = this.iterator();
 		while (it.hasNext()) {
-			Airspace as = it.next();
+			Airspace as = (Airspace) it.next();
 			if (as.getName().equals(representation)) {
 				result = as.getAirspace();
 			}

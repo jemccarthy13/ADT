@@ -1,9 +1,6 @@
 package structures;
 
 import java.awt.Component;
-import java.util.ArrayList;
-
-import javax.swing.JFileChooser;
 
 import atoLookup.ATOLookupFrame;
 import atoLookup.ATOSearchPanel;
@@ -14,37 +11,20 @@ import utilities.DebugUtility;
 /**
  * An ArrayList of Assets for the ATO Lookup form
  */
-public class ATOAssets extends ArrayList<Asset> {
+public class ATOAssets extends ListOfAsset {
 
-	/**
-	 * Expose the FileChooser to tests
-	 */
-	static JFileChooser fc = new JFileChooser();
-
+	/** Serialization information */
 	private static final long serialVersionUID = 1480309653414453245L;
-	private static ATOAssets instance = new ATOAssets();
-
-	private ATOAssets() {
-	}
-
-	/**
-	 * @return single instance
-	 */
-	public static ATOAssets getInstance() {
-		return instance;
-	}
 
 	/**
 	 * To handle override / re-import, allow ATOAssets to be overwritten.
 	 * 
 	 * @param newInstance - replacement instance
-	 * 
-	 * @todo - check if this is used anywhere
 	 */
-	public static void resetInstance(ATOAssets newInstance) {
-		instance.clear();
+	public void resetInstance(ATOAssets newInstance) {
+		this.clear();
 		for (Asset ast : newInstance) {
-			instance.add(ast);
+			this.add(ast);
 		}
 		((Component) SingletonHolder.getInstanceOf(ATOLookupFrame.class)).repaint();
 	}
@@ -53,7 +33,7 @@ public class ATOAssets extends ArrayList<Asset> {
 	 * Clear ATO assets from the ATO Lookup
 	 */
 	public static void zeroize() {
-		instance.clear();
+		((ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class)).clear();
 	}
 
 	/**
@@ -69,35 +49,36 @@ public class ATOAssets extends ArrayList<Asset> {
 		Asset prevAsset = null;
 		Asset atoAsset = null;
 
-		for (int x = 0; x < PreviousAssets.getInstance().size(); x++) {
-			Asset ass = this.get(x);
+		PreviousAssets prevAssets = (PreviousAssets) SingletonHolder.getInstanceOf(PreviousAssets.class);
+		for (int x = 0; x < prevAssets.size(); x++) {
+			Asset asst = this.get(x);
 			String compVal = "";
 			if (column == 0) {
-				compVal = ass.getID().getVCS();
+				compVal = asst.getID().getVCS();
 			} else if (column == 1) {
-				compVal = ass.getID().getMode2();
+				compVal = asst.getID().getMode2();
 			} else {
-				compVal = ass.getID().getFullCallsign();
+				compVal = asst.getID().getFullCallsign();
 			}
 			if (val.equals(compVal)) {
 				prevCount++;
-				prevAsset = ass;
+				prevAsset = asst;
 			}
 		}
 
 		for (int x = 0; x < this.size(); x++) {
-			Asset ass = this.get(x);
+			Asset asst = this.get(x);
 			String compVal = "";
 			if (column == 0) {
-				compVal = ass.getID().getVCS();
+				compVal = asst.getID().getVCS();
 			} else if (column == 1) {
-				compVal = ass.getID().getMode2();
+				compVal = asst.getID().getMode2();
 			} else {
-				compVal = ass.getID().getFullCallsign();
+				compVal = asst.getID().getFullCallsign();
 			}
 			if (val.equals(compVal)) {
 				atoFoundCount++;
-				atoAsset = ass;
+				atoAsset = asst;
 			}
 		}
 
@@ -146,5 +127,10 @@ public class ATOAssets extends ArrayList<Asset> {
 		m.setValueAt(asst.getID().getSpecType(), row, 6, true, false);
 		m.setValueAt(asst.getID().getTypeCat(), row, 7, true, false);
 		m.setValueAt(asst.getID().getFullCallsign(), row, 8, true, false);
+	}
+
+	@Override
+	public void create() {
+		// do nothing
 	}
 }

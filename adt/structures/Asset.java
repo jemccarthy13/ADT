@@ -1,7 +1,7 @@
 package structures;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashSet;
 
 import swing.SingletonHolder;
@@ -10,18 +10,33 @@ import utilities.GridSettings;
 /**
  * Representation of an asset under control.
  */
-public class Asset extends ArrayList<Object> implements Comparable<Asset> {
+public class Asset implements Comparable<Asset>, Serializable {
 
 	private static final long serialVersionUID = 8634221915912471387L;
+
+	// Mode 2, callsign, vcs features
 	private Identity ID = new Identity();
+
+	// airspace approved
+	private String airspace = "";
+
+	// altitude block
 	private Altitude altBlock = new Altitude();
+
+	// transit altitude
+	/** @todo transit altitudes and conflicts in transit */
 	private String alttransit = "";
+
+	// comments of an asset
 	private String status = "";
 	private boolean addToRundown = false;
+
+	// on/off station times
 	private String onStation = "";
 	private String offStation = "";
+
+	// AR data
 	private String arData = "";
-	private String airspace = "";
 
 	@Override
 	public int hashCode() {
@@ -33,39 +48,6 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	 */
 	private boolean inConflict = false;
 	private Color highlightColor = Color.WHITE;
-
-	@Override
-	public Object set(int columnIndex, Object aValue) {
-		switch (columnIndex) {
-		case 0:
-			setAddToRundown((Boolean) aValue);
-			break;
-		case 1:
-			getID().setFullCallsign(aValue.toString());
-			break;
-		case 2:
-			getID().setVCS(aValue.toString());
-			break;
-		case 3:
-			getID().setMode2(aValue.toString());
-			break;
-		case 4:
-			getID().setSpecType(aValue.toString());
-			break;
-		case 5:
-			getID().setTypeCat(aValue.toString());
-			break;
-		case 6:
-			setOnStation(aValue.toString());
-			break;
-		case 7:
-			setOffStation(aValue.toString());
-			break;
-		default:
-			break;
-		}
-		return aValue;
-	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -80,34 +62,11 @@ public class Asset extends ArrayList<Object> implements Comparable<Asset> {
 	}
 
 	/**
+	 * 
 	 * @return Identity object that holds ID info for this asset
 	 */
 	public Identity getID() {
 		return this.ID;
-	}
-
-	@Override
-	public Object get(int index) {
-		switch (index) {
-		case 0:
-			return isAddToRundown();
-		case 1:
-			return getID().getFullCallsign();
-		case 2:
-			return getID().getVCS();
-		case 3:
-			return getID().getMode2();
-		case 4:
-			return getID().getSpecType();
-		case 5:
-			return getID().getTypeCat();
-		case 6:
-			return getOnStation();
-		case 7:
-			return getOffStation();
-		default:
-			return getID().getFullCallsign();
-		}
 	}
 
 	/**

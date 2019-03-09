@@ -11,14 +11,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.plaf.FontUIResource;
 
+import structures.KeypadFinderCGRS;
+import structures.KeypadFinderGARS;
 import swing.ADTLabel;
 import swing.BasePanel;
 import swing.GBC;
 import swing.SingletonHolder;
-import utilities.CGRSKeypadFinder;
 import utilities.DebugUtility;
 import utilities.Fonts;
-import utilities.GARSKeypadFinder;
 import utilities.GridSettings;
 
 /**
@@ -77,10 +77,10 @@ public class SettingsEditPanel extends BasePanel {
 					boolean isCGRS = item.toString().equals("Grids") ? true : false;
 					if (isCGRS) {
 						((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
-								.setKeypadFinder(new CGRSKeypadFinder());
+								.setKeypadFinder(new KeypadFinderCGRS());
 					} else {
 						((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
-								.setKeypadFinder(new GARSKeypadFinder());
+								.setKeypadFinder(new KeypadFinderGARS());
 					}
 				}
 			}

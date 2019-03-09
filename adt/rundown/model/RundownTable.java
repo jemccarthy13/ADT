@@ -33,7 +33,7 @@ import rundown.gui.RundownFrame;
 import structures.Airspace;
 import structures.AirspaceList;
 import structures.Asset;
-import structures.ListOf;
+import structures.ListOfAsset;
 import structures.LockedCells;
 import structures.PreviousAssets;
 import structures.RundownAssets;
@@ -191,8 +191,9 @@ public class RundownTable extends JTable {
 				Asset selected = RundownAssets.getInstance().get(row);
 
 				if (e.getSource().equals(deleteItem)) {
-					PreviousAssets.getInstance().add(selected);
-					System.out.println("Previous count now: " + PreviousAssets.getInstance().size());
+					((PreviousAssets) SingletonHolder.getInstanceOf(PreviousAssets.class)).add(selected);
+					System.out.println("Previous count now: "
+							+ ((PreviousAssets) SingletonHolder.getInstanceOf(PreviousAssets.class)).size());
 					RundownAssets.getInstance().remove(row);
 					((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 				} else if (e.getSource().equals(copyApp)) {
@@ -203,16 +204,15 @@ public class RundownTable extends JTable {
 					selected.setInConflict(false);
 					((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 				} else if (e.getSource().equals(resolveAll)) {
-					for (Asset ass : RundownAssets.getInstance()) {
-						ass.setInConflict(false);
+					for (Asset asst : RundownAssets.getInstance()) {
+						asst.setInConflict(false);
 					}
 					((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 				} else if (e.getSource().equals(showConflict) || e.getSource().equals(showAirspaces)) {
 					OutputFrame frame = (OutputFrame) SingletonHolder.getInstanceOf(OutputFrame.class);
 					String builder = "";
 
-					@SuppressWarnings("unchecked")
-					ListOf<Asset> compareList = (ListOf<Asset>) SingletonHolder.getInstanceOf(AirspaceList.class);
+					ListOfAsset compareList = (ListOfAsset) SingletonHolder.getInstanceOf(AirspaceList.class);
 					if (e.getSource().equals(showConflict)) {
 						compareList = RundownAssets.getInstance();
 					}

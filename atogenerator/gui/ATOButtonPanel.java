@@ -12,6 +12,7 @@ import datastructures.ATOProjectImporter;
 import swing.ADTLabel;
 import swing.ActionButton;
 import swing.BasePanel;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.FileChooser;
 
@@ -54,7 +55,7 @@ public class ATOButtonPanel extends BasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(this.pnl.saveBtn)) {
-				ATOData.getInstance().save();
+				((ATOData) SingletonHolder.getInstanceOf(ATOData.class)).save();
 			} else if (e.getSource().equals(this.pnl.loadBtn)) {
 				FileChooser.selectAndLoadFile("Select an ATO Proj", new FileNameExtensionFilter("ATO Proj", "proj"),
 						Configuration.getInstance().getATOProjFileLoc(), new ATOProjectImporter());

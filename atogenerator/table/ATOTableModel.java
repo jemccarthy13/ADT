@@ -7,12 +7,14 @@ import javax.swing.JButton;
 
 import datastructures.ATOAsset;
 import datastructures.ATOData;
+import structures.ListOfAsset;
+import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
 /**
  * ATO table model stores the data for ATO generator table
  */
-public class ATOTableModel extends ADTTableModel<ATOAsset> {
+public class ATOTableModel extends ADTTableModel {
 	private static final long serialVersionUID = -9017185692217463087L;
 
 	private MouseListener listener = new MouseListener() {
@@ -46,7 +48,6 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 
 	@Override
 	public void create() {
-		// this.addTableModelListener(this);
 		this.fullColumnNames.add("MSN#");
 		this.fullColumnNames.add("AMCMSN");
 		this.fullColumnNames.add("PKGID");
@@ -66,7 +67,7 @@ public class ATOTableModel extends ADTTableModel<ATOAsset> {
 		this.fullColumnNames.add("M3");
 		this.fullColumnNames.add("AR");
 
-		this.items = ATOData.getInstance();
+		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOData.class);
 	}
 
 	@Override

@@ -6,18 +6,19 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
 import gui.ATOGeneratorFrame;
+import structures.Asset;
+import structures.ListOfAsset;
 import swing.SingletonHolder;
 import utilities.DebugUtility;
 
 /**
  * A list of assets that are in the ATO.
  */
-public class ATOData extends ArrayList<ATOAsset> {
+public class ATOData extends ListOfAsset {
 	/**
 	 * A file chooser to help choose files.
 	 */
@@ -27,16 +28,6 @@ public class ATOData extends ArrayList<ATOAsset> {
 	private static ATOData instance = new ATOData();
 
 	private ATOData() {
-		this.add(new ATOAsset());
-	}
-
-	/**
-	 * Singleton implementation
-	 * 
-	 * @return - single instance
-	 */
-	public static ATOData getInstance() {
-		return instance;
 	}
 
 	/**
@@ -96,7 +87,7 @@ public class ATOData extends ArrayList<ATOAsset> {
 		// MSNACFT/NO. AC/AC TYPE & MODEL/CALLSIGN/CONFIG/SEC CONFIG/IFF MODE1/IFF
 		// MODE2/IFFMODE3//
 		String msnDat = "";
-		for (ATOAsset asst : instance) {
+		for (Asset asst : instance) {
 			if (!asst.isBlank()) {
 				DebugUtility.debug(ATOData.class, asst.toString());
 				msnDat += asst.toString();
@@ -152,5 +143,10 @@ public class ATOData extends ArrayList<ATOAsset> {
 				DebugUtility.error(ATOData.class, "Unable to close resources.");
 			}
 		}
+	}
+
+	@Override
+	public void create() {
+		this.add(new ATOAsset());
 	}
 }

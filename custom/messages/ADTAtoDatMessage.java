@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import structures.ATOAssets;
+import swing.SingletonHolder;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -35,7 +36,8 @@ public class ADTAtoDatMessage extends ADTBaseMessage {
 			File f = new File(this.atoLoc);
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
-				ATOAssets.resetInstance((ATOAssets) (ois.readObject()));
+				((ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class))
+						.resetInstance((ATOAssets) (ois.readObject()));
 				ois.close();
 				DebugUtility.debug(ADTAtoDatMessage.class, "Updated ATO Lookup");
 			} catch (IOException e) {

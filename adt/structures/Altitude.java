@@ -1,17 +1,18 @@
 package structures;
 
 import java.io.Serializable;
-import java.util.regex.Matcher;
-
-import utilities.Patterns;
 
 /**
- * A structure representing Altitude blocks that allows for checks
+ * A structure representing Altitude blocks. Provides a method for checking 2D
+ * overlap (altitudes in the same range)
  */
 public class Altitude implements Serializable {
 
 	/** for serialization */
 	private static final long serialVersionUID = -4620665690270262450L;
+
+	// it's easier if these are Strings because altitude blocks are represented
+	// as flight levels (i.e. 000, 010, 090, 600) and we'd like to display the zeros
 	private String lower = "";
 	private String upper = "";
 
@@ -33,32 +34,12 @@ public class Altitude implements Serializable {
 	}
 
 	/**
-	 * Get the string representation of the altitude range for this asset
-	 * 
-	 * @return - altitude range, "XXX-XXX"
-	 */
-	public String getAltRange() {
-		String rng = "";
-		if (this.lower.equals("") && this.upper.equals("")) {
-			rng = "-";
-		} else if (this.lower.equals("")) {
-			rng = this.upper + "-" + this.upper;
-		} else if (this.upper.equals("")) {
-			rng = this.lower + "-" + this.lower;
-		} else {
-			rng = this.lower + "-" + this.upper;
-		}
-		return rng;
-	}
-
-	/**
-	 * Override to format string
-	 * 
 	 * @return - a formatted "FL XXX to FL XXX" altitude range
 	 */
 	@Override
 	public String toString() {
-		return "FL " + getAltRange().replaceAll("-", " to FL ");
+		// reuse the lower value if upper is blank
+		return "FL " + this.lower + " to FL " + (this.upper.equals("") ? this.lower : this.upper);
 	}
 
 	/**
@@ -69,57 +50,51 @@ public class Altitude implements Serializable {
 	}
 
 	/**
+	 * Check for overlap in two altitude ranges given a desired separation
+	 * (typically 500 or 1000 feet), in flight level either 005 or 010.
+	 * 
 	 * @param other  - the other altitude block to check for altitude overlap
 	 * @param altSep - altitude separation allowed between blocks
 	 * @return true iff altitude ranges overlap given the asset type
 	 */
 	public boolean overlaps(Altitude other, int altSep) {
-		String curRng = getAltRange();
-		String othRng = other.getAltRange();
 
 		int max = 1;
 		int min = 0;
 
-		if (!(curRng.equals("-") || othRng.equals("-"))) {
+		// we have two valid altitude blocks
+		if (!(other.isBlank() || this.isBlank())) {
+			int newAltB = this.getLower().equals("") ? Integer.MAX_VALUE : Integer.parseInt(this.getLower());
+			int newAltT = this.getUpper().equals("") ? Integer.MIN_VALUE : Integer.parseInt(this.getUpper());
 
-			Matcher rng1Match = Patterns.altBlockPattern.matcher(curRng);
-			Matcher rng2Match = Patterns.altBlockPattern.matcher(othRng);
-			rng1Match.find();
-			rng2Match.find();
+			int othAltB = (other.getLower().equals("") ? Integer.MAX_VALUE : Integer.parseInt(other.getLower()))
+					- altSep;
+			int othAltT = (other.getUpper().equals("") ? Integer.MIN_VALUE : Integer.parseInt(other.getUpper()))
+					+ altSep;
 
-			int newAltB = Integer.parseInt(rng1Match.group(1));
-			int newAltT = Integer.parseInt(rng1Match.group(2));
-
-			int curAltB = Integer.parseInt(rng2Match.group(1)) - altSep;
-			int curAltT = Integer.parseInt(rng2Match.group(2)) + altSep;
-
-			max = newAltB >= curAltB ? newAltB : curAltB;
-			min = newAltT <= curAltT ? newAltT : curAltT;
+			// the max of the mins - the min of the max's is a check for overlap
+			// see https://stackoverflow.com/a/39452639
+			max = newAltB >= othAltB ? newAltB : othAltB;
+			min = newAltT <= othAltT ? newAltT : othAltT;
 		}
 		return (max - min) <= 0;
 	}
 
 	/**
-	 * Setter
-	 * 
-	 * @param low - new lower altitude
+	 * @param low - new lower altitude to set
 	 */
 	public void setLower(String low) {
 		this.lower = low;
 	}
 
 	/**
-	 * Setter
-	 * 
-	 * @param up - new upper altitude
+	 * @param up - new upper altitude to set
 	 */
 	public void setUpper(String up) {
 		this.upper = up;
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return upper altitude of the block
 	 */
 	public String getUpper() {
@@ -127,8 +102,6 @@ public class Altitude implements Serializable {
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return lower altitude of the block
 	 */
 	public String getLower() {

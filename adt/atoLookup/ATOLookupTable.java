@@ -17,7 +17,7 @@ public class ATOLookupTable extends JTable {
 
 	private static final long serialVersionUID = 1267395829859061144L;
 
-	private ADTTableModel<?> model;
+	private ADTTableModel model;
 
 	private static ATOLookupTable instance = new ATOLookupTable();
 
@@ -33,7 +33,7 @@ public class ATOLookupTable extends JTable {
 	private ATOLookupTable() {
 		this.setFont(Fonts.serif);
 
-		this.model = (ADTTableModel<?>) SingletonHolder.getInstanceOf(ATOLookupModel.class);
+		this.model = (ADTTableModel) SingletonHolder.getInstanceOf(ATOLookupModel.class);
 
 		// set the data
 		this.setModel(this.model);

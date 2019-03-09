@@ -10,9 +10,9 @@ import org.junit.Test;
 import structures.Airspace;
 import structures.AirspaceList;
 import structures.Asset;
+import structures.KeypadFinderCGRS;
 import structures.DIR;
 import swing.SingletonHolder;
-import utilities.CGRSKeypadFinder;
 
 /**
  * Tests to ensure translation was valid
@@ -22,7 +22,7 @@ public class CGRSKeypadFinderTest {
 	/**
 	 * A CGRS Keypad Finder
 	 */
-	CGRSKeypadFinder finder = new CGRSKeypadFinder();
+	KeypadFinderCGRS finder = new KeypadFinderCGRS();
 
 	/**
 	 * Test the ability of assets to detect overlap

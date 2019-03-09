@@ -60,7 +60,7 @@ public class ASManagerEditPanel extends BasePanel {
 				} else {
 					Output.forceInfoMessage("Unimplemented", "Need to implement MGRS->Keypad conversion");
 					HashSet<String> result = ((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
-							.getKeypadFinder().getKillboxFromCircle(ASManagerEditPanel.this.gridsField.getText(),
+							.getKeypadFinder().getRepresentationFromCircle(ASManagerEditPanel.this.gridsField.getText(),
 									Double.parseDouble(ASManagerEditPanel.this.radiusField.getText()));
 					System.err.println(result.toString());
 				}
