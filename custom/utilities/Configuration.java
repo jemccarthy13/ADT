@@ -1,7 +1,17 @@
 package utilities;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import structures.KeypadFinderCGRS;
+import structures.KeypadFinderGARS;
+import swing.SingletonHolder;
 
 /**
  * Holds program configuration and constants
@@ -9,18 +19,16 @@ import javax.swing.UIManager;
 public class Configuration {
 
 	/** The port number used to connect client and server */
-	public static final int portNum = 8085;
+	public static int portNum = 8085;
 	/** The server address used for client connections */
 	private static String serverAddr = "localhost";
 
 	private static int compact = 0;
-
-	private final boolean SHOW_MESSAGES = false;
-
+	private boolean SHOW_MESSAGES = true;
 	private String ATODatFileLoc = " ";
 	private String ATOProjFileLoc = "";
-	private String ATOLoadLoc = "./resources/ATOs/Cosmo Shield - USMTF00.txt";
-	// private String ATOLoadLoc = "";
+	private String ATOLoadLoc = "";
+	private boolean production = true;
 
 	private static Configuration instance = new Configuration();
 
@@ -30,10 +38,55 @@ public class Configuration {
 	 * @return - single instance
 	 */
 	public static Configuration getInstance() {
+
 		return instance;
 	}
 
+	private void tryLoadConfig() {
+		Properties properties = new Properties();
+		try {
+			File file = new File("./resources/configuration.properties");
+			FileInputStream fileInput = new FileInputStream(file);
+			properties.loadFromXML(fileInput);
+			fileInput.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (Object key : properties.keySet()) {
+			if (key.equals("server_host")) {
+				Configuration.serverAddr = properties.get(key).toString();
+			} else if (key.equals("port_num")) {
+				Configuration.portNum = Integer.valueOf(properties.get(key).toString());
+			} else if (key.equals("show_messages")) {
+				if (properties.get(key).equals("false")) {
+					this.SHOW_MESSAGES = false;
+				}
+				this.SHOW_MESSAGES = true;
+			} else if (key.equals("grids")) {
+				GridSettings settings = (GridSettings) SingletonHolder.getInstanceOf(GridSettings.class);
+				if (properties.get(key).toString().equals("GARS")) {
+					settings.setKeypadFinder(new KeypadFinderGARS());
+				} else
+					settings.setKeypadFinder(new KeypadFinderCGRS());
+			} else if (key.equals("ato")) {
+				this.ATOLoadLoc = properties.get(key).toString();
+			} else if (key.equals("production")) {
+				this.production = (properties.get(key).toString().equals("false")) ? false : true;
+			}
+		}
+
+	}
+
 	private Configuration() {
+
+		tryLoadConfig();
+		if (!this.production && this.ATOLoadLoc.equals("")) {
+			this.ATOLoadLoc = "./resources/ATOs/Cosmo Shield - USMTF00.txt";
+			this.SHOW_MESSAGES = false;
+		}
 	}
 
 	/**
@@ -151,5 +204,12 @@ public class Configuration {
 	 */
 	public static void setServerAddress(String userIn) {
 		serverAddr = userIn;
+	}
+
+	/**
+	 * @return true if we are not production
+	 */
+	public boolean isDebug() {
+		return !this.production;
 	}
 }
