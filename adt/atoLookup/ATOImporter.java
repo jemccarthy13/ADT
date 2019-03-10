@@ -50,9 +50,8 @@ public class ATOImporter implements FileImporter {
 			if (fileList != null) {
 				for (File file : fileList) {
 					if (Patterns.extPattern.matcher(file.getName()).find()) {
-						DebugUtility.trace(ATOAssets.class, "Processing: " + file.getName());
 						try {
-							processFile(f.getPath(), typeMap);
+							processFile(file.getPath(), typeMap);
 							numFilesProc++;
 						} catch (IOException e) {
 							DebugUtility.debug(ATOAssets.class,
@@ -63,11 +62,11 @@ public class ATOImporter implements FileImporter {
 			}
 
 			if (numFilesProc == 0) {
-				Output.showInfoMessage("Error", "No ATO files (USMTF00.txt) were imported.\n"
+				Output.forceInfoMessage("Error", "No ATO files (USMTF00.txt) were imported.\n"
 						+ "Please ensure you are selecting a valid USMTF00.txt file.");
 			} else {
 				ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
-				Output.showInfoMessage("Proceesed",
+				Output.forceInfoMessage("Proceesed",
 						"Processed " + numFilesProc + " file(s) and added " + atoAssets.size() + " asset(s).");
 			}
 		} else {
@@ -105,7 +104,7 @@ public class ATOImporter implements FileImporter {
 
 		String retPattern = "^/([";
 
-		System.err.println("Need 'other code' functionality");
+		/** @todo need 'other code' functionality */
 		if (useAfghanCode) {
 			retPattern = retPattern + "A";
 		}
@@ -135,12 +134,11 @@ public class ATOImporter implements FileImporter {
 	 * @param typeMap
 	 * @throws IOException
 	 */
-	static void processFile(String path, HashMap<String, String> typeMap) throws IOException {
+	static void processFile(final String path, final HashMap<String, String> typeMap) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader(new File(path)));
 
-		String line = "";
 		String fileContents = "";
-		String[] strLineArray;
+		final String[] strLineArray;
 
 		String x;
 		x = in.readLine();
@@ -154,31 +152,18 @@ public class ATOImporter implements FileImporter {
 
 		strLineArray = fileContents.split("AMSNDAT");
 
-		// int lineCount = strLineArray.length;
+		final Pattern strPattern = getDesiredMsnCode();
 
-		Pattern strPattern = getDesiredMsnCode();
-
-		// Forms(IMPORTOPTIONS).ProgressLbl.width = 0
-		// Forms(IMPORTOPTIONS).ProgressLbl.Visible = True
-		// Forms(IMPORTOPTIONS).ProcessingLbl.Caption = "Processing: " & fName
-
-		boolean msnCodeMatch;
-		for (int y = 0; y < strLineArray.length; y++) {
-			line = strLineArray[y];
-			msnCodeMatch = strPattern.matcher(line).find();
-			if (msnCodeMatch) {
-				processLine(line.toString(), typeMap);
+		// todo Auto-generated method stub
+		for (int y = 0; y <= strLineArray.length; y++) {
+			if (y < strLineArray.length) {
+				String nline = strLineArray[y];
+				boolean codeMatch = strPattern.matcher(nline).find();
+				if (codeMatch && !nline.equals("")) {
+					processLine(nline.toString(), typeMap);
+				}
 			}
-
-			// DebugUtility.debug(ATOAssets.class, ((((double) (y) / lineCount)) * 100 + " %
-			// complete"));
-			// Forms(IMPORTOPTIONS).ProgressLbl.width = CInt((lineCount / totalCount) *
-			// (Forms(IMPORTOPTIONS).ProgressFrame.width * 0.95))
-			// Forms(IMPORTOPTIONS).Repaint
-			/// lineCount = lineCount + 1
 		}
-
-		DebugUtility.debug(ATOAssets.class, "ATO load 100% complete");
 	}
 
 	/**
@@ -204,8 +189,6 @@ public class ATOImporter implements FileImporter {
 		m.find();
 		String specType = m.group(2);
 
-		data = data.replace(".", "");
-
 		m = Patterns.fileLineCSPattern.matcher(data);
 		m.find();
 		String callsign = m.group(3).replace(" ", "");
@@ -226,45 +209,24 @@ public class ATOImporter implements FileImporter {
 
 		m = Patterns.msnTimingsPattern.matcher(data);
 		m.find();
-		// String onStation = m.group(1);
-		// String offtation = m.group(2);
+		String onStation = m.group(1);
+		String offStation = m.group(2);
 
-		// String[] strArray = data.split("//");
+		m = Patterns.arInfoPattern.matcher(data);
 
-		// Pattern arctPatt = Pattern.compile("(ARCT)");
-		// Pattern infoPatt = Pattern.compile(".*NAME:(.*)-/");
-
-		String arinfo = "AR Data CAO ATO CHG 0";
-
-		// If getGroupMatches(strPattern, CStr(st)).count > 0 Then
-		// Set matches = getGroupMatches(infoPatt, CStr(st))
-		// mat = matches(0)
-		// arinfo = matches(1)
-		// If (Len(mat) > 0) Then
-		// arinfo = arinfo & CStr(mat) & "/" & arinfo & Chr(10)
-		// End If
-		// End If
-		// Next
-		// If arinfo = "AR Data CAO ATO CHG 0 " & Chr(10) Then arinfo = vbNullString
+		String arinfo = "";
+		if (m.find()) {
+			arinfo = "AR Data CAO ATO CHG 0 " + m.group(0);
+		}
 
 		String typ = "";
 		// typ = typeDict(SpecType)
 
-		// DebugUtility.debug(ATOAssets.class,
-		// tkd + "/" + mode2 + "/" + arinfo + "/" + specType + "/" + typ + "/" +
-		// callsign + "/" + location);
 		ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
-		atoAssets.add(new Asset(tkd, mode2, arinfo, specType, typ, callsign, location));
 
-		// m2boRS.AddNew
-		// m2boRS!VCS = tkd
-		// m2boRS!Mode2 = Mode2
-		// m2boRS!Remarks = arinfo
-		// m2boRS!SpecType = SpecType
-		// m2boRS!Type = typ
-		// m2boRS!FullCallsign = Callsign
-		// m2boRS!ICAO = Location
-		// m2boRS.Update
-		// }
+		Asset newAsset = new Asset(tkd, mode2, arinfo, specType, typ, callsign, location);
+		newAsset.setOnStation(onStation);
+		newAsset.setOffStation(offStation);
+		atoAssets.add(newAsset);
 	}
 }

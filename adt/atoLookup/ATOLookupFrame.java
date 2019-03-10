@@ -21,7 +21,7 @@ public class ATOLookupFrame extends BaseFrame {
 
 	@Override
 	public void create() {
-		setSize(725, 600);
+		setSize(1000, 600);
 
 		this.setAlwaysOnTop(true);
 

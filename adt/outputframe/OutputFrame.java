@@ -1,13 +1,10 @@
 package outputframe;
 
-import java.awt.Component;
-
-import rundown.gui.RundownFrame;
 import swing.BaseFrame;
 import swing.SingletonHolder;
 
 /**
- * 
+ * Output frame to hold output
  */
 public class OutputFrame extends BaseFrame {
 
@@ -21,10 +18,8 @@ public class OutputFrame extends BaseFrame {
 		this.content = (OutputPanel) SingletonHolder.getInstanceOf(OutputPanel.class);
 		this.setTitle("Output");
 		setSize(600, 700);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo((Component) SingletonHolder.getInstanceOf(RundownFrame.class));
-		this.add(this.content);
 		this.setVisible(true);
+		super.create();
 	}
 
 	/**

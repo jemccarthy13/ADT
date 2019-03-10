@@ -6,6 +6,10 @@ import java.util.regex.Pattern;
  * A static location/container class for compiled Patterns.
  */
 public class Patterns {
+
+	/** AR Info pattern */
+	public static Pattern arInfoPattern = Pattern.compile("ARINFO.*NAME:(.*)-/");
+
 	/** ATO file extension pattern */
 	public static Pattern extPattern = Pattern.compile("(USMTF00).*txt");
 

@@ -51,6 +51,8 @@ public abstract class ListOfAsset extends ArrayList<Asset> implements Singleton 
 			return chosen.getOnStation();
 		case 7:
 			return chosen.getOffStation();
+		case 8:
+			return chosen.getARData();
 		default:
 			return chosen.getID().getFullCallsign();
 		}

@@ -57,6 +57,9 @@ public class ATOLookupTable extends JTable {
 
 		// column header click events
 		this.setAutoCreateRowSorter(true);
+
+		this.getColumnModel().getColumn(8)
+				.setCellRenderer((ATOLookupCellRenderer) SingletonHolder.getInstanceOf(ATOLookupCellRenderer.class));
 	}
 
 	/**
@@ -67,9 +70,9 @@ public class ATOLookupTable extends JTable {
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
 		// size the columns
-		int[] minSizes = { 40, 120, 60, 60, 60, 60, 120, 120 };
-		int[] widths = { 40, 120, 60, 60, 60, 60, 120, 120 };
-		int[] maxSizes = { 40, 120, 60, 60, 60, 60, 120, 120 };
+		int[] minSizes = { 40, 120, 60, 60, 60, 60, 120, 120, 90 };
+		int[] widths = { 40, 120, 60, 60, 60, 60, 120, 120, 90 };
+		int[] maxSizes = { 40, 120, 60, 60, 60, 60, 120, 120, 600 };
 
 		TableColumnModel colModel = this.getColumnModel();
 		for (int x = 0; x < colModel.getColumnCount(); x++) {
@@ -77,7 +80,7 @@ public class ATOLookupTable extends JTable {
 			colModel.getColumn(x).setWidth(widths[x]);
 
 			// let the last two columns (on/off station) resize freely
-			if (x < maxSizes.length - 2)
+			if (x < maxSizes.length - 3)
 				colModel.getColumn(x).setMaxWidth(maxSizes[x]);
 		}
 	}

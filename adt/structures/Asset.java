@@ -314,4 +314,12 @@ public class Asset implements Comparable<Asset>, Serializable {
 	public void setInConflict(boolean inConflict) {
 		this.inConflict = inConflict;
 	}
+
+	/**
+	 * @return Asset's AR information
+	 */
+	public Object getARData() {
+		// todo Auto-generated method stub
+		return this.arData;
+	}
 }

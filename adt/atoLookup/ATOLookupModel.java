@@ -39,6 +39,7 @@ public class ATOLookupModel extends ADTTableModel {
 		this.columnNames.add("Category");
 		this.columnNames.add("On Station");
 		this.columnNames.add("Off Station");
+		this.columnNames.add("AR Info");
 		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
 	}
 
