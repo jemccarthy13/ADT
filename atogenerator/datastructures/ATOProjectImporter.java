@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import gui.ATOGeneratorFrame;
-import structures.ListOfAsset;
+import structures.Asset;
 import swing.SingletonHolder;
-import table.ATOTableModel;
-import utilities.ADTTableModel;
 import utilities.DebugUtility;
 import utilities.FileImporter;
 
@@ -23,12 +21,17 @@ public class ATOProjectImporter implements FileImporter {
 	public void doImport(File f) {
 		if (f != null) {
 			try {
+				System.err.println(f.getPath());
 				FileInputStream is = new FileInputStream(f.getAbsolutePath());
 				ObjectInputStream ois = new ObjectInputStream(is);
-				ATOData.setInstance((ATOData) ois.readObject());
-				ListOfAsset data = (ListOfAsset) SingletonHolder.getInstanceOf(ATOData.class);
-				((ADTTableModel) SingletonHolder.getInstanceOf(ATOTableModel.class)).setItems(data);
+				SingletonHolder.setInstanceOf(ATOData.class, ois.readObject());
 
+				System.err.println("ATO DATA LOADED");
+				ATOData data = (ATOData) SingletonHolder.getInstanceOf(ATOData.class);
+
+				for (Asset d : data) {
+					System.out.println(d);
+				}
 				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 				((Component) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).validate();
 				ois.close();

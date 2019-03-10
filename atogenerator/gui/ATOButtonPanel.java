@@ -59,8 +59,9 @@ public class ATOButtonPanel extends BasePanel {
 			} else if (e.getSource().equals(this.pnl.loadBtn)) {
 				FileChooser.selectAndLoadFile("Select an ATO Proj", new FileNameExtensionFilter("ATO Proj", "proj"),
 						Configuration.getInstance().getATOProjFileLoc(), new ATOProjectImporter());
+				((ATOGeneratorFrame) SingletonHolder.getInstanceOf(ATOGeneratorFrame.class)).repaint();
 			} else if (e.getSource().equals(this.pnl.genBtn)) {
-				ATOData.output();
+				((ATOData) SingletonHolder.getInstanceOf(ATOData.class)).output();
 			}
 		}
 	}

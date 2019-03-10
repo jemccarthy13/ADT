@@ -322,4 +322,5 @@ public class Asset implements Comparable<Asset>, Serializable {
 		// todo Auto-generated method stub
 		return this.arData;
 	}
+
 }

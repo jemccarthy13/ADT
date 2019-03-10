@@ -50,4 +50,14 @@ public class SingletonHolder extends HashMap<Integer, Object> {
 		}
 		return instance.get(c.hashCode());
 	}
+
+	/**
+	 * Set a new instance in the Singleton Holder
+	 * 
+	 * @param class1
+	 * @param readObject
+	 */
+	public static void setInstanceOf(Class<?> class1, Object readObject) {
+		instance.put(class1.hashCode(), readObject);
+	}
 }

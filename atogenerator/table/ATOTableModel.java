@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 import datastructures.ATOAsset;
 import datastructures.ATOData;
-import structures.ListOfAsset;
 import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
@@ -66,8 +65,6 @@ public class ATOTableModel extends ADTTableModel {
 		this.columnNames.add("M2");
 		this.columnNames.add("M3");
 		this.columnNames.add("AR");
-
-		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOData.class);
 	}
 
 	@Override
@@ -85,17 +82,25 @@ public class ATOTableModel extends ADTTableModel {
 			button.addMouseListener(this.listener);
 			return button;
 		}
-		return super.getValueAt(rowIndex, columnIndex);
+		return ((ATOAsset) ((ATOData) SingletonHolder.getInstanceOf(ATOData.class)).get(rowIndex)).getItems()
+				.get(columnIndex);
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		super.setValueAt(aValue.toString().toUpperCase(), rowIndex, columnIndex);
+		ATOAsset chosen = (ATOAsset) ((ATOData) SingletonHolder.getInstanceOf(ATOData.class)).get(rowIndex);
+
+		chosen.getItems().set(columnIndex, aValue);
 		ATOData.checkAddNew();
 	}
 
 	@Override
 	public void addNew() {
-		this.items.add(new ATOAsset());
+		ATOData.addNew();
+	}
+
+	@Override
+	public int getRowCount() {
+		return ((ATOData) SingletonHolder.getInstanceOf(ATOData.class)).size();
 	}
 }

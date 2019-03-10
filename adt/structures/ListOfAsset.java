@@ -13,7 +13,7 @@ public abstract class ListOfAsset extends ArrayList<Asset> implements Singleton 
 	/**
 	 * Constructor
 	 */
-	protected ListOfAsset() {
+	public ListOfAsset() {
 		this.create();
 	}
 

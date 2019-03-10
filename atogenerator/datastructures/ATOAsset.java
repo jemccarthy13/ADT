@@ -73,4 +73,12 @@ public class ATOAsset extends Asset {
 		}
 		return retVal;
 	}
+
+	/**
+	 * @param string new mission number to use
+	 * @return arraylist of attributes in an ATO Asset
+	 */
+	public ArrayList<Object> getItems() {
+		return this.items;
+	}
 }

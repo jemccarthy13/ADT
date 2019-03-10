@@ -27,9 +27,6 @@ public class ATOData extends ListOfAsset {
 	private static final long serialVersionUID = 1480309653414453245L;
 	private static ATOData instance = new ATOData();
 
-	private ATOData() {
-	}
-
 	/**
 	 * Add a new blank asset to the rundown
 	 */
@@ -58,13 +55,13 @@ public class ATOData extends ListOfAsset {
 	 * @param readObject
 	 */
 	protected static void setInstance(ATOData readObject) {
-		ATOData.instance = readObject;
+		SingletonHolder.setInstanceOf(ATOData.class, readObject);
 	}
 
 	/**
 	 * 
 	 */
-	public static void output() {
+	public void output() {
 		String heading = "";
 
 		heading += "OPER/VALIANT CHASE--UNCLASSIFIED//\n";
@@ -87,7 +84,7 @@ public class ATOData extends ListOfAsset {
 		// MSNACFT/NO. AC/AC TYPE & MODEL/CALLSIGN/CONFIG/SEC CONFIG/IFF MODE1/IFF
 		// MODE2/IFFMODE3//
 		String msnDat = "";
-		for (Asset asst : instance) {
+		for (Asset asst : this) {
 			if (!asst.isBlank()) {
 				DebugUtility.debug(ATOData.class, asst.toString());
 				msnDat += asst.toString();
