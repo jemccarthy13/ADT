@@ -30,20 +30,20 @@ public class ATOLookupModel extends ADTTableModel {
 
 	@Override
 	public void create() {
-		this.fullColumnNames.clear();
-		this.fullColumnNames.add("Add");
-		this.fullColumnNames.add("Full Callsign");
-		this.fullColumnNames.add("VCS");
-		this.fullColumnNames.add("Mode 2");
-		this.fullColumnNames.add("Type");
-		this.fullColumnNames.add("Category");
-		this.fullColumnNames.add("On Station");
-		this.fullColumnNames.add("Off Station");
+		this.columnNames.clear();
+		this.columnNames.add("Add");
+		this.columnNames.add("Full Callsign");
+		this.columnNames.add("VCS");
+		this.columnNames.add("Mode 2");
+		this.columnNames.add("Type");
+		this.columnNames.add("Category");
+		this.columnNames.add("On Station");
+		this.columnNames.add("Off Station");
 		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
 	}
 
 	@Override
 	public int getColumnCount() {
-		return this.fullColumnNames.size();
+		return this.columnNames.size();
 	}
 }

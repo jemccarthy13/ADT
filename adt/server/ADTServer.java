@@ -32,7 +32,7 @@ import utilities.DebugUtility;
 public class ADTServer extends Thread {
 
 	private ServerSocket serverSocket;
-	private int connections = 0;
+	private int numConnections = 0;
 	private HashMap<Integer, ADTServerThread> clients;
 
 	private static ADTServer instance = new ADTServer();
@@ -85,19 +85,20 @@ public class ADTServer extends Thread {
 			DebugUtility.error(ADTServer.class, "Port already bound: " + Configuration.portNum);
 			this.serverSocket = null;
 		} catch (IOException e2) {
+			DebugUtility.error(ADTServer.class, "Unknown IO error occurred.");
 			e2.printStackTrace();
 		}
 
 		// while there is a valid connection, create a client thread and read messages
 		while (this.endCondition == false && this.serverSocket != null) {
 			try {
-				ADTServerThread client = new ADTServerThread(this.connections, this.serverSocket.accept());
+				ADTServerThread client = new ADTServerThread(this.numConnections, this.serverSocket.accept());
 				new Thread(client).start();
-				this.clients.put(this.connections, client);
+				this.clients.put(this.numConnections, client);
 
-				DebugUtility.debug(ADTServer.class, "Started server thread: " + this.connections);
+				DebugUtility.debug(ADTServer.class, "Started server thread: " + this.numConnections);
 
-				this.connections++;
+				this.numConnections++;
 			} catch (BindException e1) {
 				DebugUtility.error(ADTServer.class, "Port " + Configuration.portNum + " already in use.");
 			} catch (IOException e) {
@@ -109,9 +110,9 @@ public class ADTServer extends Thread {
 				this.serverSocket.close();
 			}
 		} catch (IOException e) {
-			// idk
+			DebugUtility.error(ADTServer.class, "Unknown IO error occurred.");
 		}
-		DebugUtility.debug(ADTServer.class, "Stopped");
+		DebugUtility.trace(ADTServer.class, "Stopped server");
 	}
 
 	/**

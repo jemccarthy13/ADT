@@ -15,17 +15,17 @@ public class RundownTableModel extends ADTTableModel {
 
 	@Override
 	public void create() {
-		this.fullColumnNames.add("VCS");
-		this.fullColumnNames.add("Mode 2");
-		this.fullColumnNames.add("Location");
-		this.fullColumnNames.add("Alt L");
-		this.fullColumnNames.add("Alt U");
-		this.fullColumnNames.add("Status");
-		this.fullColumnNames.add("Type");
-		this.fullColumnNames.add("Category");
-		this.fullColumnNames.add("Full Callsign");
-		this.fullColumnNames.add("In Conflict");
-		this.fullColumnNames.add("Color");
+		this.columnNames.add("VCS");
+		this.columnNames.add("Mode 2");
+		this.columnNames.add("Location");
+		this.columnNames.add("Alt L");
+		this.columnNames.add("Alt U");
+		this.columnNames.add("Status");
+		this.columnNames.add("Type");
+		this.columnNames.add("Category");
+		this.columnNames.add("Full Callsign");
+		this.columnNames.add("In Conflict");
+		this.columnNames.add("Color");
 
 		this.items = RundownAssets.getInstance();
 	}

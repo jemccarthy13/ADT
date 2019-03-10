@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import rundown.gui.RundownCellListener;
 import structures.Airspace;
 import structures.AirspaceList;
 import swing.ADTLabel;
@@ -26,6 +25,7 @@ import swing.GBC;
 import swing.MouseClickListener;
 import swing.SingletonHolder;
 import utilities.AltFieldListener;
+import utilities.ConflictComparer;
 import utilities.GridSettings;
 import utilities.Output;
 
@@ -136,7 +136,7 @@ public class ASManagerEditPanel extends BasePanel {
 
 		ASManagerPanel.getInstance().repaint();
 
-		RundownCellListener.checkAirspaceHighlights();
+		ConflictComparer.checkAirspaceHighlights();
 		((ManagerFrame) (SingletonHolder.getInstanceOf(ManagerFrame.class))).dispose();
 	}
 

@@ -32,20 +32,32 @@ public class RundownCellRenderer extends DefaultTableCellRenderer implements Sin
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
+
+		// get the component to render from the table
 		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+		// if we have a conflict flagged, paint the component RED
 		if (RundownTable.getInstance().getValueAt(row, 9).equals(Boolean.TRUE) && (column == 3 || column == 4)) {
 			c.setBackground(Color.RED);
-		} else if (LockedCells.isLocked(row, column)) {
+		}
+		// or it's locked and we color it gray
+		else if (LockedCells.isLocked(row, column)) {
 			c.setBackground(Color.gray.darker());
-		} else if (column == 2) {
+		}
+		// or it's the second column, so check for airspace color
+		else if (column == 2) {
 			Color colr = (Color) (RundownTable.getInstance().getValueAt(row, 10));
 			if (colr != Color.WHITE) {
 				c.setBackground(colr);
 			}
-		} else if (!isSelected) {
+		}
+		// lastly, color white background for any other non-selected cell
+		else if (!isSelected) {
 			c.setBackground(RundownTable.getInstance().getBackground());
 		}
 
+		// for the status column, also add a tooltip text (mouse hover) so we can see
+		// all of the status
 		if (column == 5) {
 			String tooltipText = RundownTable.getInstance().getValueAt(row, column).toString();
 			if (tooltipText != null && !tooltipText.equals(""))

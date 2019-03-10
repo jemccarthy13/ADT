@@ -1,6 +1,5 @@
 package rundown.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -11,11 +10,7 @@ import main.ADTClient;
 import messages.ADTLockedMessage;
 import messages.ADTUpdateMessage;
 import rundown.model.RundownTable;
-import structures.Airspace;
-import structures.AirspaceList;
-import structures.Asset;
 import structures.LockedCells;
-import structures.RundownAssets;
 import swing.Singleton;
 import swing.SingletonHolder;
 import utilities.ConflictComparer;
@@ -37,7 +32,6 @@ public class RundownCellListener implements Singleton, PropertyChangeListener, R
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		// A cell has started/stopped editing
-
 		if ("tableCellEditor".equals(e.getPropertyName())) {
 			if (RundownTable.getInstance().isEditing()) {
 				processEditingStarted();
@@ -55,12 +49,11 @@ public class RundownCellListener implements Singleton, PropertyChangeListener, R
 		// column of the table have not been set when the "tableCellEditor"
 		// PropertyChangeEvent is fired.
 		// This results in the "run" method being invoked
-
 		SwingUtilities.invokeLater(this);
 	}
 
 	/*
-	 * See above.
+	 * See above, "processEditingStarted"
 	 */
 	@Override
 	public void run() {
@@ -68,8 +61,8 @@ public class RundownCellListener implements Singleton, PropertyChangeListener, R
 		this.column = RundownTable.getInstance().getEditingColumn();
 		int modelRow = RundownTable.getInstance().convertRowIndexToModel(this.row);
 
+		// lock on edit started
 		ADTClient client = ((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).getClient();
-
 		client.sendMessage(new ADTLockedMessage(modelRow, this.column, true));
 		LockedCells.setLocked(client.getSessionID(), this.row, this.column, true);
 	}
@@ -151,32 +144,10 @@ public class RundownCellListener implements Singleton, PropertyChangeListener, R
 
 				ConflictComparer.checkConflicts(this.row);
 
-				checkAirspaceHighlights();
+				ConflictComparer.checkAirspaceHighlights();
 			}
 
 			((Component) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
-		}
-	}
-
-	/**
-	 * Check the rundown for airspace highlighting
-	 */
-	public static void checkAirspaceHighlights() {
-		// now loop through every asset that has a conflict
-		for (Asset other : RundownAssets.getInstance()) {
-
-			boolean hasConflict = false;
-			for (Asset asst : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
-				Airspace as = (Airspace) asst;
-				if (as.isAddToRundown() && as.conflictsWith(other).size() > 0) {
-					hasConflict = true;
-					DebugUtility.trace(RundownCellListener.class, as.getColor().toString());
-					other.setAirspaceHighlightColor(as.getColor());
-				}
-			}
-			if (!hasConflict) {
-				other.setAirspaceHighlightColor(Color.WHITE);
-			}
 		}
 	}
 

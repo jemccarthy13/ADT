@@ -8,6 +8,7 @@ import main.ADTClient;
 import rundown.model.RundownTable;
 import swing.BaseFrame;
 import swing.SingletonHolder;
+import utilities.ADTRobot;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.ImageLibrary;
@@ -62,11 +63,7 @@ public class RundownFrame extends BaseFrame {
 		// don't display until the client/server connection has been established
 		int attempts = 0;
 		while (!this.client.isConnected() && attempts < 10) {
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				// keep waiting
-			}
+			ADTRobot.sleep(250);
 			attempts++;
 		}
 

@@ -53,9 +53,13 @@ public class RundownContextMenu extends JPopupMenu implements Singleton {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			// because the table can be sorted, we need to get the row in terms of the model
 			RundownTable table = (RundownTable) SingletonHolder.getInstanceOf(RundownTable.class);
 			table.getSelectedRow();
 			int row = table.convertRowIndexToModel(table.getSelectedRow());
+
+			// now we retrieve the selected asset because this is a context menu in the
+			// context of the selected asset
 			Asset selected = RundownAssets.getInstance().get(row);
 
 			if (e.getSource().equals(RundownContextMenu.this.deleteItem)) {
@@ -105,7 +109,6 @@ public class RundownContextMenu extends JPopupMenu implements Singleton {
 						}
 					}
 				}
-				System.out.println(builder);
 				frame.setOutput(builder);
 				frame.setTitle("Conflict");
 				frame.setVisible(true);
@@ -141,8 +144,8 @@ public class RundownContextMenu extends JPopupMenu implements Singleton {
 					@Override
 					public void run() {
 						RundownTable table = (RundownTable) SingletonHolder.getInstanceOf(RundownTable.class);
-						int rowAtPoint = table
-								.rowAtPoint(SwingUtilities.convertPoint(RundownContextMenu.this, new Point(0, 0), table));
+						int rowAtPoint = table.rowAtPoint(
+								SwingUtilities.convertPoint(RundownContextMenu.this, new Point(0, 0), table));
 						if (rowAtPoint > -1) {
 							table.setRowSelectionInterval(rowAtPoint, rowAtPoint);
 						}

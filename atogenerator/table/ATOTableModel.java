@@ -48,24 +48,24 @@ public class ATOTableModel extends ADTTableModel {
 
 	@Override
 	public void create() {
-		this.fullColumnNames.add("MSN#");
-		this.fullColumnNames.add("AMCMSN");
-		this.fullColumnNames.add("PKGID");
-		this.fullColumnNames.add("MSNCC");
-		this.fullColumnNames.add("MSN");
-		this.fullColumnNames.add("SECMSN");
-		this.fullColumnNames.add("ALERT");
-		this.fullColumnNames.add("DEPLOC");
-		this.fullColumnNames.add("ARRLOC");
-		this.fullColumnNames.add("#AC");
-		this.fullColumnNames.add("ACTYPE");
-		this.fullColumnNames.add("CALLSIGN");
-		this.fullColumnNames.add("CONFIG");
-		this.fullColumnNames.add("SECCONFIG");
-		this.fullColumnNames.add("M1");
-		this.fullColumnNames.add("M2");
-		this.fullColumnNames.add("M3");
-		this.fullColumnNames.add("AR");
+		this.columnNames.add("MSN#");
+		this.columnNames.add("AMCMSN");
+		this.columnNames.add("PKGID");
+		this.columnNames.add("MSNCC");
+		this.columnNames.add("MSN");
+		this.columnNames.add("SECMSN");
+		this.columnNames.add("ALERT");
+		this.columnNames.add("DEPLOC");
+		this.columnNames.add("ARRLOC");
+		this.columnNames.add("#AC");
+		this.columnNames.add("ACTYPE");
+		this.columnNames.add("CALLSIGN");
+		this.columnNames.add("CONFIG");
+		this.columnNames.add("SECCONFIG");
+		this.columnNames.add("M1");
+		this.columnNames.add("M2");
+		this.columnNames.add("M3");
+		this.columnNames.add("AR");
 
 		this.items = (ListOfAsset) SingletonHolder.getInstanceOf(ATOData.class);
 	}

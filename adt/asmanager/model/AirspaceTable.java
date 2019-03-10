@@ -26,11 +26,11 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import asmanager.gui.ManagerFrame;
-import rundown.gui.RundownCellListener;
 import rundown.model.RundownTable;
 import structures.AirspaceList;
 import swing.Borders;
 import swing.SingletonHolder;
+import utilities.ConflictComparer;
 import utilities.Fonts;
 
 /**
@@ -62,7 +62,7 @@ public class AirspaceTable extends JTable {
 			if (c != null) {
 				this.savedColor = c;
 				AirspaceTable.this.setValueAt(c, this.savedRow, this.savedColumn);
-				RundownCellListener.checkAirspaceHighlights();
+				ConflictComparer.checkAirspaceHighlights();
 			}
 			List<SortKey> keys = new ArrayList<SortKey>();
 			keys.addAll(AirspaceTable.this.getRowSorter().getSortKeys());

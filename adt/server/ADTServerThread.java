@@ -102,10 +102,11 @@ public class ADTServerThread extends Thread {
 			DebugUtility.trace(ADTServerThread.class, "Forwarding " + msg.getCommand());
 			this.output.writeObject(msg);
 		} catch (NullPointerException e) {
-			DebugUtility.error(ADTServerThread.class, "Server/client connection wasn't established.");
+			DebugUtility.error(ADTServerThread.class,
+					"Server/client connection wasn't established. Couldn't forward: " + msg.getCommand());
 		} catch (IOException e) {
 			e.printStackTrace();
-			DebugUtility.error(ADTServerThread.class, "Unable to send message:" + msg.getCommand());
+			DebugUtility.error(ADTServerThread.class, "Unkown IO error occured. Message:" + msg.getCommand());
 		}
 	}
 

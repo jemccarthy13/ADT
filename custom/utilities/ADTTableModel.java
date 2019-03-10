@@ -16,7 +16,7 @@ public abstract class ADTTableModel extends AbstractTableModel implements Single
 	private static final long serialVersionUID = -2333045189615857224L;
 
 	/** The column headers for the Table */
-	protected ArrayList<String> fullColumnNames = new ArrayList<String>();
+	protected ArrayList<String> columnNames = new ArrayList<String>();
 
 	/**
 	 * Constructor
@@ -44,12 +44,12 @@ public abstract class ADTTableModel extends AbstractTableModel implements Single
 
 	@Override
 	public int getColumnCount() {
-		return this.fullColumnNames.size();
+		return this.columnNames.size();
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return this.fullColumnNames.get(columnIndex);
+		return this.columnNames.get(columnIndex);
 	}
 
 	@Override

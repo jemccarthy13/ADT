@@ -1,7 +1,13 @@
 package utilities;
 
+import java.awt.Color;
+
+import rundown.gui.RundownCellListener;
+import structures.Airspace;
+import structures.AirspaceList;
 import structures.Asset;
 import structures.RundownAssets;
+import swing.SingletonHolder;
 
 /**
  * Helper class that compares for conflicts between assets
@@ -69,5 +75,28 @@ public class ConflictComparer {
 			}
 			cnt1++;
 		}
+	}
+
+	/**
+	 * Check the rundown for airspace highlighting
+	 */
+	public static void checkAirspaceHighlights() {
+		// now loop through every asset that has a conflict
+		for (Asset other : RundownAssets.getInstance()) {
+
+			boolean hasConflict = false;
+			for (Asset asst : (AirspaceList) (SingletonHolder.getInstanceOf(AirspaceList.class))) {
+				Airspace as = (Airspace) asst;
+				if (as.isAddToRundown() && as.conflictsWith(other).size() > 0) {
+					hasConflict = true;
+					DebugUtility.trace(RundownCellListener.class, as.getColor().toString());
+					other.setAirspaceHighlightColor(as.getColor());
+				}
+			}
+			if (!hasConflict) {
+				other.setAirspaceHighlightColor(Color.WHITE);
+			}
+		}
+
 	}
 }
