@@ -3,6 +3,7 @@ package asmanager.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import rundown.gui.RundownCellListener;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import swing.SingletonHolder;
@@ -22,7 +23,7 @@ public class AirspaceTableCellListener implements PropertyChangeListener, Runnab
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (this.column == 0) {
-			RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
+			RundownCellListener.checkAirspaceHighlights();
 			((RundownFrame) SingletonHolder.getInstanceOf(RundownFrame.class)).repaint();
 		}
 	}

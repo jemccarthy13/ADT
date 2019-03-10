@@ -16,6 +16,7 @@ import structures.AirspaceList;
 import structures.Asset;
 import structures.LockedCells;
 import structures.RundownAssets;
+import swing.Singleton;
 import swing.SingletonHolder;
 import utilities.ConflictComparer;
 import utilities.DebugUtility;
@@ -28,20 +29,11 @@ import utilities.Output;
  *
  * The source of the Action is a TableCellListener instance.
  */
-public class RundownCellListener implements PropertyChangeListener, Runnable {
+public class RundownCellListener implements Singleton, PropertyChangeListener, Runnable {
 
 	private int row;
 	private int column;
 
-	/**
-	 * Create a TableCellListener.
-	 */
-	public RundownCellListener() {
-	}
-
-	//
-	// Implement the PropertyChangeListener interface
-	//
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		// A cell has started/stopped editing
@@ -169,7 +161,7 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 	/**
 	 * Check the rundown for airspace highlighting
 	 */
-	public void checkAirspaceHighlights() {
+	public static void checkAirspaceHighlights() {
 		// now loop through every asset that has a conflict
 		for (Asset other : RundownAssets.getInstance()) {
 
@@ -178,7 +170,7 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				Airspace as = (Airspace) asst;
 				if (as.isAddToRundown() && as.conflictsWith(other).size() > 0) {
 					hasConflict = true;
-					DebugUtility.trace(this.getClass(), as.getColor().toString());
+					DebugUtility.trace(RundownCellListener.class, as.getColor().toString());
 					other.setAirspaceHighlightColor(as.getColor());
 				}
 			}
@@ -186,5 +178,10 @@ public class RundownCellListener implements PropertyChangeListener, Runnable {
 				other.setAirspaceHighlightColor(Color.WHITE);
 			}
 		}
+	}
+
+	@Override
+	public void create() {
+		// do nothing on create
 	}
 }

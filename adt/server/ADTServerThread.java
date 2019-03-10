@@ -10,6 +10,7 @@ import messages.ADTBaseMessage;
 import messages.ADTBlankMessage;
 import messages.ADTEndSessionMessage;
 import messages.ADTEstablishMessage;
+import messages.ADTIdMessage;
 import messages.ADTLockedCellsMessage;
 import messages.ADTUpdateMessage;
 import rundown.model.RundownTableModel;
@@ -23,7 +24,6 @@ import utilities.DebugUtility;
 public class ADTServerThread extends Thread {
 
 	private int id;
-	private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 
@@ -34,14 +34,20 @@ public class ADTServerThread extends Thread {
 	 * @param reader - input to process
 	 * @param socket - the connection socket to create a writer for
 	 */
-	public ADTServerThread(int id, ObjectInputStream reader, Socket socket) {
-		this.input = reader;
+	public ADTServerThread(int id, Socket socket) {
 		this.id = id;
-		this.socket = socket;
 		try {
-			this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			this.input = new ObjectInputStream(socket.getInputStream());
+			this.output = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
-			DebugUtility.error(ADTServerThread.class, "Unable to create printWriter");
+			DebugUtility.error(ADTServerThread.class, "Unable to create ServerThread input/output streams for " + id);
+		}
+
+		if (this.output != null) {
+			this.sendMessage(new ADTIdMessage(id));
+			this.sendRundown();
+			this.sendATOData();
+			this.sendLocks();
 		}
 	}
 

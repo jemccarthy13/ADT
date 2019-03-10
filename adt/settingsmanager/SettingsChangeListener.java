@@ -4,7 +4,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * Listen for changes to the settings
+ * Listen for changes to the settings. On any sort of change event, call
+ * handleChange(), which updates the appropriate Setting
  */
 public abstract class SettingsChangeListener implements DocumentListener {
 

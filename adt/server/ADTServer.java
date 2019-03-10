@@ -1,15 +1,12 @@
 package server;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.BindException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.HashMap;
 
 import messages.ADTBaseMessage;
 import messages.ADTEndSessionMessage;
-import messages.ADTIdMessage;
 import utilities.Configuration;
 import utilities.DebugUtility;
 
@@ -35,8 +32,6 @@ import utilities.DebugUtility;
 public class ADTServer extends Thread {
 
 	private ServerSocket serverSocket;
-	private Socket clientSocket;
-	private ObjectInputStream bufferedReader;
 	private int connections = 0;
 	private HashMap<Integer, ADTServerThread> clients;
 
@@ -77,7 +72,7 @@ public class ADTServer extends Thread {
 	}
 
 	/**
-	 * Start the ADT Server.
+	 * Start the ADT Server by establishing the proper connections
 	 * 
 	 * @note should not be called directly
 	 */
@@ -93,20 +88,14 @@ public class ADTServer extends Thread {
 			e2.printStackTrace();
 		}
 
+		// while there is a valid connection, create a client thread and read messages
 		while (this.endCondition == false && this.serverSocket != null) {
 			try {
-				this.clientSocket = this.serverSocket.accept();
-				// Create a reader
-				this.bufferedReader = new ObjectInputStream(this.clientSocket.getInputStream());
-				DebugUtility.debug(ADTServer.class, "Started server thread: " + this.connections);
-				ADTServerThread client = new ADTServerThread(this.connections, this.bufferedReader, this.clientSocket);
+				ADTServerThread client = new ADTServerThread(this.connections, this.serverSocket.accept());
 				new Thread(client).start();
 				this.clients.put(this.connections, client);
-				client.sendMessage(new ADTIdMessage(this.connections));
 
-				client.sendRundown();
-				client.sendATOData();
-				client.sendLocks();
+				DebugUtility.debug(ADTServer.class, "Started server thread: " + this.connections);
 
 				this.connections++;
 			} catch (BindException e1) {
@@ -159,7 +148,7 @@ public class ADTServer extends Thread {
 	/**
 	 * Stop sending messages to the given client.
 	 * 
-	 * @param id
+	 * @param id - the user who has disconnected or wishes to end session
 	 */
 	public void removeClient(int id) {
 		this.clients.remove(id);

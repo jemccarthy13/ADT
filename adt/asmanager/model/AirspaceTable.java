@@ -26,6 +26,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import asmanager.gui.ManagerFrame;
+import rundown.gui.RundownCellListener;
 import rundown.model.RundownTable;
 import structures.AirspaceList;
 import swing.Borders;
@@ -61,7 +62,7 @@ public class AirspaceTable extends JTable {
 			if (c != null) {
 				this.savedColor = c;
 				AirspaceTable.this.setValueAt(c, this.savedRow, this.savedColumn);
-				RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
+				RundownCellListener.checkAirspaceHighlights();
 			}
 			List<SortKey> keys = new ArrayList<SortKey>();
 			keys.addAll(AirspaceTable.this.getRowSorter().getSortKeys());

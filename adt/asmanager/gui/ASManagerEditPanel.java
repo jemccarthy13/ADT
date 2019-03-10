@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import rundown.model.RundownTable;
+import rundown.gui.RundownCellListener;
 import structures.Airspace;
 import structures.AirspaceList;
 import swing.ADTLabel;
@@ -136,7 +136,7 @@ public class ASManagerEditPanel extends BasePanel {
 
 		ASManagerPanel.getInstance().repaint();
 
-		RundownTable.getInstance().getCellListener().checkAirspaceHighlights();
+		RundownCellListener.checkAirspaceHighlights();
 		((ManagerFrame) (SingletonHolder.getInstanceOf(ManagerFrame.class))).dispose();
 	}
 
