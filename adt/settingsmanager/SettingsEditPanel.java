@@ -72,16 +72,14 @@ public class SettingsEditPanel extends BasePanel {
 		this.selector.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent event) {
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					Object item = event.getItem();
-					boolean isCGRS = item.toString().equals("Grids") ? true : false;
-					if (isCGRS) {
-						((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
-								.setKeypadFinder(new KeypadFinderCGRS());
-					} else {
-						((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
-								.setKeypadFinder(new KeypadFinderGARS());
-					}
+				Object item = event.getItem();
+				boolean isCGRS = item.toString().equals("CGRS") ? true : false;
+				if (isCGRS) {
+					((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
+							.setKeypadFinder(new KeypadFinderCGRS());
+				} else {
+					((GridSettings) SingletonHolder.getInstanceOf(GridSettings.class))
+							.setKeypadFinder(new KeypadFinderGARS());
 				}
 			}
 		});
@@ -118,6 +116,7 @@ public class SettingsEditPanel extends BasePanel {
 		this.add(this.startColField, gbc_colField);
 
 		this.startColField.getDocument().addDocumentListener(new SettingsChangeListener() {
+
 			@Override
 			protected void handleChange(DocumentEvent e) {
 				settings.setStartCol(SettingsEditPanel.this.startColField.getText());

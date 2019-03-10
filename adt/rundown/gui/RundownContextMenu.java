@@ -49,12 +49,19 @@ public class RundownContextMenu extends JPopupMenu implements Singleton {
 	/** Remove from rundown context menu option */
 	final JMenuItem deleteItem = new JMenuItem("No longer in the BMA");
 
+	/**
+	 * Default constructor
+	 */
+	public RundownContextMenu() {
+		this.create();
+	}
+
 	private ActionListener menuListener = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// because the table can be sorted, we need to get the row in terms of the model
-			RundownTable table = (RundownTable) SingletonHolder.getInstanceOf(RundownTable.class);
+			RundownTable table = RundownTable.getInstance();
 			table.getSelectedRow();
 			int row = table.convertRowIndexToModel(table.getSelectedRow());
 
@@ -143,7 +150,7 @@ public class RundownContextMenu extends JPopupMenu implements Singleton {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						RundownTable table = (RundownTable) SingletonHolder.getInstanceOf(RundownTable.class);
+						RundownTable table = RundownTable.getInstance();
 						int rowAtPoint = table.rowAtPoint(
 								SwingUtilities.convertPoint(RundownContextMenu.this, new Point(0, 0), table));
 						if (rowAtPoint > -1) {

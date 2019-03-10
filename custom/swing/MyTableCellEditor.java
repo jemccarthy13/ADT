@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.AbstractCellEditor;
-import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
@@ -16,11 +15,11 @@ public class MyTableCellEditor extends AbstractCellEditor implements TableCellEd
 	private static final long serialVersionUID = -1997111587617475155L;
 
 	/** Component to reference the text inside this cell */
-	protected JComponent component = new JTextField();
+	protected JTextField component = new JTextField();
 
 	@Override
 	public Object getCellEditorValue() {
-		return ((JTextField) this.component).getText();
+		return this.component.getText();
 	}
 
 	/**
@@ -36,6 +35,7 @@ public class MyTableCellEditor extends AbstractCellEditor implements TableCellEd
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex,
 			int vColIndex) {
+		this.component.setText(table.getValueAt(rowIndex, vColIndex).toString());
 		this.component.setFont(new Font("Verdana", 1, 24));
 		return this.component;
 	}

@@ -110,7 +110,7 @@ public class RundownTable extends JTable {
 		}
 		this.addPropertyChangeListener((RundownCellListener) SingletonHolder.getInstanceOf(RundownCellListener.class));
 
-		this.setComponentPopupMenu((RundownContextMenu) SingletonHolder.getInstanceOf(RundownContextMenu.class));
+		this.setComponentPopupMenu(new RundownContextMenu());
 	}
 
 	/**
