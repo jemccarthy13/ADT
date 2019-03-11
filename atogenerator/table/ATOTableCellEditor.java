@@ -3,7 +3,6 @@ package table;
 import java.awt.Component;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 
@@ -55,7 +54,7 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 
 		if (ATOTable.getPrevCol() != -1 && ATOTable.getPrevRow() != -1
 				&& ATOTable.getInstance().getValueAt(rowIndex, vColIndex).equals("-")) {
-			((JTextField) this.component).setText("");
+			this.component.setText("");
 			ATOTable.getInstance().setValueAt("", rowIndex, vColIndex);
 			ATOTable.setPrevCol(vColIndex);
 			ATOTable.setPrevRow(rowIndex);
@@ -66,6 +65,6 @@ public class ATOTableCellEditor extends MyTableCellEditor {
 
 	@Override
 	public Object getCellEditorValue() {
-		return ((JTextField) this.component).getText();
+		return this.component.getText();
 	}
 }
