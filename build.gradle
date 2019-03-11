@@ -45,7 +45,7 @@ sourceSets {
 
     test {
         java {
-            srcDirs = ["adt", "adt/utilities", "adt/structures","custom","atogenerator","test"]  // Note @Peter's comment below
+            srcDirs = ["adt", "adt/utilities", "adt/structures","custom","atogenerator","test","test/utilities"]  // Note @Peter's comment below
         }        
         resources {
             srcDirs = ["resources"]
