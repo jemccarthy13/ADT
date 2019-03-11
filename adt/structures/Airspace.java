@@ -29,7 +29,7 @@ public class Airspace extends Asset {
 	 */
 	@Override
 	public boolean isBlank() {
-		return super.isBlank() && this.name.equals("") && this.color == Color.WHITE;
+		return super.isBlank() && this.getName().equals("") && this.getColor() == Color.WHITE;
 	}
 
 	/**
@@ -55,6 +55,7 @@ public class Airspace extends Asset {
 		this.setName("");
 		this.setAirspace("");
 		this.setAltBlock("", "");
+		this.setColor(Color.WHITE);
 	}
 
 	/**

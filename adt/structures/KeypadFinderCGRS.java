@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 
 import swing.SingletonHolder;
-import utilities.DebugUtility;
 import utilities.GridSettings;
 import utilities.Patterns;
 
@@ -79,8 +78,9 @@ public class KeypadFinderCGRS extends KeypadFinder {
 		boolean success = m.find();
 
 		if (m.groupCount() < 4 || !success) {
-			DebugUtility.error(this.getClass(), "BAD CGRS grid:  " + killbox);
-			DebugUtility.error(this.getClass(), "Attempting named airspaces expansion...");
+			// DebugUtility.error(this.getClass(), "BAD CGRS grid: " + killbox);
+			// DebugUtility.error(this.getClass(), "Attempting named airspaces
+			// expansion...");
 		} else {
 			row = m.group(1);
 			col = m.group(2);
@@ -258,8 +258,6 @@ public class KeypadFinderCGRS extends KeypadFinder {
 
 					String keypadStr = padRow + col1stChr + col2ndChr + startingKeypad;
 
-					System.err.println("Testing: " + keypadStr);
-
 					boolean inCircle = testKeypad(Double.parseDouble(nCenter), Double.parseDouble(eCenter),
 							nCornerPoint, eCornerPoint, radius);
 
@@ -309,7 +307,6 @@ public class KeypadFinderCGRS extends KeypadFinder {
 		if (getDistance(nCornerPoint - 50 / 3, nCenter, eCornerPoint + 50 / 6, eCenter, longDelta) < testRadius)
 			retval = true;
 
-		System.err.println("Found one corner: " + retval);
 		return retval;
 	}
 

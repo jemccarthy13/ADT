@@ -5,7 +5,8 @@ import java.awt.Image;
 import org.junit.Assert;
 import org.junit.Test;
 
-import utilities.BaseTest;
+import teststructures.BaseTest;
+import utilities.DebugUtility;
 import utilities.ImageLibrary;
 
 /**
@@ -17,10 +18,9 @@ public class ImageLibraryTest extends BaseTest {
 	 * Test the image library
 	 */
 	@Test
-	public void getImage() {
-		ImageLibrary.getImage("invalid");
-		BaseTest.originalOut.println(BaseTest.outContent);
-		Assert.assertTrue(BaseTest.outContent.toString().contains("Unable to resolve invalid"));
+	public void getInvalidImage() {
+		Image i = ImageLibrary.getImage("invalid");
+		Assert.assertNull(i);
 	}
 
 	/**
@@ -28,9 +28,9 @@ public class ImageLibraryTest extends BaseTest {
 	 */
 	@Test
 	public void getValidImage() {
-		ImageLibrary.getImage("searchIcon");
-		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to resolve searchIcon"));
-		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to load: 'searchIcon.jpg'"));
+		Image i = ImageLibrary.getImage("searchIcon.jpg");
+		Assert.assertNotNull(i);
+		DebugUtility.error(ImageLibraryTest.class, i.toString());
 	}
 
 	/**
@@ -38,11 +38,8 @@ public class ImageLibraryTest extends BaseTest {
 	 */
 	@Test
 	public void getExistingImage() {
-		ImageLibrary.getImage("AF-Roundel");
-		BaseTest.originalOut.println(BaseTest.outContent);
-		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to resolve AF-Roundel"));
-		Assert.assertFalse(BaseTest.outContent.toString().contains("Unable to load: 'AF-Roundel.jpg'"));
-		Image i = ImageLibrary.getImage("AF-Roundel");
+		ImageLibrary.getImage("AF-Roundel.jpg");
+		Image i = ImageLibrary.getImage("AF-Roundel.jpg");
 		Assert.assertNotNull(i);
 	}
 }

@@ -17,8 +17,8 @@ import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
 import swing.SingletonHolder;
-import utilities.ADTRobot;
-import utilities.BaseTest;
+import teststructures.ADTRobot;
+import teststructures.BaseTest;
 import utilities.DebugUtility;
 
 /**
@@ -51,7 +51,7 @@ public class ADTTest extends BaseTest {
 		((RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
 		ADTRobot.sleep(500);
 		Assert.assertTrue(
-				10 == ((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount());
+				11 == ((RundownTableModel) SingletonHolder.getInstanceOf(RundownTableModel.class)).getColumnCount());
 		((RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class)).compactCheck.doClick();
 		ADTRobot.sleep(1000);
 		DebugUtility.debug(ADTTest.class,

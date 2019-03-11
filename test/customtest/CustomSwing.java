@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import datastructures.TestStruct;
 import swing.SingletonHolder;
-import utilities.BaseTest;
+import teststructures.BaseTest;
 
 /**
  * Test the remainder of the custom swing utilities.

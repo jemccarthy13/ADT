@@ -208,7 +208,13 @@ public class RundownMenuBar extends JMenuBar {
 			} else if (e.getSource().equals(RundownMenuBar.this.typeManager)) {
 				DebugUtility.error(RundownMenuBar.class, "Type manager not implemented");
 			} else if (e.getSource().equals(RundownMenuBar.this.zeroize)) {
-				if (Output.showConfirmMessage("Confirm zeroize", "Are you sure?")) {
+				boolean zeroizeSure = false;
+				if (Configuration.getInstance().isTest()) {
+					zeroizeSure = true;
+				} else {
+					zeroizeSure = Output.showConfirmMessage("Confirm zeroize", "Are you sure?");
+				}
+				if (zeroizeSure) {
 					ATOAssets.zeroize();
 					RundownAssets.getInstance().clear();
 					RundownAssets.checkAddNew();

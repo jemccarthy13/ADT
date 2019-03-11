@@ -1,8 +1,11 @@
-package utilities;
+package teststructures;
 
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
+
+import utilities.Configuration;
+import utilities.DebugUtility;
 
 /**
  * A simple server designed to operate on the same port and block the ADTServer

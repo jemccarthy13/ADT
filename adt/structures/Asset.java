@@ -116,7 +116,7 @@ public class Asset implements Comparable<Asset>, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return this.getID().getVCS() + "/" + this.getID().getMode2() + "/" + this.airspace + "/"
+		return this.getID().getVCS() + "/" + this.getID().getMode2() + "/" + this.getAirspace() + "/"
 				+ this.getID().getSpecType() + "/" + this.getID().getTypeCat() + "/" + this.getID().getFullCallsign()
 				+ "/" + this.arData;
 	}
@@ -321,6 +321,13 @@ public class Asset implements Comparable<Asset>, Serializable {
 	public Object getARData() {
 		// todo Auto-generated method stub
 		return this.arData;
+	}
+
+	/**
+	 * @param string assets AR data in string format
+	 */
+	public void setARData(String string) {
+		this.arData = string;
 	}
 
 }

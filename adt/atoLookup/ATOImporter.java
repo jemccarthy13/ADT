@@ -66,7 +66,7 @@ public class ATOImporter implements FileImporter {
 						+ "Please ensure you are selecting a valid USMTF00.txt file.");
 			} else {
 				ListOfAsset atoAssets = (ListOfAsset) SingletonHolder.getInstanceOf(ATOAssets.class);
-				Output.forceInfoMessage("Proceesed",
+				Output.showInfoMessage("Proceesed",
 						"Processed " + numFilesProc + " file(s) and added " + atoAssets.size() + " asset(s).");
 			}
 		} else {

@@ -9,9 +9,11 @@ import main.ADTApp;
 import rundown.gui.RundownFrame;
 import rundown.gui.RundownMenuBar;
 import structures.ATOAssets;
+import structures.PreviousAssets;
+import structures.RundownAssets;
 import swing.BaseFrame;
 import swing.SingletonHolder;
-import utilities.BaseTest;
+import teststructures.BaseTest;
 import utilities.Configuration;
 
 /**
@@ -40,10 +42,10 @@ public class ADTMenuBarTest extends BaseTest {
 	 */
 	@Test
 	public void testSettings() {
-		Configuration.getInstance().setATOLoadLoc("./TESTATO.txt");
+		Configuration.getInstance().setATOLoadLoc("./resources/ATOs/TESTATO USMTF00.txt");
 		RundownMenuBar.getInstance().doImport.doClick();
 
-		Assert.assertTrue(((ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class)).size() == 1001);
+		Assert.assertTrue(((ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class)).size() == 1056);
 
 		// random sample one to make sure it's the right guy
 	}
@@ -55,7 +57,11 @@ public class ADTMenuBarTest extends BaseTest {
 	public void testZeroize() {
 		RundownMenuBar.getInstance().zeroize.doClick();
 
-		BaseTest.fail("Zeroize not implemented");
+		Assert.assertTrue(((ATOAssets) SingletonHolder.getInstanceOf(ATOAssets.class)).size() == 0);
+		Assert.assertTrue(RundownAssets.getInstance().size() == 1);
+		Assert.assertTrue(RundownAssets.getInstance().get(0).isBlank());
+		Assert.assertTrue(((PreviousAssets) SingletonHolder.getInstanceOf(PreviousAssets.class)).size() == 0);
+
 	}
 
 	/**

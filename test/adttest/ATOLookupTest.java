@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import rundown.gui.RundownButtonPanel;
 import swing.SingletonHolder;
-import utilities.BaseTest;
+import teststructures.BaseTest;
 
 /**
  * Test the ATO Lookup functionality

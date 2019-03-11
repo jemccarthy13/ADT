@@ -8,7 +8,7 @@ import structures.Asset;
 import structures.ListOfAsset;
 import structures.RundownAssets;
 import swing.SingletonHolder;
-import utilities.ADTRobot;
+import teststructures.ADTRobot;
 import utilities.Configuration;
 import utilities.ShutdownThread;
 

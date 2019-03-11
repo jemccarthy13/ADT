@@ -19,8 +19,8 @@ import main.ATOGenerator;
 import swing.SingletonHolder;
 import table.ATOTable;
 import table.ATOTableModel;
-import utilities.ADTRobot;
-import utilities.BaseTest;
+import teststructures.ADTRobot;
+import teststructures.BaseTest;
 import utilities.Configuration;
 import utilities.DebugUtility;
 

@@ -14,10 +14,9 @@ public final class DebugUtility {
 
 	private static Logger newLogger() {
 		Logger l = Logger.getLogger("ADTLogger");
-		l.setLevel(Level.INFO);
+		l.setLevel(Level.FINEST);
 		ConsoleHandler c = new ConsoleHandler();
-		c.setLevel(Level.INFO);
-
+		c.setLevel(Level.FINEST);
 		l.addHandler(c);
 		return l;
 	}

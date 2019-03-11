@@ -8,7 +8,7 @@ import main.ADTClient;
 import rundown.model.RundownTable;
 import swing.BaseFrame;
 import swing.SingletonHolder;
-import utilities.ADTRobot;
+import teststructures.ADTRobot;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.ImageLibrary;

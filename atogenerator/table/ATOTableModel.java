@@ -7,6 +7,8 @@ import javax.swing.JButton;
 
 import datastructures.ATOAsset;
 import datastructures.ATOData;
+import structures.ATOAssets;
+import structures.ListOfAsset;
 import swing.SingletonHolder;
 import utilities.ADTTableModel;
 
@@ -65,6 +67,7 @@ public class ATOTableModel extends ADTTableModel {
 		this.columnNames.add("M2");
 		this.columnNames.add("M3");
 		this.columnNames.add("AR");
+		this.items = (ListOfAsset) (SingletonHolder.getInstanceOf(ATOAssets.class));
 	}
 
 	@Override

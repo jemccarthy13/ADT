@@ -1,7 +1,8 @@
-package utilities;
+package teststructures;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.logging.Level;
 
 import javax.swing.JTable;
 
@@ -14,6 +15,8 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import junit.framework.TestSuite;
+import utilities.Configuration;
+import utilities.DebugUtility;
 
 /**
  * A self-registering BaseTest
@@ -63,6 +66,7 @@ public abstract class BaseTest extends TestSuite {
 		@Override
 		public void starting(Description desc) {
 			DebugUtility.error(BaseTest.class, "Starting: " + desc.getMethodName());
+			Configuration.getInstance().setTest(true);
 		}
 	};
 	/**
@@ -96,6 +100,7 @@ public abstract class BaseTest extends TestSuite {
 	 */
 	@BeforeClass
 	public static void setUpStreams() {
+		DebugUtility.setLevel(Level.FINEST);
 		System.setOut(outStream);
 		System.setErr(errStream);
 	}

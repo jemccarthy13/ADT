@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 /**
  * Create all images used in game for reference.
  */
-public class ImageLibrary extends HashMap<String, ImageIcon> {
+public class ImageLibrary extends HashMap<String, Image> {
 
 	private static final long serialVersionUID = 8298201257452310707L;
 
@@ -38,17 +38,30 @@ public class ImageLibrary extends HashMap<String, ImageIcon> {
 	 * @return an Image if it can be retrieved
 	 */
 	public static Image getImage(String name) {
-		Image img = null;
-		ImageIcon icon = null;
-		URL location = ImageLibrary.class.getResource(name);
+		Image retVal;
+		if (m_instance.containsKey(name)) {
+			retVal = m_instance.get(name);
+		} else {
+			Image img = null;
+			ImageIcon icon = null;
+			URL location = ImageLibrary.class.getClassLoader().getResource(name);
 
-		if (location != null)
-			icon = new ImageIcon(ImageLibrary.class.getResource(name));
-		if (icon != null) {
-			icon.setDescription(name);
-			DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
-			img = icon.getImage();
+			if (location == null)
+				location = ImageLibrary.class.getClassLoader().getResource("graphics/" + name);
+			if (location == null)
+				location = ImageLibrary.class.getClassLoader().getResource("resources/" + name);
+
+			if (location != null)
+				icon = new ImageIcon(location);
+
+			if (icon != null) {
+				icon.setDescription(name);
+				DebugUtility.trace(ImageLibrary.class, "On the fly loaded " + icon.getDescription());
+				img = icon.getImage();
+			}
+			m_instance.put(name, img);
+			retVal = img;
 		}
-		return img;
+		return retVal;
 	}
 }

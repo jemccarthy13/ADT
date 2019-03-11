@@ -2,10 +2,11 @@ package adttest;
 
 import org.junit.Test;
 
+import asmanager.gui.ManagerFrame;
 import rundown.gui.RundownButtonPanel;
 import swing.SingletonHolder;
-import utilities.ADTRobot;
-import utilities.BaseTest;
+import teststructures.ADTRobot;
+import teststructures.BaseTest;
 
 /**
  * Tests for airspace manager functionality
@@ -20,6 +21,7 @@ public class ASManagerTest extends BaseTest {
 		RundownButtonPanel panel = (RundownButtonPanel) SingletonHolder.getInstanceOf(RundownButtonPanel.class);
 		panel.asMgrBtn.doClick();
 		ADTRobot.sleep(4000);
+		((ManagerFrame) SingletonHolder.getInstanceOf(ManagerFrame.class)).dispose();
 	}
 
 	/**

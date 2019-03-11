@@ -64,18 +64,21 @@ public class Altitude implements Serializable {
 
 		// we have two valid altitude blocks
 		if (!(other.isBlank() || this.isBlank())) {
-			int newAltB = this.getLower().equals("") ? Integer.MAX_VALUE : Integer.parseInt(this.getLower());
-			int newAltT = this.getUpper().equals("") ? Integer.MIN_VALUE : Integer.parseInt(this.getUpper());
+			int newAltB = this.getLower().equals("") ? Integer.parseInt(this.getUpper())
+					: Integer.parseInt(this.getLower());
+			int newAltT = this.getUpper().equals("") ? Integer.parseInt(this.getLower())
+					: Integer.parseInt(this.getUpper());
 
-			int othAltB = (other.getLower().equals("") ? Integer.MAX_VALUE : Integer.parseInt(other.getLower()))
-					- altSep;
-			int othAltT = (other.getUpper().equals("") ? Integer.MIN_VALUE : Integer.parseInt(other.getUpper()))
-					+ altSep;
+			int othAltB = (other.getLower().equals("") ? Integer.parseInt(other.getUpper())
+					: Integer.parseInt(other.getLower())) - altSep;
+			int othAltT = (other.getUpper().equals("") ? Integer.parseInt(other.getLower())
+					: Integer.parseInt(other.getUpper())) + altSep;
 
 			// the max of the mins - the min of the max's is a check for overlap
 			// see https://stackoverflow.com/a/39452639
 			max = newAltB >= othAltB ? newAltB : othAltB;
 			min = newAltT <= othAltT ? newAltT : othAltT;
+
 		}
 		return (max - min) <= 0;
 	}

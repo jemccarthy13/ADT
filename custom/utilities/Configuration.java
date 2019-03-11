@@ -29,6 +29,7 @@ public class Configuration {
 	private String ATOProjFileLoc = "";
 	private String ATOLoadLoc = "";
 	private boolean production = true;
+	private boolean isTest = false;
 
 	private static Configuration instance = new Configuration();
 
@@ -211,5 +212,21 @@ public class Configuration {
 	 */
 	public boolean isDebug() {
 		return !this.production;
+	}
+
+	/**
+	 * @return true iff running JUnit test, to prevent Output info Boxes and auto
+	 *         confirm input
+	 */
+	public boolean isTest() {
+		return this.isTest;
+	}
+
+	/**
+	 * @param isTest whether or not we are Junit testing
+	 */
+	public void setTest(boolean isTest) {
+		this.SHOW_MESSAGES = !isTest;
+		this.isTest = isTest;
 	}
 }

@@ -5,10 +5,10 @@ import java.awt.Window;
 import rundown.gui.RundownFrame;
 import server.ADTServer;
 import swing.SingletonHolder;
-import utilities.ADTRobot;
-import utilities.BaseTest;
+import teststructures.ADTRobot;
+import teststructures.BaseTest;
+import teststructures.TestServer;
 import utilities.DebugUtility;
-import utilities.TestServer;
 
 /**
  * Test what happens when a server is already bound
