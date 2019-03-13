@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import org.junit.Assert;
 import org.junit.Test;
 
-import teststructures.ADTRobot;
+import structures.ADTRobot;
 import teststructures.BaseTest;
 import utilities.DebugUtility;
 

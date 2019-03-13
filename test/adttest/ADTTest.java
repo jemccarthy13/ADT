@@ -16,8 +16,8 @@ import rundown.gui.RundownButtonPanel;
 import rundown.gui.RundownFrame;
 import rundown.model.RundownTable;
 import rundown.model.RundownTableModel;
+import structures.ADTRobot;
 import swing.SingletonHolder;
-import teststructures.ADTRobot;
 import teststructures.BaseTest;
 import utilities.DebugUtility;
 

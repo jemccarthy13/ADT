@@ -3,12 +3,12 @@ package main;
 import java.awt.Window;
 
 import rundown.gui.RundownFrame;
+import structures.ADTRobot;
 import structures.ATOAssets;
 import structures.Asset;
 import structures.ListOfAsset;
 import structures.RundownAssets;
 import swing.SingletonHolder;
-import teststructures.ADTRobot;
 import utilities.Configuration;
 import utilities.ShutdownThread;
 

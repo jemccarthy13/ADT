@@ -4,8 +4,8 @@ import java.awt.Window;
 
 import rundown.gui.RundownFrame;
 import server.ADTServer;
+import structures.ADTRobot;
 import swing.SingletonHolder;
-import teststructures.ADTRobot;
 import teststructures.BaseTest;
 import teststructures.TestServer;
 import utilities.DebugUtility;

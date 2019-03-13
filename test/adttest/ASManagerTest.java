@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import asmanager.gui.ManagerFrame;
 import rundown.gui.RundownButtonPanel;
+import structures.ADTRobot;
 import swing.SingletonHolder;
-import teststructures.ADTRobot;
 import teststructures.BaseTest;
 
 /**

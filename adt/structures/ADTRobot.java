@@ -1,4 +1,4 @@
-package teststructures;
+package structures;
 
 import java.awt.AWTException;
 import java.awt.Robot;

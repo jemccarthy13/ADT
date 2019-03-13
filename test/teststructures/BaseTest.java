@@ -15,6 +15,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import junit.framework.TestSuite;
+import structures.ADTRobot;
 import utilities.Configuration;
 import utilities.DebugUtility;
 

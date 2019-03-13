@@ -6,9 +6,9 @@ import java.awt.Toolkit;
 
 import main.ADTClient;
 import rundown.model.RundownTable;
+import structures.ADTRobot;
 import swing.BaseFrame;
 import swing.SingletonHolder;
-import teststructures.ADTRobot;
 import utilities.Configuration;
 import utilities.DebugUtility;
 import utilities.ImageLibrary;
