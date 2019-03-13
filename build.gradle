@@ -36,7 +36,7 @@ dependencies {
 sourceSets {
     main {
     	java {
-            srcDirs = ["adt", "adt/utilities", "adt/structures", "atogenerator","custom"]  // Note @Peter's comment below
+            srcDirs = ["adt", "adt/utilities", "adt/structures", "atogenerator","custom"] 
         }        
         resources {
             srcDirs = ["resources"]
@@ -45,7 +45,7 @@ sourceSets {
 
     test {
         java {
-            srcDirs = ["adt", "adt/utilities", "adt/structures","custom","atogenerator","test","test/utilities"]  // Note @Peter's comment below
+            srcDirs = ["adt", "adt/utilities", "adt/structures","custom","atogenerator","test","test/teststructures"] 
         }        
         resources {
             srcDirs = ["resources"]
