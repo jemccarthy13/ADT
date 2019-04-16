@@ -4,8 +4,6 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
-import org.junit.Assert;
-
 /**
  * Wrapper around JRobot to provide enhanced capability.
  */
@@ -22,7 +20,7 @@ public class ADTRobot {
 		try {
 			this.r = new Robot();
 		} catch (AWTException e) {
-			Assert.fail("Couldn't create test robot.");
+			System.err.println(e);
 		}
 	}
 

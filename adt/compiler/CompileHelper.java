@@ -1,6 +1,8 @@
 package compiler;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * A helper utility to write a small compile script
@@ -17,8 +19,26 @@ public class CompileHelper {
 
 		File f = new File(startDir);
 
-		String command = "javac -cp " + classPath(f, false) + " " + classPath(f, true);
-		System.out.println(command);
+		String classP = classPath(f, false);
+		String compileCommand = "javac -cp " + (char) (34) + classP + (char) (34) + " " + classPath(f, true);
+		String runCommand = "java -cp " + (char) (34) + classP + (char) (34) + " " + "main/ADTApp";
+		System.out.println(compileCommand);
+		System.out.println(runCommand);
+
+		System.out.println(compileCommand.replace("javac -cp", "jar cvfe ADT.jar adt.main.ADTApp")
+				.replace("java", "class").replaceAll("" + (char) (34) + ".*" + (char) (34) + " ", ""));
+
+		// TODO - write to file
+		File yourFile = new File("./commands.bat");
+		try {
+			yourFile.createNewFile(); // if file already exists will do nothing
+			FileOutputStream oFile = new FileOutputStream(yourFile, false);
+			oFile.write((compileCommand + "\n" + runCommand).getBytes());
+			oFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private static String classPath(File f, boolean compile) {

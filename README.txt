@@ -1,3 +1,17 @@
+===================================================================
+
+===================================================================
+
+Compilation instructions:
+
+From the main ADT folder (which houses adt, atogenerator, custom, resources, etc):
+\ADT> javac .\adt\compiler\CompileHelper.java
+\ADT> java -cp adt  compiler.CompileHelper
+\ADT> ./commands.bat
+
+===================================================================
+
+===================================================================
 
 This file will be replaced with a more in-depth documentation at some point in the future.
 
