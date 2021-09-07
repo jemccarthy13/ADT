@@ -32,7 +32,7 @@ public class SettingsEditPanel extends BasePanel {
 	/**
 	 * Combobox whether the grid is CGRS or GARS
 	 */
-	JComboBox selector;
+	JComboBox<String> selector;
 
 	/** Field for setting the grid Origin */
 	JTextField originField;
@@ -63,7 +63,7 @@ public class SettingsEditPanel extends BasePanel {
 		GBC gbc_selectorLbl = new GBC(0, 0);
 		this.add(selectorLbl, gbc_selectorLbl);
 
-		this.selector = new JComboBox();
+		this.selector = new JComboBox<String>();
 		this.selector.addItem("CGRS");
 		this.selector.addItem("GARS");
 		GBC gbc_selector = new GBC(1, 0);

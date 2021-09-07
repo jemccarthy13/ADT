@@ -107,7 +107,7 @@ public class ASManagerEditPanel extends BasePanel {
 	 * Combobox whether this airspace is defined in terms of Grid reference or
 	 * centerpoint/radius
 	 */
-	JComboBox selector;
+	JComboBox<String> selector;
 
 	/**
 	 * Set the edit panel to show/hide centerpoint/radius fields
@@ -155,7 +155,7 @@ public class ASManagerEditPanel extends BasePanel {
 		GBC gbc_selectorLbl = new GBC(0, 0);
 		this.add(selectorLbl, gbc_selectorLbl);
 
-		this.selector = new JComboBox();
+		this.selector = new JComboBox<String>();
 		this.selector.addItem("Grids");
 		this.selector.addItem("Center Point/Radius");
 		GBC gbc_selector = new GBC(1, 0);
