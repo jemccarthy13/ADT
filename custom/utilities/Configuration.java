@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -45,13 +48,33 @@ public class Configuration {
 
 	private void tryLoadConfig() {
 		Properties properties = new Properties();
+		File file = null;
 		try {
-			File file = new File("./resources/configuration.properties");
+			file = new File("./resources/configuration.properties");
 			FileInputStream fileInput = new FileInputStream(file);
 			properties.loadFromXML(fileInput);
 			fileInput.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			DebugUtility.error(Configuration.class, e.getLocalizedMessage());
+			try {
+				URL propURL = Configuration.class.getResource("resources/configuration.properties");
+				file = new File(propURL.toURI());
+				FileInputStream fileInput = new FileInputStream(file);
+				properties.loadFromXML(fileInput);
+				fileInput.close();
+			} catch (URISyntaxException e1) {
+				// todo Auto-generated catch block
+				e1.printStackTrace();
+			} catch (FileNotFoundException e1) {
+				// todo Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InvalidPropertiesFormatException e1) {
+				// todo Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// todo Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

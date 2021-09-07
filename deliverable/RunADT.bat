@@ -1,1 +1,1 @@
-javaw -jar ADT.jar
+java -jar ADT.jar
